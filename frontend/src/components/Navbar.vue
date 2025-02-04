@@ -5,6 +5,7 @@
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/Register">Register</RouterLink>
       <RouterLink to="/Login">Login</RouterLink>
+      <RouterLink to="/Logout">Logout</RouterLink>
     </v-app-bar>
 </template>
 

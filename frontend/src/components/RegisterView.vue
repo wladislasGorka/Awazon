@@ -9,6 +9,8 @@
   </template>
   
   <script>
+  import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
   export default {
     data() {
       return {
@@ -24,6 +26,11 @@
           email: this.email,
           password: this.password
         };
+
+        const auth = getAuth();
+        createUserWithEmailAndPassword(auth, this.email, this.password).then( cred =>{
+            console.log(cred);
+        })
   
         fetch('http://127.0.0.1:8000/user', {
           method: 'POST',
