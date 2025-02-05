@@ -5,7 +5,6 @@ import { loadFonts } from './plugins/webfontloader'
 import { createRouter, createWebHistory } from 'vue-router'
 import {routes} from './routes.js'
 import { initializeApp } from "firebase/app";
-import { getAuth } from 'firebase/auth';
 // import { getAnalytics } from "firebase/analytics";
 
 
@@ -24,14 +23,12 @@ const firebaseConfig = {
   measurementId: "G-J2DVM70LXN"
 };
 
-const firebaseApp = initializeApp(firebaseConfig);
-const auth = getAuth(firebaseApp);
+initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
 loadFonts()
 
 const app = createApp(App);
-app.config.globalProperties.$firebaseAuth = auth; // Make Firebase Auth available globally
 app.use(vuetify)
    .use(router)
    .mount('#app');

@@ -26,7 +26,7 @@
         
         const auth = getAuth();
         signInWithEmailAndPassword(auth, this.email, this.password)
-        .then( cred =>{
+        .then( cred => {
             console.log(cred);
         })
       }

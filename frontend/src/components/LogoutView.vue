@@ -1,9 +1,10 @@
+<!-- src/components/LogoutView.vue -->
 <template>
     <div>
       <p>Hello</p>
       <v-btn @click="logout">Logout</v-btn>
     </div>
-  </template>
+</template>
   
   <script>
   import { getAuth, signOut } from 'firebase/auth';
