@@ -14,6 +14,55 @@ services:
       - "8000:8000"
     networks:
       - frontend
+      - backend
+    depends_on:
+      - "mariadb"
+      # mariadb:
+        # condition: service_healthy
+        # restart: true
+
+  mariadb:
+    image: mariadb:11.7
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: main
+      MYSQL_HOST: mariadb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      DATABASE_URL: "mysql://root:password@mariadb:3306/main?sslmode=disable&charset=utf8mb4&serverVersion=11.7.2-MariaDB-ubu2404"
+    ports:
+      - "3306:3306"
+    # healthcheck:
+    #   test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+    #   timeout: 20s
+    #   retries: 10
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - backend
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.2
+    container_name: phpmyadmin
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: password
+    ports:
+      - "8080:80"
+    networks:
+      - backend
+    depends_on:
+      - "mariadb"
+        # condition: service_healthy
+        # restart: true
 
 networks:
   frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
+volumes:
+  db_data:
