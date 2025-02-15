@@ -22,6 +22,19 @@
           .catch((error) => {
             console.error('Error signing out:', error);
           });
+        fetch('http://localhost:8000/api/test', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          })
+          .then(response => response.json())
+          .then(data => {
+            console.log('Response:', data);
+          })
+          .catch(error => {
+            console.error('Erreur:', error);
+          });
       }
     }
   };

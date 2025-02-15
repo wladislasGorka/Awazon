@@ -36,4 +36,10 @@ final class UserController extends AbstractController
         // Envoyer une réponse JSON
         return new JsonResponse(['message' => 'User created successfully', 'userId' => $user->getId()], 201);
     }
+
+    #[Route('/api/test', name: 'api_test')]
+    public function test(): JsonResponse
+    {
+        return new JsonResponse(['message' => 'Communication réussie !']);
+    }
 }

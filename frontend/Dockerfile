@@ -8,6 +8,7 @@ RUN npm install
 
 COPY . .
 
+EXPOSE 3000
+
 CMD ["npm","run","serve","--","--port","3000"]
 
-EXPOSE 3000
