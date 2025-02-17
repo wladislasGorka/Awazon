@@ -5,6 +5,7 @@
       <v-spacer></v-spacer>
       <RouterLink to="/"> Home</RouterLink> |
       <RouterLink to="/Register"> Register</RouterLink> |
+      <RouterLink to="/Product"> Product</RouterLink> |
       <RouterLink to="/Login"> Login</RouterLink> |
       <RouterLink to="/Logout"> Logout</RouterLink>
     </v-app-bar>
