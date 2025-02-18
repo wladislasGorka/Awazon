@@ -3,7 +3,7 @@
     <v-form @submit.prevent="submitForm">
       <v-text-field v-model="email" label="Email" type="email" required></v-text-field>
       <v-text-field v-model="password" label="Mot de passe" type="password" required></v-text-field>
-      <v-btn type="submit" color="primary">Enregistrer</v-btn>
+      <v-btn type="submit" color="primary">Login</v-btn>
     </v-form>
   </template>
   

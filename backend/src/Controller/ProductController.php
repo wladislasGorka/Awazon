@@ -34,6 +34,6 @@ final class ProductController extends AbstractController
         $entityManager->flush();
 
         // Envoyer une réponse JSON
-        return new JsonResponse(['message' => 'Product created successfully', 'productId' => $product->getId()], 201);
+        return new JsonResponse(['message' => 'Product created successfully !', 'productId' => $product->getId()], 201);
     }
 }
