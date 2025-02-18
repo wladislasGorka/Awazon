@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Member;
 use App\Entity\Merchant;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,6 +65,23 @@ final class UserController extends AbstractController
 
         // Envoyer une réponse JSON
         return new JsonResponse(['message' => 'User created successfully', 'userId' => $user->getId()], 201);
+    }
+
+    #[Route('/users', name: 'app_users')]
+    public function getUsers(UserRepository $userRepository, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $users=$userRepository->findAll();
+        $datas=[];
+        foreach($users as $user){
+            $datas[] = [
+                'name' => $user->getName(),
+                'email' => $user->getEmail(),
+                'role' => $entityManager->getClassMetadata(get_class($user))->discriminatorValue
+            ] ;
+        }
+        
+        // Envoyer une réponse JSON
+        return new JsonResponse(['message' => 'List of Users', 'datas' => $datas], 201);
     }
 
     #[Route('/api/test', name: 'api_test')]
