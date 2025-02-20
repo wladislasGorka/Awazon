@@ -73,10 +73,17 @@ class Shop
     #[ORM\ManyToMany(targetEntity: CategoryShop::class, inversedBy: 'shops')]
     private Collection $categories;
 
+    /**
+     * @var Collection<int, OrderShop>
+     */
+    #[ORM\OneToMany(targetEntity: OrderShop::class, mappedBy: 'shop')]
+    private Collection $Orders;
+
     public function __construct()
     {
         $this->imagesShop = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->Orders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -302,6 +309,36 @@ class Shop
     public function removeCategory(CategoryShop $category): static
     {
         $this->categories->removeElement($category);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderShop>
+     */
+    public function getOrders(): Collection
+    {
+        return $this->Orders;
+    }
+
+    public function addOrder(OrderShop $order): static
+    {
+        if (!$this->Orders->contains($order)) {
+            $this->Orders->add($order);
+            $order->setShop($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(OrderShop $order): static
+    {
+        if ($this->Orders->removeElement($order)) {
+            // set the owning side to null (unless already changed)
+            if ($order->getShop() === $this) {
+                $order->setShop(null);
+            }
+        }
 
         return $this;
     }

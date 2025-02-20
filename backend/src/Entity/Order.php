@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Config\OrderStatus;
 use App\Repository\OrderRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,6 +34,24 @@ class Order
 
     #[ORM\Column(enumType: OrderStatus::class)]
     private ?OrderStatus $status = null;
+
+    /**
+     * @var Collection<int, OrderShop>
+     */
+    #[ORM\OneToMany(targetEntity: OrderShop::class, mappedBy: 'OrderId')]
+    private Collection $shops;
+
+    /**
+     * @var Collection<int, OrderProduct>
+     */
+    #[ORM\OneToMany(targetEntity: OrderProduct::class, mappedBy: 'products')]
+    private Collection $products;
+
+    public function __construct()
+    {
+        $this->shops = new ArrayCollection();
+        $this->products = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -94,6 +114,66 @@ class Order
     public function setStatus(OrderStatus $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderShop>
+     */
+    public function getShops(): Collection
+    {
+        return $this->shops;
+    }
+
+    public function addShop(OrderShop $shop): static
+    {
+        if (!$this->shops->contains($shop)) {
+            $this->shops->add($shop);
+            $shop->setOrderId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShop(OrderShop $shop): static
+    {
+        if ($this->shops->removeElement($shop)) {
+            // set the owning side to null (unless already changed)
+            if ($shop->getOrderId() === $this) {
+                $shop->setOrderId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderProduct>
+     */
+    public function getProduct(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(OrderProduct $product): static
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(OrderProduct $product): static
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getProduct() === $this) {
+                $product->setProduct(null);
+            }
+        }
 
         return $this;
     }

@@ -17,6 +17,14 @@ class OrderShop
     #[ORM\Column(enumType: OrderShopStatus::class)]
     private ?OrderShopStatus $status = null;
 
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Shop $shop = null;
+
+    #[ORM\ManyToOne(inversedBy: 'shops')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Order $orderId = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -30,6 +38,30 @@ class OrderShop
     public function setStatus(OrderShopStatus $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getShop(): ?Shop
+    {
+        return $this->shop;
+    }
+
+    public function setShop(?Shop $shop): static
+    {
+        $this->shop = $shop;
+
+        return $this;
+    }
+
+    public function getOrderId(): ?Order
+    {
+        return $this->orderId;
+    }
+
+    public function setOrderId(?Order $orderId): static
+    {
+        $this->orderId = $orderId;
 
         return $this;
     }
