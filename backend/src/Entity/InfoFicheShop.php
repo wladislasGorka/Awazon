@@ -22,6 +22,10 @@ class InfoFicheShop
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $icon = null;
 
+    #[ORM\ManyToOne(inversedBy: 'infosFicheShop')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?FicheShop $ficheShop = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +63,18 @@ class InfoFicheShop
     public function setIcon(?string $icon): static
     {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function getFicheShop(): ?FicheShop
+    {
+        return $this->ficheShop;
+    }
+
+    public function setFicheShop(?FicheShop $ficheShop): static
+    {
+        $this->ficheShop = $ficheShop;
 
         return $this;
     }

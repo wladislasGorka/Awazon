@@ -16,6 +16,10 @@ class ImageShop
     #[ORM\Column(length: 50)]
     private ?string $path = null;
 
+    #[ORM\ManyToOne(inversedBy: 'imagesShop')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Shop $shop = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -29,6 +33,18 @@ class ImageShop
     public function setPath(?string $path): static
     {
         $this->path = $path;
+
+        return $this;
+    }
+
+    public function getShop(): ?Shop
+    {
+        return $this->shop;
+    }
+
+    public function setShop(?Shop $shop): static
+    {
+        $this->shop = $shop;
 
         return $this;
     }
