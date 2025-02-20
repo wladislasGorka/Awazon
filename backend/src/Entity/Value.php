@@ -2,14 +2,12 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use App\Repository\ProductRepository;
+use App\Repository\ValueRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ProductRepository::class)]
-#[ApiResource]
-class Product
+#[ORM\Entity(repositoryClass: ValueRepository::class)]
+class Value
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,14 +17,13 @@ class Product
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
+    #[ORM\Column(length: 50)]
+    private ?string $stock = null;
 
     #[ORM\Column]
     private ?float $price = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $stock = null;
+   
 
     public function getId(): ?int
     {
@@ -45,14 +42,14 @@ class Product
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getStock(): ?string
     {
-        return $this->description;
+        return $this->stock;
     }
 
-    public function setDescription(string $description): static
+    public function setStock(string $stock): static
     {
-        $this->description = $description;
+        $this->stock = $stock;
 
         return $this;
     }
@@ -69,15 +66,5 @@ class Product
         return $this;
     }
 
-    public function getStock(): ?string
-    {
-        return $this->stock;
-    }
-
-    public function setStock(string $stock): static
-    {
-        $this->stock = $stock;
-
-        return $this;
-    }
+    
 }

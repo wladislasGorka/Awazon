@@ -1,39 +1,33 @@
-<?php
-
+<?php 
 namespace App\Controller;
 
-use App\Entity\Product;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class ProductController extends AbstractController
 {
-    #[Route('/product', name: 'app_product')]
-    public function index(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    #[Route('/product', name: 'app_product', methods: ['GET'])]
+    public function index(): Response
     {
-        // Récupérer les données de la requête
+        return $this->render('product/index.html.twig', [
+            'controller_name' => 'ProductController',
+        ]);
+    }
+
+    #[Route('/product', name: 'create_product', methods: ['POST'])]
+    public function create(Request $request): JsonResponse
+    {
         $data = json_decode($request->getContent(), true);
 
-        // Vérifier que les données nécessaires sont présentes
-        if (!isset($data['name'], $data['desc'], $data['price'])) {
-            return new JsonResponse(['error' => 'Invalid data'], 400);
-        }
+        // Vous pouvez ajouter la logique pour enregistrer le produit dans la base de données ici
 
-        // Créer un nouvel utilisateur et définir ses propriétés
-        $product = new Product();
-        $product->setName($data['name']);
-        $product->setDescription($data['desc']);
-        $product->setPrice($data['price']);
-
-        // Enregistrer l'utilisateur dans la base de données
-        $entityManager->persist($product);
-        $entityManager->flush();
-
-        // Envoyer une réponse JSON
-        return new JsonResponse(['message' => 'Product created successfully', 'productId' => $product->getId()], 201);
+        // Pour l'instant, nous renvoyons simplement les données reçues en réponse
+        return new JsonResponse([
+            'message' => 'Produit créé avec succès',
+            'data' => $data,
+        ], Response::HTTP_CREATED);
     }
 }

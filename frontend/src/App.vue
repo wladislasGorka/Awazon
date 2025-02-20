@@ -9,8 +9,7 @@
 
 <script>
 import Navbar from './components/Navbar.vue';
-import { getAuth } from "firebase/auth";
-import { useRouter } from 'vue-router';
+import { getAuth } from 'firebase/auth';
 
 export default {
   name: 'App',
@@ -19,21 +18,22 @@ export default {
     Navbar,
   },
   mounted() {
-    const router = useRouter();
     const auth = getAuth();
     auth.onAuthStateChanged(user => {
       if (user) {
         console.log('User is signed in.');
-        router.push("/");
+        this.$router.push("/");
       } else {
         console.log('No user is signed in.');
-        router.push("/Login")
+        this.$router.push("/Login");
       }
     });
   },
 
-  data: () => ({
-    //
-  }),
-}
+  data() {
+    return {
+      // Any necessary data properties can go here
+    };
+  },
+};
 </script>

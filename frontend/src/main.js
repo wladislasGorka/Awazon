@@ -5,6 +5,7 @@ import { loadFonts } from './plugins/webfontloader'
 import { createRouter, createWebHistory } from 'vue-router'
 import {routes} from './routes.js'
 import { initializeApp } from "firebase/app";
+import { fetchProducts } from './routes';
 // import { getAnalytics } from "firebase/analytics";
 
 
@@ -28,7 +29,17 @@ initializeApp(firebaseConfig);
 
 loadFonts()
 
-const app = createApp(App);
+const app = createApp({
+  data() {
+    return {
+      products: [],
+    };
+  },
+  async mounted() {
+    this.products = await fetchProducts();
+  },
+  render: h => h(App),
+});
 app.use(vuetify)
    .use(router)
    .mount('#app');
