@@ -2,22 +2,22 @@
 
 namespace App\Repository;
 
-use App\Entity\Commande;
+use App\Entity\CategoryShop;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Commande>
+ * @extends ServiceEntityRepository<CategoryShop>
  */
-class CommandeRepository extends ServiceEntityRepository
+class CategoryShopRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Commande::class);
+        parent::__construct($registry, CategoryShop::class);
     }
 
     //    /**
-    //     * @return Commande[] Returns an array of Commande objects
+    //     * @return CategoryShop[] Returns an array of CategoryShop objects
     //     */
     //    public function findByExampleField($value): array
     //    {
@@ -31,7 +31,7 @@ class CommandeRepository extends ServiceEntityRepository
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Commande
+    //    public function findOneBySomeField($value): ?CategoryShop
     //    {
     //        return $this->createQueryBuilder('c')
     //            ->andWhere('c.exampleField = :val')
