@@ -35,6 +35,9 @@ class Event
     #[ORM\Column(length: 255)]
     private ?string $path_image = null;
 
+    #[ORM\Column]
+    private ?bool $registration = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +123,18 @@ class Event
     public function setPathImage(string $path_image): static
     {
         $this->path_image = $path_image;
+
+        return $this;
+    }
+
+    public function isRegistration(): ?bool
+    {
+        return $this->registration;
+    }
+
+    public function setRegistration(bool $registration): static
+    {
+        $this->registration = $registration;
 
         return $this;
     }

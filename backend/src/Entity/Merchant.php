@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Config\MerchantType;
+use App\Config\MerchantStatus;
 use App\Repository\MerchantRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,6 +20,12 @@ class Merchant
 
     #[ORM\Column(length: 255)]
     private ?string $kbis = null;
+
+    #[ORM\Column(enumType: MerchantType::class)]
+    private ?MerchantType $type = null;
+
+    #[ORM\Column(enumType: MerchantStatus::class)]
+    private ?MerchantStatus $status = null;
 
     public function getId(): ?int
     {
@@ -44,6 +52,30 @@ class Merchant
     public function setKbis(string $kbis): static
     {
         $this->kbis = $kbis;
+
+        return $this;
+    }
+
+    public function getType(): ?MerchantType
+    {
+        return $this->type;
+    }
+
+    public function setType(MerchantType $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getStatus(): ?MerchantStatus
+    {
+        return $this->status;
+    }
+
+    public function setStatus(MerchantStatus $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
