@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Config\GiftCodeTargetType;
 use App\Repository\GiftCodeTargetRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: GiftCodeTargetRepository::class)]
+#[ApiResource]
 class GiftCodeTarget
 {
     #[ORM\Id]

@@ -7,8 +7,10 @@ use App\Config\ReportType;
 use App\Repository\ReportRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: ReportRepository::class)]
+#[ApiResource]
 class Report
 {
     #[ORM\Id]

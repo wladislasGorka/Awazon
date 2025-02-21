@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Config\ForumSectionAccess;
 use App\Repository\ForumSectionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: ForumSectionRepository::class)]
+#[ApiResource]
 class ForumSection
 {
     #[ORM\Id]

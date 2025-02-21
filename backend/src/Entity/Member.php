@@ -4,8 +4,10 @@ namespace App\Entity;
 
 use App\Repository\MemberRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
+#[ApiResource]
 #[ORM\Table(name: '`member`')]
 class Member
 {

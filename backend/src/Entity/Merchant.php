@@ -6,8 +6,10 @@ use App\Config\MerchantType;
 use App\Config\MerchantStatus;
 use App\Repository\MerchantRepository;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 #[ORM\Entity(repositoryClass: MerchantRepository::class)]
+#[ApiResource]
 class Merchant
 {
     #[ORM\Id]

@@ -5,9 +5,11 @@ use App\Config\ForumMessageStatus;
 use App\Repository\ForumMessageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 
 
 #[ORM\Entity(repositoryClass: ForumMessageRepository::class)]
+#[ApiResource]
 class ForumMessage
 {
     #[ORM\Id]
