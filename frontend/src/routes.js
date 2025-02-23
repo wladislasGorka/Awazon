@@ -5,6 +5,11 @@ import RegisterMerchantView from './components/RegisterMerchantView.vue'
 import ProductView from './components/ProductView.vue'
 import LoginView from './components/LoginView.vue'
 import LogoutView from './components/LogoutView.vue'
+import EventsView from './components/EventsView.vue'
+import ForumView from './components/ForumView.vue'
+import ShopsView from './components/ShopsView.vue'
+import ProductsView from './components/ProductsView.vue'
+import ContactView from './components/ContactView.vue'
 
 export const routes = [
   { path: '/', component: HelloWorld },
@@ -13,6 +18,11 @@ export const routes = [
   { path: '/RegisterMerchant', component: RegisterMerchantView },
   { path: '/Product', component: ProductView },
   { path: '/Login', component: LoginView },
-  { path: '/Logout', component: LogoutView }
+  { path: '/Logout', component: LogoutView },
+  { path: '/Events', component: EventsView },
+  { path: '/Forum', component: ForumView },
+  { path: '/Shops', component: ShopsView },
+  { path: '/Products', component: ProductsView },
+  { path: '/Contact', component: ContactView },
 ]
 
