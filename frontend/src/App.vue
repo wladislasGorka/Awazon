@@ -1,21 +1,45 @@
 <!-- src/App.vue -->
 <template>
   <v-app>
-    <ProductForm @productCreated="fetchProducts"/>
+    <v-main>
+      <RouterView />
+      <Navbar />
+      <SubNavBar />
+    </v-main>
+    <FooterPage />
   </v-app>
 </template>
 
 <script>
-import ProductForm from './components/ProductForm.vue';
+import Navbar from './components/Navbar.vue';
+import SubNavBar from './components/SubNavBar.vue';
+import FooterPage from './components/FooterView.vue';
+import { getAuth } from "firebase/auth";
+import { RouterView, useRouter } from 'vue-router';
 
 export default {
   components: {
-    ProductForm
+    Navbar,
+    SubNavBar,
+    RouterView,
+    FooterPage
   },
-  methods: {
-    fetchProducts() {
-      // Recharger les produits depuis l'API
-    }
-  }
-};
+  mounted() {
+    const router = useRouter();
+    const auth = getAuth();
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        console.log('User is signed in.');
+        router.push("/");
+      } else {
+        console.log('No user is signed in.');
+        router.push("/Login")
+      }
+    });
+  },
+
+  data: () => ({
+    //
+  }),
+}
 </script>

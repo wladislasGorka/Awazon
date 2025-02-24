@@ -2,39 +2,39 @@
 
 namespace App\Repository;
 
-use App\Entity\Product;
+use App\Entity\ForumSection;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Product>
+ * @extends ServiceEntityRepository<ForumSection>
  */
-class ProductRepository extends ServiceEntityRepository
+class ForumSectionRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Product::class);
+        parent::__construct($registry, ForumSection::class);
     }
 
     //    /**
-    //     * @return Product[] Returns an array of Product objects
+    //     * @return ForumSection[] Returns an array of ForumSection objects
     //     */
     //    public function findByExampleField($value): array
     //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
+    //        return $this->createQueryBuilder('f')
+    //            ->andWhere('f.exampleField = :val')
     //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
+    //            ->orderBy('f.id', 'ASC')
     //            ->setMaxResults(10)
     //            ->getQuery()
     //            ->getResult()
     //        ;
     //    }
 
-    //    public function findOneBySomeField($value): ?Product
+    //    public function findOneBySomeField($value): ?ForumSection
     //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
+    //        return $this->createQueryBuilder('f')
+    //            ->andWhere('f.exampleField = :val')
     //            ->setParameter('val', $value)
     //            ->getQuery()
     //            ->getOneOrNullResult()

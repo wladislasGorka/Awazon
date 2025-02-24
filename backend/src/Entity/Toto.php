@@ -3,13 +3,12 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
-use App\Repository\ProductRepository;
-use Doctrine\DBAL\Types\Types;
+use App\Repository\TotoRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[ORM\Entity(repositoryClass: TotoRepository::class)]
 #[ApiResource]
-class Product
+class Toto
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -19,15 +18,18 @@ class Product
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(length: 255)]
     private ?string $description = null;
 
+<<<<<<< HEAD:backend/src/Entity/Product.php
     #[ORM\Column]
     private ?float $price = null;
 
     #[ORM\Column(length: 50)]
     private ?string $stock = null;
 
+=======
+>>>>>>> 67fecfdc2600c5892a4d0c637be6ea36a2214c1d:backend/src/Entity/Toto.php
     public function getId(): ?int
     {
         return $this->id;
@@ -56,6 +58,7 @@ class Product
 
         return $this;
     }
+<<<<<<< HEAD:backend/src/Entity/Product.php
 
     public function getPrice(): ?float
     {
@@ -81,3 +84,6 @@ class Product
         return $this;
     }
 }
+=======
+}
+>>>>>>> 67fecfdc2600c5892a4d0c637be6ea36a2214c1d:backend/src/Entity/Toto.php
