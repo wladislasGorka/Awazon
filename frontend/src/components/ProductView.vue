@@ -9,7 +9,6 @@
   </template>
   
   <script>
-  import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
   export default {
     data() {
@@ -26,11 +25,6 @@
           desc: this.desc,
           price: this.price
         };
-
-        const auth = getAuth();
-        createUserWithEmailAndPassword(auth, this.email, this.password).then( cred =>{
-            console.log(cred);
-        })
   
         fetch('http://localhost:8000/product', {
           method: 'POST',
