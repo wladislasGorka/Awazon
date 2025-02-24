@@ -1,33 +1,29 @@
-<?php 
+<?php // src/Controller/ProductController.php
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Product;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-final class ProductController extends AbstractController
+class ProductController extends AbstractController
 {
-    #[Route('/product', name: 'app_product', methods: ['GET'])]
-    public function index(): Response
-    {
-        return $this->render('product/index.html.twig', [
-            'controller_name' => 'ProductController',
-        ]);
-    }
-
-    #[Route('/product', name: 'create_product', methods: ['POST'])]
-    public function create(Request $request): JsonResponse
+    /**
+     * @Route("/api/products", name="create_product", methods={"POST"})
+     */
+    public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
+        $product = new Product();
+        $product->setName($data['name']);
+        $product->setDescription($data['description']);
+        $product->setPrice($data['price']);
 
-        // Vous pouvez ajouter la logique pour enregistrer le produit dans la base de données ici
+        $em->persist($product);
+        $em->flush();
 
-        // Pour l'instant, nous renvoyons simplement les données reçues en réponse
-        return new JsonResponse([
-            'message' => 'Produit créé avec succès',
-            'data' => $data,
-        ], Response::HTTP_CREATED);
+        return new JsonResponse(['id' => $product->getId()], JsonResponse::HTTP_CREATED);
     }
 }
