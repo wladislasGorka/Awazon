@@ -26,3 +26,13 @@ export const routes = [
   { path: '/Contact', component: ContactView },
 ]
 
+export const fetchProducts = async () => {
+  try {
+      const response = await fetch('/product');
+      const data = await response.json();
+      return data;
+  } catch (error) {
+      console.error('Erreur lors de la récupération des produits :', error);
+      return [];
+  }
+};
