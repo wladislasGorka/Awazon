@@ -1,4 +1,3 @@
-<!-- src/App.vue -->
 <template>
   <v-app>
     <v-main>
@@ -18,6 +17,8 @@ import { getAuth } from "firebase/auth";
 import { RouterView, useRouter } from 'vue-router';
 
 export default {
+  name: 'App',
+  
   components: {
     Navbar,
     SubNavBar,
