@@ -1,6 +1,6 @@
-<?php namespace App\Enum;
+<?php namespace App\Config;
 
-enum StatutReviewShop: string
+enum StatutReviewProduct: string
 {
     case OPTION_1 = 'pending';
     case OPTION_2 = 'approved';

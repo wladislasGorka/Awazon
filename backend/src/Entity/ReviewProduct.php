@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Enum\StatutReviewProduct;
+use App\Config\StatutReviewProduct;
 use App\Repository\ReviewProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;

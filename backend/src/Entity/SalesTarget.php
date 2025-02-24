@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Enum\TypeOptionSales;
+use App\Config\TypeOptionSales;
 use App\Repository\SalesTargetRepository;
 use Doctrine\ORM\Mapping as ORM;
 

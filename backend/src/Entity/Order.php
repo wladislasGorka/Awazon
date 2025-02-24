@@ -38,13 +38,13 @@ class Order
     /**
      * @var Collection<int, OrderShop>
      */
-    #[ORM\OneToMany(targetEntity: OrderShop::class, mappedBy: 'OrderId')]
+    #[ORM\OneToMany(targetEntity: OrderShop::class, mappedBy: 'orderId')]
     private Collection $shops;
 
     /**
      * @var Collection<int, OrderProduct>
      */
-    #[ORM\OneToMany(targetEntity: OrderProduct::class, mappedBy: 'products')]
+    #[ORM\OneToMany(targetEntity: OrderProduct::class, mappedBy: 'product')]
     private Collection $products;
 
     public function __construct()

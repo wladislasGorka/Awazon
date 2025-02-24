@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\ReviewShopRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Enum\StatutReviewShop;
+use App\Config\StatutReviewShop;
 
 #[ORM\Entity(repositoryClass: ReviewShopRepository::class)]
 class ReviewShop

@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Enum\TypeOptionProduct;
+use App\Config\TypeOptionProduct;
 use App\Repository\OptionRepository;
 use Doctrine\ORM\Mapping as ORM;
 

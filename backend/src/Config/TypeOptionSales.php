@@ -1,4 +1,4 @@
-<?php namespace App\Enum;
+<?php namespace App\Config;
 
 enum TypeOptionSales: string
 {
