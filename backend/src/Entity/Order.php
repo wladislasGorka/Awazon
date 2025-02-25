@@ -44,8 +44,14 @@ class Order
     /**
      * @var Collection<int, OrderProduct>
      */
-    #[ORM\OneToMany(targetEntity: OrderProduct::class, mappedBy: 'product')]
+    #[ORM\OneToMany(targetEntity: OrderProduct::class, mappedBy: 'orderId')]
     private Collection $products;
+
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    private ?GiftCode $giftCode = null;
+
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    private ?Member $memberId = null;
 
     public function __construct()
     {
@@ -160,7 +166,7 @@ class Order
     {
         if (!$this->products->contains($product)) {
             $this->products->add($product);
-            $product->setProduct($this);
+            $product->setOrderId($this);
         }
 
         return $this;
@@ -170,10 +176,34 @@ class Order
     {
         if ($this->products->removeElement($product)) {
             // set the owning side to null (unless already changed)
-            if ($product->getProduct() === $this) {
-                $product->setProduct(null);
+            if ($product->getOrderId() === $this) {
+                $product->setOrderId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getGiftCode(): ?GiftCode
+    {
+        return $this->giftCode;
+    }
+
+    public function setGiftCode(?GiftCode $giftCode): static
+    {
+        $this->giftCode = $giftCode;
+
+        return $this;
+    }
+
+    public function getMemberId(): ?Member
+    {
+        return $this->memberId;
+    }
+
+    public function setMemberId(?Member $memberId): static
+    {
+        $this->memberId = $memberId;
 
         return $this;
     }
