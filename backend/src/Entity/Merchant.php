@@ -19,6 +19,9 @@ class Merchant
     #[ORM\Column(length: 255)]
     private ?string $kbis = null;
 
+    #[ORM\OneToOne(mappedBy: 'merchantId', cascade: ['persist', 'remove'])]
+    private ?Shop $shop = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,23 @@ class Merchant
     public function setKbis(string $kbis): static
     {
         $this->kbis = $kbis;
+
+        return $this;
+    }
+
+    public function getShop(): ?Shop
+    {
+        return $this->shop;
+    }
+
+    public function setShop(Shop $shop): static
+    {
+        // set the owning side of the relation if necessary
+        if ($shop->getMerchantId() !== $this) {
+            $shop->setMerchantId($this);
+        }
+
+        $this->shop = $shop;
 
         return $this;
     }

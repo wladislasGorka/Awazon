@@ -22,6 +22,14 @@ class Cart
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $add_time = null;
 
+    #[ORM\ManyToOne(inversedBy: 'carts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Member $memberId = null;
+
+    #[ORM\ManyToOne(inversedBy: 'carts')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Product $productId = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -47,6 +55,30 @@ class Cart
     public function setAddTime(\DateTimeInterface $add_time): static
     {
         $this->add_time = $add_time;
+
+        return $this;
+    }
+
+    public function getMemberId(): ?Member
+    {
+        return $this->memberId;
+    }
+
+    public function setMemberId(?Member $memberId): static
+    {
+        $this->memberId = $memberId;
+
+        return $this;
+    }
+
+    public function getProductId(): ?Product
+    {
+        return $this->productId;
+    }
+
+    public function setProductId(?Product $productId): static
+    {
+        $this->productId = $productId;
 
         return $this;
     }
