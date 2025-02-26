@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Config\OrderShopStatus;
 use App\Repository\OrderShopRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: OrderShopRepository::class)]
+#[ApiResource()]
 class OrderShop
 {
     #[ORM\Id]

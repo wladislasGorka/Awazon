@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ReviewShopRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Config\StatutReviewShop;
 
 #[ORM\Entity(repositoryClass: ReviewShopRepository::class)]
+#[ApiResource()]
 class ReviewShop
 {
     #[ORM\Id]

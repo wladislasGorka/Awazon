@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\InfoFicheShopRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: InfoFicheShopRepository::class)]
+#[ApiResource()]
 class InfoFicheShop
 {
     #[ORM\Id]

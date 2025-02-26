@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Config\TypeOptionSales;
 use App\Repository\SalesTargetRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SalesTargetRepository::class)]
+#[ApiResource()]
 class SalesTarget
 {
     #[ORM\Id]

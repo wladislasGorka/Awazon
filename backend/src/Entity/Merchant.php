@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MerchantRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MerchantRepository::class)]
+#[ApiResource()]
 class Merchant extends Users
 {
     #[ORM\Column(length: 255)]
