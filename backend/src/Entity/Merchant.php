@@ -6,13 +6,8 @@ use App\Repository\MerchantRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MerchantRepository::class)]
-class Merchant
+class Merchant extends Users
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
-
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
@@ -21,11 +16,6 @@ class Merchant
 
     #[ORM\OneToOne(mappedBy: 'merchantId', cascade: ['persist', 'remove'])]
     private ?Shop $shop = null;
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
 
     public function getAddress(): ?string
     {

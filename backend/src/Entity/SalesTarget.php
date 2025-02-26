@@ -17,7 +17,7 @@ class SalesTarget
     #[ORM\Column(enumType: TypeOptionSales::class)]
     private ?TypeOptionSales $type = null;
 
-    #[ORM\ManyToOne(inversedBy: 'SalesTarget')]
+    #[ORM\ManyToOne(inversedBy: 'salesTarget')]
     private ?Sales $sales = null;
 
     public function getId(): ?int

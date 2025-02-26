@@ -37,18 +37,18 @@ class Sales
      * @var Collection<int, SalesImage>
      */
     #[ORM\OneToMany(targetEntity: SalesImage::class, mappedBy: 'sales')]
-    private Collection $SalesImage;
+    private Collection $salesImage;
 
     /**
      * @var Collection<int, SalesTarget>
      */
     #[ORM\OneToMany(targetEntity: SalesTarget::class, mappedBy: 'sales')]
-    private Collection $SalesTarget;
+    private Collection $salesTarget;
 
     public function __construct()
     {
-        $this->SalesImage = new ArrayCollection();
-        $this->SalesTarget = new ArrayCollection();
+        $this->salesImage = new ArrayCollection();
+        $this->salesTarget = new ArrayCollection();
     }
 
 
@@ -122,14 +122,14 @@ class Sales
      */
     public function getSalesImage(): Collection
     {
-        return $this->SalesImage;
+        return $this->salesImage;
     }
 
-    public function addSalesImage(SalesImage $SalesImage): static
+    public function addSalesImage(SalesImage $salesImage): static
     {
-        if (!$this->SalesImage->contains($SalesImage)) {
-            $this->SalesImage->add($SalesImage);
-            $SalesImage->setSales($this);
+        if (!$this->salesImage->contains($salesImage)) {
+            $this->salesImage->add($salesImage);
+            $salesImage->setSales($this);
         }
 
         return $this;
@@ -137,7 +137,7 @@ class Sales
 
     public function removeSalesImage(SalesImage $salesImage): static
     {
-        if ($this->SalesImage->removeElement($salesImage)) {
+        if ($this->salesImage->removeElement($salesImage)) {
             // set the owning side to null (unless already changed)
             if ($salesImage->getSales() === $this) {
                 $salesImage->setSales(null);
@@ -152,13 +152,13 @@ class Sales
      */
     public function getSalesTarget(): Collection
     {
-        return $this->SalesTarget;
+        return $this->salesTarget;
     }
 
     public function addSalesTarget(SalesTarget $salesTarget): static
     {
-        if (!$this->SalesTarget->contains($salesTarget)) {
-            $this->SalesTarget->add($salesTarget);
+        if (!$this->salesTarget->contains($salesTarget)) {
+            $this->salesTarget->add($salesTarget);
             $salesTarget->setSales($this);
         }
 
@@ -167,7 +167,7 @@ class Sales
 
     public function removeSalesTarget(SalesTarget $salesTarget): static
     {
-        if ($this->SalesTarget->removeElement($salesTarget)) {
+        if ($this->salesTarget->removeElement($salesTarget)) {
             // set the owning side to null (unless already changed)
             if ($salesTarget->getSales() === $this) {
                 $salesTarget->setSales(null);

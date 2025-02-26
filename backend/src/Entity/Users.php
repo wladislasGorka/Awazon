@@ -9,42 +9,45 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
-class Users
+#[ORM\InheritanceType('JOINED')]
+#[ORM\DiscriminatorColumn(name: 'class', type: 'string')]
+#[ORM\DiscriminatorMap(['Member' => Member::class, 'Merchant' => Merchant::class, 'Admin' => Admin::class, 'SuperAdmin' => SuperAdmin::class])]
+abstract class Users
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    protected ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $name = null;
+    protected ?string $name = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $first_name = null;
+    protected ?string $first_name = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $email = null;
+    protected ?string $email = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $password = null;
+    protected ?string $password = null;
 
     #[ORM\Column]
-    private ?int $phone = null;
+    protected ?int $phone = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $register_date = null;
+    protected ?\DateTimeInterface $register_date = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $login_date = null;
+    protected ?\DateTimeInterface $login_date = null;
 
     #[ORM\Column]
-    private ?bool $email_verif = null;
+    protected ?bool $email_verif = null;
 
     #[ORM\Column(enumType: UsersStatus::class)]
-    private ?UsersStatus $status = null;
+    protected ?UsersStatus $status = null;
 
     #[ORM\Column(enumType: UsersRole::class)]
-    private ?UsersRole $role = null;
+    protected ?UsersRole $role = null;
 
     public function getId(): ?int
     {
