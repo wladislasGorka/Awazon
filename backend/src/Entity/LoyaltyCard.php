@@ -22,6 +22,10 @@ class LoyaltyCard
     #[ORM\Column(length: 50)]
     private ?string $level = null;
 
+    #[ORM\ManyToOne(inversedBy: 'loyaltyCards')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Level $Levelid = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +63,18 @@ class LoyaltyCard
     public function setLevel(string $level): static
     {
         $this->level = $level;
+
+        return $this;
+    }
+
+    public function getLevelid(): ?Level
+    {
+        return $this->Levelid;
+    }
+
+    public function setLevelid(?Level $Levelid): static
+    {
+        $this->Levelid = $Levelid;
 
         return $this;
     }

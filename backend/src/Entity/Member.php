@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\MemberRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: MemberRepository::class)]
@@ -22,6 +24,24 @@ class Member
 
     #[ORM\Column(length: 255)]
     private ?string $paypal_id = null;
+
+    /**
+     * @var Collection<int, ReviewProduct>
+     */
+    #[ORM\ManyToMany(targetEntity: ReviewProduct::class, inversedBy: 'members')]
+    private Collection $ReviewProduct;
+
+    /**
+     * @var Collection<int, ReviewShop>
+     */
+    #[ORM\ManyToMany(targetEntity: ReviewShop::class, inversedBy: 'members')]
+    private Collection $ReviewShop;
+
+    public function __construct()
+    {
+        $this->ReviewProduct = new ArrayCollection();
+        $this->ReviewShop = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -60,6 +80,54 @@ class Member
     public function setPaypalId(string $paypal_id): static
     {
         $this->paypal_id = $paypal_id;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReviewProduct>
+     */
+    public function getReviewProduct(): Collection
+    {
+        return $this->ReviewProduct;
+    }
+
+    public function addReviewProduct(ReviewProduct $reviewProduct): static
+    {
+        if (!$this->ReviewProduct->contains($reviewProduct)) {
+            $this->ReviewProduct->add($reviewProduct);
+        }
+
+        return $this;
+    }
+
+    public function removeReviewProduct(ReviewProduct $reviewProduct): static
+    {
+        $this->ReviewProduct->removeElement($reviewProduct);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReviewShop>
+     */
+    public function getReviewShop(): Collection
+    {
+        return $this->ReviewShop;
+    }
+
+    public function addReviewShop(ReviewShop $reviewShop): static
+    {
+        if (!$this->ReviewShop->contains($reviewShop)) {
+            $this->ReviewShop->add($reviewShop);
+        }
+
+        return $this;
+    }
+
+    public function removeReviewShop(ReviewShop $reviewShop): static
+    {
+        $this->ReviewShop->removeElement($reviewShop);
 
         return $this;
     }

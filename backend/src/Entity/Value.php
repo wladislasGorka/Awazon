@@ -23,6 +23,10 @@ class Value
     #[ORM\Column]
     private ?float $price = null;
 
+    #[ORM\ManyToOne(inversedBy: 'ValueId')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Option $optionId = null;
+
    
 
     public function getId(): ?int
@@ -62,6 +66,18 @@ class Value
     public function setPrice(float $price): static
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getOptionId(): ?Option
+    {
+        return $this->optionId;
+    }
+
+    public function setOptionId(?Option $optionId): static
+    {
+        $this->optionId = $optionId;
 
         return $this;
     }

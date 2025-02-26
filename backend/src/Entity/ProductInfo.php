@@ -19,6 +19,10 @@ class ProductInfo
     #[ORM\Column(length: 50)]
     private ?string $value = null;
 
+    #[ORM\ManyToOne(inversedBy: 'ProductInfo')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Product $product = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +48,18 @@ class ProductInfo
     public function setValue(string $value): static
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): static
+    {
+        $this->product = $product;
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ReviewShopRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Config\StatutReviewShop;
@@ -26,6 +28,17 @@ class ReviewShop
 
     #[ORM\Column(nullable: true, enumType: StatutReviewShop::class)]
     private ?StatutReviewShop $statut = null;
+
+    /**
+     * @var Collection<int, Member>
+     */
+    #[ORM\ManyToMany(targetEntity: Member::class, mappedBy: 'ReviewShop')]
+    private Collection $members;
+
+    public function __construct()
+    {
+        $this->members = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -76,6 +89,33 @@ class ReviewShop
     public function setStatut(?StatutReviewShop $statut): static
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Member>
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(Member $member): static
+    {
+        if (!$this->members->contains($member)) {
+            $this->members->add($member);
+            $member->addReviewShop($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMember(Member $member): static
+    {
+        if ($this->members->removeElement($member)) {
+            $member->removeReviewShop($this);
+        }
 
         return $this;
     }
