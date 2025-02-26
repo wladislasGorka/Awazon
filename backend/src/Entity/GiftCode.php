@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\GiftCodeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
@@ -27,6 +29,21 @@ class GiftCode
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $expiration_date = null;
+
+    /**
+     * @var Collection<int, Order>
+     */
+    #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'giftCode')]
+    private Collection $orders;
+
+    #[ORM\ManyToOne(inversedBy: 'giftCodes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Shop $shopId = null;
+
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -77,6 +94,48 @@ class GiftCode
     public function setExpirationDate(\DateTimeInterface $expiration_date): static
     {
         $this->expiration_date = $expiration_date;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Order>
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): static
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders->add($order);
+            $order->setGiftCode($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): static
+    {
+        if ($this->orders->removeElement($order)) {
+            // set the owning side to null (unless already changed)
+            if ($order->getGiftCode() === $this) {
+                $order->setGiftCode(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getShopId(): ?Shop
+    {
+        return $this->shopId;
+    }
+
+    public function setShopId(?Shop $shopId): static
+    {
+        $this->shopId = $shopId;
 
         return $this;
     }

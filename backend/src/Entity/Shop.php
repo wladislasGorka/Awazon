@@ -77,13 +77,38 @@ class Shop
      * @var Collection<int, OrderShop>
      */
     #[ORM\OneToMany(targetEntity: OrderShop::class, mappedBy: 'shop')]
-    private Collection $Orders;
+    private Collection $orders;
+
+    /**
+     * @var Collection<int, GiftCode>
+     */
+    #[ORM\OneToMany(targetEntity: GiftCode::class, mappedBy: 'shopId')]
+    private Collection $giftCodes;
+
+    /**
+     * @var Collection<int, Reservation>
+     */
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'shopId')]
+    private Collection $reservations;
+
+    #[ORM\OneToOne(inversedBy: 'shop', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Merchant $merchantId = null;
+
+    /**
+     * @var Collection<int, Product>
+     */
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'shopId', orphanRemoval: true)]
+    private Collection $products;
 
     public function __construct()
     {
         $this->imagesShop = new ArrayCollection();
         $this->categories = new ArrayCollection();
-        $this->Orders = new ArrayCollection();
+        $this->orders = new ArrayCollection();
+        $this->giftCodes = new ArrayCollection();
+        $this->reservations = new ArrayCollection();
+        $this->products = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -318,13 +343,13 @@ class Shop
      */
     public function getOrders(): Collection
     {
-        return $this->Orders;
+        return $this->orders;
     }
 
     public function addOrder(OrderShop $order): static
     {
-        if (!$this->Orders->contains($order)) {
-            $this->Orders->add($order);
+        if (!$this->orders->contains($order)) {
+            $this->orders->add($order);
             $order->setShop($this);
         }
 
@@ -333,10 +358,112 @@ class Shop
 
     public function removeOrder(OrderShop $order): static
     {
-        if ($this->Orders->removeElement($order)) {
+        if ($this->orders->removeElement($order)) {
             // set the owning side to null (unless already changed)
             if ($order->getShop() === $this) {
                 $order->setShop(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GiftCode>
+     */
+    public function getGiftCodes(): Collection
+    {
+        return $this->giftCodes;
+    }
+
+    public function addGiftCode(GiftCode $giftCode): static
+    {
+        if (!$this->giftCodes->contains($giftCode)) {
+            $this->giftCodes->add($giftCode);
+            $giftCode->setShopId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGiftCode(GiftCode $giftCode): static
+    {
+        if ($this->giftCodes->removeElement($giftCode)) {
+            // set the owning side to null (unless already changed)
+            if ($giftCode->getShopId() === $this) {
+                $giftCode->setShopId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reservation>
+     */
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(Reservation $reservation): static
+    {
+        if (!$this->reservations->contains($reservation)) {
+            $this->reservations->add($reservation);
+            $reservation->setShopId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReservation(Reservation $reservation): static
+    {
+        if ($this->reservations->removeElement($reservation)) {
+            // set the owning side to null (unless already changed)
+            if ($reservation->getShopId() === $this) {
+                $reservation->setShopId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMerchantId(): ?Merchant
+    {
+        return $this->merchantId;
+    }
+
+    public function setMerchantId(Merchant $merchantId): static
+    {
+        $this->merchantId = $merchantId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): static
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->setShopId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): static
+    {
+        if ($this->products->removeElement($product)) {
+            // set the owning side to null (unless already changed)
+            if ($product->getShopId() === $this) {
+                $product->setShopId(null);
             }
         }
 
