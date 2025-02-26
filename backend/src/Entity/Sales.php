@@ -45,6 +45,10 @@ class Sales
     #[ORM\OneToMany(targetEntity: SalesTarget::class, mappedBy: 'sales')]
     private Collection $salesTarget;
 
+    #[ORM\ManyToOne(inversedBy: 'sales')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Shop $shop = null;
+
     public function __construct()
     {
         $this->salesImage = new ArrayCollection();
@@ -173,6 +177,18 @@ class Sales
                 $salesTarget->setSales(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getShop(): ?Shop
+    {
+        return $this->shop;
+    }
+
+    public function setShop(?Shop $shop): static
+    {
+        $this->shop = $shop;
 
         return $this;
     }

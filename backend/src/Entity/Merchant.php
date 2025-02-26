@@ -17,6 +17,10 @@ class Merchant extends Users
     #[ORM\OneToOne(mappedBy: 'merchantId', cascade: ['persist', 'remove'])]
     private ?Shop $shop = null;
 
+    #[ORM\ManyToOne(inversedBy: 'merchants')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?City $city = null;
+
     public function getAddress(): ?string
     {
         return $this->address;
@@ -54,6 +58,18 @@ class Merchant extends Users
         }
 
         $this->shop = $shop;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): static
+    {
+        $this->city = $city;
 
         return $this;
     }

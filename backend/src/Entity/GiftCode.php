@@ -40,9 +40,16 @@ class GiftCode
     #[ORM\JoinColumn(nullable: false)]
     private ?Shop $shopId = null;
 
+    /**
+     * @var Collection<int, GiftCodeTarget>
+     */
+    #[ORM\OneToMany(targetEntity: GiftCodeTarget::class, mappedBy: 'giftCode', orphanRemoval: true)]
+    private Collection $targets;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->targets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -136,6 +143,36 @@ class GiftCode
     public function setShopId(?Shop $shopId): static
     {
         $this->shopId = $shopId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, GiftCodeTarget>
+     */
+    public function getTargets(): Collection
+    {
+        return $this->targets;
+    }
+
+    public function addTarget(GiftCodeTarget $target): static
+    {
+        if (!$this->targets->contains($target)) {
+            $this->targets->add($target);
+            $target->setGiftCode($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTarget(GiftCodeTarget $target): static
+    {
+        if ($this->targets->removeElement($target)) {
+            // set the owning side to null (unless already changed)
+            if ($target->getGiftCode() === $this) {
+                $target->setGiftCode(null);
+            }
+        }
 
         return $this;
     }

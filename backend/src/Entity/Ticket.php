@@ -24,6 +24,13 @@ class Ticket
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\ManyToOne(inversedBy: 'tickets')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Users $sender = null;
+
+    #[ORM\ManyToOne(inversedBy: 'receivedTickets')]
+    private ?Users $recipient = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -61,6 +68,30 @@ class Ticket
     public function setDate(\DateTimeInterface $date): static
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getSender(): ?Users
+    {
+        return $this->sender;
+    }
+
+    public function setSender(?Users $sender): static
+    {
+        $this->sender = $sender;
+
+        return $this;
+    }
+
+    public function getRecipient(): ?Users
+    {
+        return $this->recipient;
+    }
+
+    public function setRecipient(?Users $recipient): static
+    {
+        $this->recipient = $recipient;
 
         return $this;
     }

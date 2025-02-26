@@ -28,6 +28,10 @@ class Report
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\ManyToOne(inversedBy: 'reports')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Users $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,6 +81,18 @@ class Report
     public function setDate(\DateTimeInterface $date): static
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getUser(): ?Users
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Users $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

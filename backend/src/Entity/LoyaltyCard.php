@@ -26,6 +26,10 @@ class LoyaltyCard
     #[ORM\JoinColumn(nullable: false)]
     private ?Level $Levelid = null;
 
+    #[ORM\OneToOne(inversedBy: 'loyaltyCard', cascade: ['persist', 'remove'])]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Member $member = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -75,6 +79,18 @@ class LoyaltyCard
     public function setLevelid(?Level $Levelid): static
     {
         $this->Levelid = $Levelid;
+
+        return $this;
+    }
+
+    public function getMember(): ?Member
+    {
+        return $this->member;
+    }
+
+    public function setMember(Member $member): static
+    {
+        $this->member = $member;
 
         return $this;
     }

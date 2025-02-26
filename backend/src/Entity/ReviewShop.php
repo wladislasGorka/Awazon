@@ -29,15 +29,18 @@ class ReviewShop
     #[ORM\Column(nullable: true, enumType: StatutReviewShop::class)]
     private ?StatutReviewShop $statut = null;
 
-    /**
-     * @var Collection<int, Member>
-     */
-    #[ORM\ManyToMany(targetEntity: Member::class, mappedBy: 'ReviewShop')]
-    private Collection $members;
+    #[ORM\ManyToOne(inversedBy: 'shopReviews')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Member $member = null;
+
+    #[ORM\ManyToOne(inversedBy: 'reviews')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Shop $shop = null;
+
 
     public function __construct()
     {
-        $this->members = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -93,29 +96,26 @@ class ReviewShop
         return $this;
     }
 
-    /**
-     * @return Collection<int, Member>
-     */
-    public function getMembers(): Collection
+    public function getMember(): ?Member
     {
-        return $this->members;
+        return $this->member;
     }
 
-    public function addMember(Member $member): static
+    public function setMember(?Member $member): static
     {
-        if (!$this->members->contains($member)) {
-            $this->members->add($member);
-            $member->addReviewShop($this);
-        }
+        $this->member = $member;
 
         return $this;
     }
 
-    public function removeMember(Member $member): static
+    public function getShop(): ?Shop
     {
-        if ($this->members->removeElement($member)) {
-            $member->removeReviewShop($this);
-        }
+        return $this->shop;
+    }
+
+    public function setShop(?Shop $shop): static
+    {
+        $this->shop = $shop;
 
         return $this;
     }

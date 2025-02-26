@@ -75,6 +75,18 @@ class Product
     #[ORM\JoinColumn(nullable: false)]
     private ?Shop $shopId = null;
 
+    /**
+     * @var Collection<int, Member>
+     */
+    #[ORM\ManyToMany(targetEntity: Member::class, mappedBy: 'favoriteProducts')]
+    private Collection $favoredBy;
+
+    /**
+     * @var Collection<int, ReviewProduct>
+     */
+    #[ORM\OneToMany(targetEntity: ReviewProduct::class, mappedBy: 'product')]
+    private Collection $reviews;
+
     public function __construct()
     {
         $this->Keyword = new ArrayCollection();
@@ -84,6 +96,8 @@ class Product
         $this->OptionId = new ArrayCollection();
         $this->orders = new ArrayCollection();
         $this->carts = new ArrayCollection();
+        $this->favoredBy = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -357,6 +371,63 @@ class Product
     public function setShopId(?Shop $shopId): static
     {
         $this->shopId = $shopId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Member>
+     */
+    public function getFavoredBy(): Collection
+    {
+        return $this->favoredBy;
+    }
+
+    public function addFavoredBy(Member $favoredBy): static
+    {
+        if (!$this->favoredBy->contains($favoredBy)) {
+            $this->favoredBy->add($favoredBy);
+            $favoredBy->addFavoriteProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavoredBy(Member $favoredBy): static
+    {
+        if ($this->favoredBy->removeElement($favoredBy)) {
+            $favoredBy->removeFavoriteProduct($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReviewProduct>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(ReviewProduct $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(ReviewProduct $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getProduct() === $this) {
+                $review->setProduct(null);
+            }
+        }
 
         return $this;
     }

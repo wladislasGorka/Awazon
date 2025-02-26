@@ -27,6 +27,14 @@ class ForumMessage
     #[ORM\Column(enumType: ForumMessageStatus::class)]
     private ?ForumMessageStatus $message_status = null;
 
+    #[ORM\ManyToOne(inversedBy: 'messages')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?ForumSubject $forumSubject = null;
+
+    #[ORM\ManyToOne(inversedBy: 'forumMessages')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Users $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -76,6 +84,30 @@ class ForumMessage
     public function setMessageStatus(ForumMessageStatus $message_status): static
     {
         $this->message_status = $message_status;
+
+        return $this;
+    }
+
+    public function getForumSubject(): ?ForumSubject
+    {
+        return $this->forumSubject;
+    }
+
+    public function setForumSubject(?ForumSubject $forumSubject): static
+    {
+        $this->forumSubject = $forumSubject;
+
+        return $this;
+    }
+
+    public function getUser(): ?Users
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Users $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

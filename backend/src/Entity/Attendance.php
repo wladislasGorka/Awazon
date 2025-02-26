@@ -19,6 +19,14 @@ class Attendance
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $register_date = null;
 
+    #[ORM\ManyToOne(inversedBy: 'attendances')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Member $member = null;
+
+    #[ORM\ManyToOne(inversedBy: 'attendances')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Event $event = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -32,6 +40,30 @@ class Attendance
     public function setRegisterDate(\DateTimeInterface $register_date): static
     {
         $this->register_date = $register_date;
+
+        return $this;
+    }
+
+    public function getMember(): ?Member
+    {
+        return $this->member;
+    }
+
+    public function setMember(?Member $member): static
+    {
+        $this->member = $member;
+
+        return $this;
+    }
+
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?Event $event): static
+    {
+        $this->event = $event;
 
         return $this;
     }

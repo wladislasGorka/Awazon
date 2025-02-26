@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Config\UsersRole;
 use App\Config\UsersStatus;
 use App\Repository\UsersRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -48,6 +50,52 @@ abstract class Users
 
     #[ORM\Column(enumType: UsersRole::class)]
     protected ?UsersRole $role = null;
+
+    /**
+     * @var Collection<int, ForumSubject>
+     */
+    #[ORM\OneToMany(targetEntity: ForumSubject::class, mappedBy: 'user')]
+    private Collection $forumSubjects;
+
+    /**
+     * @var Collection<int, ForumMessage>
+     */
+    #[ORM\OneToMany(targetEntity: ForumMessage::class, mappedBy: 'user')]
+    private Collection $forumMessages;
+
+    /**
+     * @var Collection<int, Report>
+     */
+    #[ORM\OneToMany(targetEntity: Report::class, mappedBy: 'user', orphanRemoval: true)]
+    private Collection $reports;
+
+    /**
+     * @var Collection<int, Ticket>
+     */
+    #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'sender')]
+    private Collection $tickets;
+
+    /**
+     * @var Collection<int, Ticket>
+     */
+    #[ORM\OneToMany(targetEntity: Ticket::class, mappedBy: 'recipient')]
+    private Collection $receivedTickets;
+
+    /**
+     * @var Collection<int, Newsletter>
+     */
+    #[ORM\OneToMany(targetEntity: Newsletter::class, mappedBy: 'user')]
+    private Collection $newsletters;
+
+    public function __construct()
+    {
+        $this->forumSubjects = new ArrayCollection();
+        $this->forumMessages = new ArrayCollection();
+        $this->reports = new ArrayCollection();
+        $this->tickets = new ArrayCollection();
+        $this->receivedTickets = new ArrayCollection();
+        $this->newsletters = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -173,4 +221,185 @@ abstract class Users
 
         return $this;
     }
+
+    /**
+     * @return Collection<int, ForumSubject>
+     */
+    public function getForumSubjects(): Collection
+    {
+        return $this->forumSubjects;
+    }
+
+    public function addForumSubject(ForumSubject $forumSubject): static
+    {
+        if (!$this->forumSubjects->contains($forumSubject)) {
+            $this->forumSubjects->add($forumSubject);
+            $forumSubject->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeForumSubject(ForumSubject $forumSubject): static
+    {
+        if ($this->forumSubjects->removeElement($forumSubject)) {
+            // set the owning side to null (unless already changed)
+            if ($forumSubject->getUser() === $this) {
+                $forumSubject->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ForumMessage>
+     */
+    public function getForumMessages(): Collection
+    {
+        return $this->forumMessages;
+    }
+
+    public function addForumMessage(ForumMessage $forumMessage): static
+    {
+        if (!$this->forumMessages->contains($forumMessage)) {
+            $this->forumMessages->add($forumMessage);
+            $forumMessage->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeForumMessage(ForumMessage $forumMessage): static
+    {
+        if ($this->forumMessages->removeElement($forumMessage)) {
+            // set the owning side to null (unless already changed)
+            if ($forumMessage->getUser() === $this) {
+                $forumMessage->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Report>
+     */
+    public function getReports(): Collection
+    {
+        return $this->reports;
+    }
+
+    public function addReport(Report $report): static
+    {
+        if (!$this->reports->contains($report)) {
+            $this->reports->add($report);
+            $report->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReport(Report $report): static
+    {
+        if ($this->reports->removeElement($report)) {
+            // set the owning side to null (unless already changed)
+            if ($report->getUser() === $this) {
+                $report->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ticket>
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): static
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets->add($ticket);
+            $ticket->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): static
+    {
+        if ($this->tickets->removeElement($ticket)) {
+            // set the owning side to null (unless already changed)
+            if ($ticket->getSender() === $this) {
+                $ticket->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ticket>
+     */
+    public function getReceivedTickets(): Collection
+    {
+        return $this->receivedTickets;
+    }
+
+    public function addReceivedTicket(Ticket $receivedTicket): static
+    {
+        if (!$this->receivedTickets->contains($receivedTicket)) {
+            $this->receivedTickets->add($receivedTicket);
+            $receivedTicket->setRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceivedTicket(Ticket $receivedTicket): static
+    {
+        if ($this->receivedTickets->removeElement($receivedTicket)) {
+            // set the owning side to null (unless already changed)
+            if ($receivedTicket->getRecipient() === $this) {
+                $receivedTicket->setRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Newsletter>
+     */
+    public function getNewsletters(): Collection
+    {
+        return $this->newsletters;
+    }
+
+    public function addNewsletter(Newsletter $newsletter): static
+    {
+        if (!$this->newsletters->contains($newsletter)) {
+            $this->newsletters->add($newsletter);
+            $newsletter->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNewsletter(Newsletter $newsletter): static
+    {
+        if ($this->newsletters->removeElement($newsletter)) {
+            // set the owning side to null (unless already changed)
+            if ($newsletter->getUser() === $this) {
+                $newsletter->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+    
 }

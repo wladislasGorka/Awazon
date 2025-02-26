@@ -101,6 +101,34 @@ class Shop
     #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'shopId', orphanRemoval: true)]
     private Collection $products;
 
+    /**
+     * @var Collection<int, Event>
+     */
+    #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'shop')]
+    private Collection $events;
+
+    /**
+     * @var Collection<int, Sales>
+     */
+    #[ORM\OneToMany(targetEntity: Sales::class, mappedBy: 'shop', orphanRemoval: true)]
+    private Collection $sales;
+
+    /**
+     * @var Collection<int, Member>
+     */
+    #[ORM\ManyToMany(targetEntity: Member::class, mappedBy: 'favoriteShops')]
+    private Collection $favoredBy;
+
+    /**
+     * @var Collection<int, ReviewShop>
+     */
+    #[ORM\OneToMany(targetEntity: ReviewShop::class, mappedBy: 'shop')]
+    private Collection $reviews;
+
+    #[ORM\ManyToOne(inversedBy: 'shops')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?City $city = null;
+
     public function __construct()
     {
         $this->imagesShop = new ArrayCollection();
@@ -109,6 +137,10 @@ class Shop
         $this->giftCodes = new ArrayCollection();
         $this->reservations = new ArrayCollection();
         $this->products = new ArrayCollection();
+        $this->events = new ArrayCollection();
+        $this->sales = new ArrayCollection();
+        $this->favoredBy = new ArrayCollection();
+        $this->reviews = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -466,6 +498,135 @@ class Shop
                 $product->setShopId(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Event>
+     */
+    public function getEvents(): Collection
+    {
+        return $this->events;
+    }
+
+    public function addEvent(Event $event): static
+    {
+        if (!$this->events->contains($event)) {
+            $this->events->add($event);
+            $event->setShop($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): static
+    {
+        if ($this->events->removeElement($event)) {
+            // set the owning side to null (unless already changed)
+            if ($event->getShop() === $this) {
+                $event->setShop(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sales>
+     */
+    public function getSales(): Collection
+    {
+        return $this->sales;
+    }
+
+    public function addSale(Sales $sale): static
+    {
+        if (!$this->sales->contains($sale)) {
+            $this->sales->add($sale);
+            $sale->setShop($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSale(Sales $sale): static
+    {
+        if ($this->sales->removeElement($sale)) {
+            // set the owning side to null (unless already changed)
+            if ($sale->getShop() === $this) {
+                $sale->setShop(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Member>
+     */
+    public function getFavoredBy(): Collection
+    {
+        return $this->favoredBy;
+    }
+
+    public function addFavoredBy(Member $favoredBy): static
+    {
+        if (!$this->favoredBy->contains($favoredBy)) {
+            $this->favoredBy->add($favoredBy);
+            $favoredBy->addFavoriteShop($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFavoredBy(Member $favoredBy): static
+    {
+        if ($this->favoredBy->removeElement($favoredBy)) {
+            $favoredBy->removeFavoriteShop($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReviewShop>
+     */
+    public function getReviews(): Collection
+    {
+        return $this->reviews;
+    }
+
+    public function addReview(ReviewShop $review): static
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setShop($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReview(ReviewShop $review): static
+    {
+        if ($this->reviews->removeElement($review)) {
+            // set the owning side to null (unless already changed)
+            if ($review->getShop() === $this) {
+                $review->setShop(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): static
+    {
+        $this->city = $city;
 
         return $this;
     }

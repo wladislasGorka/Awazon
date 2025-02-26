@@ -28,6 +28,9 @@ class Newsletter
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $release_date = null;
 
+    #[ORM\ManyToOne(inversedBy: 'newsletters')]
+    private ?Users $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -77,6 +80,18 @@ class Newsletter
     public function setReleaseDate(\DateTimeInterface $release_date): static
     {
         $this->release_date = $release_date;
+
+        return $this;
+    }
+
+    public function getUser(): ?Users
+    {
+        return $this->user;
+    }
+
+    public function setUser(?Users $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

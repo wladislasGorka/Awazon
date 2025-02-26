@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EventRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -23,9 +25,6 @@ class Event
     #[ORM\Column(length: 255)]
     private ?string $address = null;
 
-    #[ORM\Column]
-    private ?int $city = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date_start = null;
 
@@ -34,6 +33,24 @@ class Event
 
     #[ORM\Column(length: 255)]
     private ?string $path_image = null;
+
+    #[ORM\ManyToOne(inversedBy: 'events')]
+    private ?Shop $shop = null;
+
+    /**
+     * @var Collection<int, Attendance>
+     */
+    #[ORM\OneToMany(targetEntity: Attendance::class, mappedBy: 'event', orphanRemoval: true)]
+    private Collection $attendances;
+
+    #[ORM\ManyToOne(inversedBy: 'events')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?City $city = null;
+
+    public function __construct()
+    {
+        $this->attendances = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -76,18 +93,6 @@ class Event
         return $this;
     }
 
-    public function getCity(): ?int
-    {
-        return $this->city;
-    }
-
-    public function setCity(int $city): static
-    {
-        $this->city = $city;
-
-        return $this;
-    }
-
     public function getDateStart(): ?\DateTimeInterface
     {
         return $this->date_start;
@@ -120,6 +125,60 @@ class Event
     public function setPathImage(string $path_image): static
     {
         $this->path_image = $path_image;
+
+        return $this;
+    }
+
+    public function getShop(): ?Shop
+    {
+        return $this->shop;
+    }
+
+    public function setShop(?Shop $shop): static
+    {
+        $this->shop = $shop;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Attendance>
+     */
+    public function getAttendances(): Collection
+    {
+        return $this->attendances;
+    }
+
+    public function addAttendance(Attendance $attendance): static
+    {
+        if (!$this->attendances->contains($attendance)) {
+            $this->attendances->add($attendance);
+            $attendance->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttendance(Attendance $attendance): static
+    {
+        if ($this->attendances->removeElement($attendance)) {
+            // set the owning side to null (unless already changed)
+            if ($attendance->getEvent() === $this) {
+                $attendance->setEvent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): static
+    {
+        $this->city = $city;
 
         return $this;
     }

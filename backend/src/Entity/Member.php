@@ -21,18 +21,6 @@ class Member extends Users
     private ?string $paypal_id = null;
 
     /**
-     * @var Collection<int, ReviewProduct>
-     */
-    #[ORM\ManyToMany(targetEntity: ReviewProduct::class, inversedBy: 'members')]
-    private Collection $ReviewProduct;
-
-    /**
-     * @var Collection<int, ReviewShop>
-     */
-    #[ORM\ManyToMany(targetEntity: ReviewShop::class, inversedBy: 'members')]
-    private Collection $ReviewShop;
-
-    /**
      * @var Collection<int, Order>
      */
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'memberId')]
@@ -50,13 +38,62 @@ class Member extends Users
     #[ORM\OneToMany(targetEntity: Cart::class, mappedBy: 'memberId', orphanRemoval: true)]
     private Collection $carts;
 
+    #[ORM\OneToOne(mappedBy: 'member', cascade: ['persist', 'remove'])]
+    private ?LoyaltyCard $loyaltyCard = null;
+
+    /**
+     * @var Collection<int, Attendance>
+     */
+    #[ORM\OneToMany(targetEntity: Attendance::class, mappedBy: 'member', orphanRemoval: true)]
+    private Collection $attendances;
+
+    /**
+     * @var Collection<int, Shop>
+     */
+    #[ORM\ManyToMany(targetEntity: Shop::class, inversedBy: 'favoredBy')]
+    private Collection $favoriteShops;
+
+    /**
+     * @var Collection<int, Product>
+     */
+    #[ORM\ManyToMany(targetEntity: Product::class, inversedBy: 'favoredBy')]
+    private Collection $favoriteProducts;
+
+    /**
+     * @var Collection<int, ReviewShop>
+     */
+    #[ORM\OneToMany(targetEntity: ReviewShop::class, mappedBy: 'member')]
+    private Collection $shopReviews;
+
+    /**
+     * @var Collection<int, ReviewProduct>
+     */
+    #[ORM\OneToMany(targetEntity: ReviewProduct::class, mappedBy: 'member')]
+    private Collection $productReviews;
+
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'mentoring')]
+    private ?self $mentor = null;
+
+    /**
+     * @var Collection<int, self>
+     */
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'mentor')]
+    private Collection $mentoring;
+
+    #[ORM\ManyToOne(inversedBy: 'members')]
+    private ?City $city = null;
+
     public function __construct()
     {
-        $this->ReviewProduct = new ArrayCollection();
-        $this->ReviewShop = new ArrayCollection();
         $this->orders = new ArrayCollection();
         $this->reservations = new ArrayCollection();
         $this->carts = new ArrayCollection();
+        $this->attendances = new ArrayCollection();
+        $this->favoriteShops = new ArrayCollection();
+        $this->favoriteProducts = new ArrayCollection();
+        $this->shopReviews = new ArrayCollection();
+        $this->productReviews = new ArrayCollection();
+        $this->mentoring = new ArrayCollection();
     }
 
     public function getImgProfil(): ?string
@@ -91,54 +128,6 @@ class Member extends Users
     public function setPaypalId(string $paypal_id): static
     {
         $this->paypal_id = $paypal_id;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ReviewProduct>
-     */
-    public function getReviewProduct(): Collection
-    {
-        return $this->ReviewProduct;
-    }
-
-    public function addReviewProduct(ReviewProduct $reviewProduct): static
-    {
-        if (!$this->ReviewProduct->contains($reviewProduct)) {
-            $this->ReviewProduct->add($reviewProduct);
-        }
-
-        return $this;
-    }
-
-    public function removeReviewProduct(ReviewProduct $reviewProduct): static
-    {
-        $this->ReviewProduct->removeElement($reviewProduct);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, ReviewShop>
-     */
-    public function getReviewShop(): Collection
-    {
-        return $this->ReviewShop;
-    }
-
-    public function addReviewShop(ReviewShop $reviewShop): static
-    {
-        if (!$this->ReviewShop->contains($reviewShop)) {
-            $this->ReviewShop->add($reviewShop);
-        }
-
-        return $this;
-    }
-
-    public function removeReviewShop(ReviewShop $reviewShop): static
-    {
-        $this->ReviewShop->removeElement($reviewShop);
 
         return $this;
     }
@@ -229,6 +218,215 @@ class Member extends Users
                 $cart->setMemberId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLoyaltyCard(): ?LoyaltyCard
+    {
+        return $this->loyaltyCard;
+    }
+
+    public function setLoyaltyCard(LoyaltyCard $loyaltyCard): static
+    {
+        // set the owning side of the relation if necessary
+        if ($loyaltyCard->getMember() !== $this) {
+            $loyaltyCard->setMember($this);
+        }
+
+        $this->loyaltyCard = $loyaltyCard;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Attendance>
+     */
+    public function getAttendances(): Collection
+    {
+        return $this->attendances;
+    }
+
+    public function addAttendance(Attendance $attendance): static
+    {
+        if (!$this->attendances->contains($attendance)) {
+            $this->attendances->add($attendance);
+            $attendance->setMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttendance(Attendance $attendance): static
+    {
+        if ($this->attendances->removeElement($attendance)) {
+            // set the owning side to null (unless already changed)
+            if ($attendance->getMember() === $this) {
+                $attendance->setMember(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Shop>
+     */
+    public function getFavoriteShops(): Collection
+    {
+        return $this->favoriteShops;
+    }
+
+    public function addFavoriteShop(Shop $favoriteShop): static
+    {
+        if (!$this->favoriteShops->contains($favoriteShop)) {
+            $this->favoriteShops->add($favoriteShop);
+        }
+
+        return $this;
+    }
+
+    public function removeFavoriteShop(Shop $favoriteShop): static
+    {
+        $this->favoriteShops->removeElement($favoriteShop);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getFavoriteProducts(): Collection
+    {
+        return $this->favoriteProducts;
+    }
+
+    public function addFavoriteProduct(Product $favoriteProduct): static
+    {
+        if (!$this->favoriteProducts->contains($favoriteProduct)) {
+            $this->favoriteProducts->add($favoriteProduct);
+        }
+
+        return $this;
+    }
+
+    public function removeFavoriteProduct(Product $favoriteProduct): static
+    {
+        $this->favoriteProducts->removeElement($favoriteProduct);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReviewShop>
+     */
+    public function getShopReviews(): Collection
+    {
+        return $this->shopReviews;
+    }
+
+    public function addShopReview(ReviewShop $shopReview): static
+    {
+        if (!$this->shopReviews->contains($shopReview)) {
+            $this->shopReviews->add($shopReview);
+            $shopReview->setMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShopReview(ReviewShop $shopReview): static
+    {
+        if ($this->shopReviews->removeElement($shopReview)) {
+            // set the owning side to null (unless already changed)
+            if ($shopReview->getMember() === $this) {
+                $shopReview->setMember(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ReviewProduct>
+     */
+    public function getProductReviews(): Collection
+    {
+        return $this->productReviews;
+    }
+
+    public function addProductReview(ReviewProduct $productReview): static
+    {
+        if (!$this->productReviews->contains($productReview)) {
+            $this->productReviews->add($productReview);
+            $productReview->setMember($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductReview(ReviewProduct $productReview): static
+    {
+        if ($this->productReviews->removeElement($productReview)) {
+            // set the owning side to null (unless already changed)
+            if ($productReview->getMember() === $this) {
+                $productReview->setMember(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getMentor(): ?self
+    {
+        return $this->mentor;
+    }
+
+    public function setMentor(?self $mentor): static
+    {
+        $this->mentor = $mentor;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getMentoring(): Collection
+    {
+        return $this->mentoring;
+    }
+
+    public function addMentoring(self $mentoring): static
+    {
+        if (!$this->mentoring->contains($mentoring)) {
+            $this->mentoring->add($mentoring);
+            $mentoring->setMentor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMentoring(self $mentoring): static
+    {
+        if ($this->mentoring->removeElement($mentoring)) {
+            // set the owning side to null (unless already changed)
+            if ($mentoring->getMentor() === $this) {
+                $mentoring->setMentor(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): static
+    {
+        $this->city = $city;
 
         return $this;
     }

@@ -22,6 +22,10 @@ class GiftCodeTarget
     #[ORM\Column]
     private ?int $target_id = null;
 
+    #[ORM\ManyToOne(inversedBy: 'targets')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?GiftCode $giftCode = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -47,6 +51,18 @@ class GiftCodeTarget
     public function setTargetId(int $target_id): static
     {
         $this->target_id = $target_id;
+
+        return $this;
+    }
+
+    public function getGiftCode(): ?GiftCode
+    {
+        return $this->giftCode;
+    }
+
+    public function setGiftCode(?GiftCode $giftCode): static
+    {
+        $this->giftCode = $giftCode;
 
         return $this;
     }

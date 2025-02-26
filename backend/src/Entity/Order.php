@@ -53,6 +53,10 @@ class Order
     #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?Member $memberId = null;
 
+    #[ORM\ManyToOne(inversedBy: 'orders')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?City $city = null;
+
     public function __construct()
     {
         $this->shops = new ArrayCollection();
@@ -204,6 +208,18 @@ class Order
     public function setMemberId(?Member $memberId): static
     {
         $this->memberId = $memberId;
+
+        return $this;
+    }
+
+    public function getCity(): ?City
+    {
+        return $this->city;
+    }
+
+    public function setCity(?City $city): static
+    {
+        $this->city = $city;
 
         return $this;
     }

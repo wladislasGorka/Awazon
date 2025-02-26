@@ -25,6 +25,12 @@ class Qna
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $creation_date = null;
 
+    #[ORM\ManyToOne(inversedBy: 'qnas')]
+    private ?Admin $senderAdmin = null;
+
+    #[ORM\ManyToOne(inversedBy: 'qnas')]
+    private ?SuperAdmin $senderSuperAdmin = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -62,6 +68,30 @@ class Qna
     public function setCreationDate(\DateTimeInterface $creation_date): static
     {
         $this->creation_date = $creation_date;
+
+        return $this;
+    }
+
+    public function getSenderAdmin(): ?Admin
+    {
+        return $this->senderAdmin;
+    }
+
+    public function setSenderAdmin(?Admin $user): static
+    {
+        $this->senderAdmin = $user;
+
+        return $this;
+    }
+
+    public function getSenderSuperAdmin(): ?SuperAdmin
+    {
+        return $this->senderSuperAdmin;
+    }
+
+    public function setSenderSuperAdmin(?SuperAdmin $user): static
+    {
+        $this->senderSuperAdmin = $user;
 
         return $this;
     }
