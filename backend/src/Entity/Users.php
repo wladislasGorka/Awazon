@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Config\UsersRole;
 use App\Config\UsersStatus;
 use App\Repository\UsersRepository;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -14,11 +16,11 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'class', type: 'string')]
 #[ORM\DiscriminatorMap(['Member' => Member::class, 'Merchant' => Merchant::class, 'Admin' => Admin::class, 'SuperAdmin' => SuperAdmin::class])]
-abstract class Users
+abstract class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     protected ?int $id = null;
 
     #[ORM\Column(length: 50)]
@@ -27,10 +29,10 @@ abstract class Users
     #[ORM\Column(length: 50)]
     protected ?string $first_name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     protected ?string $email = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(type: 'string', length: 50)]
     protected ?string $password = null;
 
     #[ORM\Column]
@@ -50,6 +52,9 @@ abstract class Users
 
     #[ORM\Column(enumType: UsersRole::class)]
     protected ?UsersRole $role = null;
+
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
     /**
      * @var Collection<int, ForumSubject>
@@ -148,6 +153,44 @@ abstract class Users
         $this->password = $password;
 
         return $this;
+    }
+
+    /**
+     * The public representation of the user (e.g. a username, an email address, etc.)
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getPhone(): ?int
