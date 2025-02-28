@@ -16,6 +16,24 @@ class ProductInfoRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductInfo::class);
     }
 
+    /* *
+ * Updates the information of a product.
+ *
+ * @param string $name The name of the information field to update.
+ * @param string $value The value to set for the information field.
+ * @return void
+ */
+public function updateInfo(string $name, string $value): void
+{
+    $productInfo = $this->findOneBy(['name' => $name]);
+    if ($productInfo) {
+        $productInfo->setValue($value);
+        $this->_em->persist($productInfo);
+        $this->_em->flush();
+    }
+}
+
+
     //    /**
     //     * @return ProductInfo[] Returns an array of ProductInfo objects
     //     */

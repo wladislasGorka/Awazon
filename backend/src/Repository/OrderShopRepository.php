@@ -16,6 +16,22 @@ class OrderShopRepository extends ServiceEntityRepository
         parent::__construct($registry, OrderShop::class);
     }
 
+    /* *
+ * Finds and returns OrderShop entities by status.
+ *
+ * @param string $status The status of the order shop.
+ * @return OrderShop[] Returns an array of OrderShop objects.
+ */
+public function findByStatut(string $status): array
+{
+    return $this->createQueryBuilder('os')
+        ->andWhere('os.statut = :status')
+        ->setParameter('status', $status)
+        ->orderBy('os.id', 'ASC')
+        ->getQuery()
+        ->getResult();
+}
+
     //    /**
     //     * @return OrderShop[] Returns an array of OrderShop objects
     //     */

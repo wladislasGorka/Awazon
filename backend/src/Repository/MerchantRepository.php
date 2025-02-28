@@ -16,6 +16,27 @@ class MerchantRepository extends ServiceEntityRepository
         parent::__construct($registry, Merchant::class);
     }
 
+
+    /* *
+ * Updates the contact information of a merchant.
+ *
+ * @param int $merchantId The ID of the merchant.
+ * @param string $address The new address.
+ * @param string $number The new contact number.
+ * @return void
+ */
+public function updateContact(int $merchantId, string $address, string $number): void
+{
+    $merchant = $this->find($merchantId);
+    if ($merchant) {
+        $merchant->setAddress($address);
+        $merchant->setNumber($number);
+        $this->_em->persist($merchant);
+        $this->_em->flush();
+    }
+}
+
+
     //    /**
     //     * @return Merchant[] Returns an array of Merchant objects
     //     */
