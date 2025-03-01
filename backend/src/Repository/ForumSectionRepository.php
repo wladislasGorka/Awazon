@@ -16,6 +16,21 @@ class ForumSectionRepository extends ServiceEntityRepository
         parent::__construct($registry, ForumSection::class);
     }
 
+    /* *
+ * Finds sections by the specified role.
+ *
+ * @param string $role The role to search for.
+ * @return Section[] An array of sections for the specified role.
+ */
+public function findByRole(string $role): array
+{
+    return $this->createQueryBuilder('s')
+        ->andWhere('s.role = :role')
+        ->setParameter('role', $role)
+        ->getQuery()
+        ->getResult();
+}
+
     //    /**
     //     * @return ForumSection[] Returns an array of ForumSection objects
     //     */
