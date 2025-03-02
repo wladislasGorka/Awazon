@@ -13,18 +13,21 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        secured_area:
-            form_login:
-                enable_csrf: true
-        main:
-            form_login:
-                login_path: app_login
-                check_path: app_login
-            logout:
-                path: /logout
-                target: app_login
-            lazy: true
+        api:
+            pattern: ^/api
             provider: app_user_provider
+            custom_authenticator: App\Security\APIAuthenticator
+            stateless: true
+            lazy: true
+        
+        # login:
+        #     pattern: ^/login_check
+        #     stateless: true
+        #     json_login:
+        #         check_path: /login_check
+        #         success_handler: lexik_jwt_authentication.handler.authentication_success
+        #         failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        #     jwt: ~
         
 
             # activate different ways to authenticate
@@ -36,6 +39,8 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api,       roles: IS_AUTHENTICATED_FULLY }
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
 

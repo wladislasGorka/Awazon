@@ -4,8 +4,8 @@ namespace App\Config;
 
 enum UsersRole: string
 {
-    case Member = 'enabled';
-    case Merchant = 'banned';
-    case Admin = 'disabled';
-    case SuperAdmin = 'superadmin';
+    case Member = 'ROLE_MEMBER';
+    case Merchant = 'ROLE_MERCHANT';
+    case Admin = 'ROLE_ADMIN';
+    case SuperAdmin = 'ROLE_SUPER_ADMIN';
 }

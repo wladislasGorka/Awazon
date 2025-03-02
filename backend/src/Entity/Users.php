@@ -32,7 +32,7 @@ abstract class Users implements UserInterface, PasswordAuthenticatedUserInterfac
     #[ORM\Column(type: 'string', length: 255, unique: true)]
     protected ?string $email = null;
 
-    #[ORM\Column(type: 'string', length: 50)]
+    #[ORM\Column(type: 'string', length: 255)]
     protected ?string $password = null;
 
     #[ORM\Column]

@@ -7,30 +7,23 @@
 </template>
   
   <script>
-  import { getAuth, signOut } from 'firebase/auth';
   
   export default {
     name: 'LogoutView',
     methods: {
       logout() {
-        const auth = getAuth();
-        signOut(auth)
-          .then(() => {
-            console.log('Sign-out successful.');
-            // Redirect to login page or show a message
-          })
-          .catch((error) => {
-            console.error('Error signing out:', error);
-          });
-        fetch('http://localhost:8000/api/test', {
+        fetch('http://localhost:8000/logout', {
             method: 'GET',
             headers: {
               'Content-Type': 'application/json'
             }
           })
-          .then(response => response.json())
-          .then(data => {
-            console.log('Response:', data);
+          .then(response => {
+            if (response.ok) {
+                this.$router.push('/Events');
+            } else {
+                console.error('Logout failed:', response.statusText);
+            }
           })
           .catch(error => {
             console.error('Erreur:', error);
