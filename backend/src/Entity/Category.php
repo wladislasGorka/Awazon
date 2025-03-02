@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CategoryRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
@@ -18,9 +20,13 @@ class Category
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'category')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?SubCategory $subCategory = null;
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: SubCategory::class)] // Correction : OneToMany
+    private Collection $subCategories; // Correction : Nom au pluriel
+
+    public function __construct()
+    {
+        $this->subCategories = new ArrayCollection(); // Initialisation de la collection
+    }
 
     public function getId(): ?int
     {
@@ -39,14 +45,31 @@ class Category
         return $this;
     }
 
-    public function getSubCategory(): ?SubCategory
+    /**
+     * @return Collection<int, SubCategory>
+     */
+    public function getSubCategories(): Collection // Correction : Retourne une collection
     {
-        return $this->subCategory;
+        return $this->subCategories;
     }
 
-    public function setSubCategory(?SubCategory $subCategory): static
+    public function addSubCategory(SubCategory $subCategory): static
     {
-        $this->subCategory = $subCategory;
+        if (!$this->subCategories->contains($subCategory)) {
+            $this->subCategories->add($subCategory);
+            $subCategory->setCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSubCategory(SubCategory $subCategory): static
+    {
+        if ($this->subCategories->removeElement($subCategory)) {
+            if ($subCategory->getCategory() === $this) {
+                $subCategory->setCategory(null);
+            }
+        }
 
         return $this;
     }

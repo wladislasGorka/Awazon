@@ -20,19 +20,45 @@ class SubCategory
     #[ORM\Column(length: 50)]
     private ?string $name = null;
 
-    #[ORM\ManyToOne(inversedBy: 'SubCategory')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Product $product = null;
+    #[ORM\OneToMany(mappedBy: 'subCategory', targetEntity: Product::class)]
+    private Collection $products;
 
-    /**
-     * @var Collection<int, Category>
-     */
-    #[ORM\OneToMany(targetEntity: Category::class, mappedBy: 'subCategory')]
-    private Collection $category;
+    #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'subCategories')] // Correction : ManyToOne
+    #[ORM\JoinColumn(nullable: false)] // Ajout de JoinColumn pour la clé étrangère
+    private ?Category $category = null; // Correction : Propriété unique
 
     public function __construct()
     {
-        $this->category = new ArrayCollection();
+        $this->products = new ArrayCollection();
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function addProduct(Product $product): static
+    {
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->setSubCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduct(Product $product): static
+    {
+        if ($this->products->removeElement($product)) {
+            if ($product->getSubCategory() === $this) {
+                $product->setSubCategory(null);
+            }
+        }
+
+        return $this;
     }
 
     public function getId(): ?int
@@ -52,44 +78,14 @@ class SubCategory
         return $this;
     }
 
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(?Product $product): static
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Category>
-     */
-    public function getCategory(): Collection
+    public function getCategory(): ?Category // Correction : Retourne une seule Category
     {
         return $this->category;
     }
 
-    public function addCategory(Category $category): static
+    public function setCategory(?Category $category): static // Correction : Accepte une seule Category
     {
-        if (!$this->category->contains($category)) {
-            $this->category->add($category);
-            $category->setSubCategory($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Category $category): static
-    {
-        if ($this->category->removeElement($category)) {
-            // set the owning side to null (unless already changed)
-            if ($category->getSubCategory() === $this) {
-                $category->setSubCategory(null);
-            }
-        }
+        $this->category = $category;
 
         return $this;
     }

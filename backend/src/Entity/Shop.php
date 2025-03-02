@@ -37,8 +37,8 @@ class Shop
     #[ORM\Column(nullable: true)]
     private ?float $latitude = null;
 
-    #[ORM\Column]
-    private ?int $phone = null;
+    #[ORM\Column(length: 20)] // Ajustez la longueur selon vos besoins
+    private ?string $phone = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $open_date = null;
@@ -91,7 +91,7 @@ class Shop
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'shopId')]
     private Collection $reservations;
 
-    #[ORM\OneToOne(inversedBy: 'shop', cascade: ['persist', 'remove'])]
+    #[ORM\ManyToOne(targetEntity: Merchant::class, inversedBy: 'shops')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Merchant $merchantId = null;
 
@@ -225,7 +225,7 @@ class Shop
         return $this->phone;
     }
 
-    public function setPhone(int $phone): static
+    public function setPhone(?string $phone): static
     {
         $this->phone = $phone;
 

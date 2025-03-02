@@ -35,12 +35,7 @@ class Product
     #[ORM\OneToMany(targetEntity: Keyword::class, mappedBy: 'product')]
     private Collection $Keyword;
 
-    /**
-     * @var Collection<int, SubCategory>
-     */
-    #[ORM\OneToMany(targetEntity: SubCategory::class, mappedBy: 'product')]
-    private Collection $SubCategory;
-
+   
     /**
      * @var Collection<int, ProductImage>
      */
@@ -87,10 +82,14 @@ class Product
     #[ORM\OneToMany(targetEntity: ReviewProduct::class, mappedBy: 'product')]
     private Collection $reviews;
 
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?SubCategory $subCategory = null;
+    
+
     public function __construct()
     {
         $this->Keyword = new ArrayCollection();
-        $this->SubCategory = new ArrayCollection();
         $this->ProductImage = new ArrayCollection();
         $this->ProductInfo = new ArrayCollection();
         $this->OptionId = new ArrayCollection();
@@ -182,37 +181,18 @@ class Product
 
         return $this;
     }
-
-    /**
-     * @return Collection<int, SubCategory>
-     */
-    public function getSubCategory(): Collection
+    public function getSubCategory(): ?SubCategory
     {
-        return $this->SubCategory;
+        return $this->subCategory;
     }
-
-    public function addSubCategory(SubCategory $subCategory): static
+    
+    public function setSubCategory(?SubCategory $subCategory): static
     {
-        if (!$this->SubCategory->contains($subCategory)) {
-            $this->SubCategory->add($subCategory);
-            $subCategory->setProduct($this);
-        }
-
+        $this->subCategory = $subCategory;
+    
         return $this;
     }
-
-    public function removeSubCategory(SubCategory $subCategory): static
-    {
-        if ($this->SubCategory->removeElement($subCategory)) {
-            // set the owning side to null (unless already changed)
-            if ($subCategory->getProduct() === $this) {
-                $subCategory->setProduct(null);
-            }
-        }
-
-        return $this;
-    }
-
+   
     /**
      * @return Collection<int, ProductImage>
      */

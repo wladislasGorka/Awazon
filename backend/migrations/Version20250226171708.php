@@ -1,12 +1,12 @@
 <?php
-
+ 
 declare(strict_types=1);
-
+ 
 namespace DoctrineMigrations;
-
+ 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
-
+ 
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
@@ -16,7 +16,7 @@ final class Version20250226171708 extends AbstractMigration
     {
         return '';
     }
-
+ 
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
@@ -102,7 +102,7 @@ final class Version20250226171708 extends AbstractMigration
         $this->addSql('ALTER TABLE super_admin ADD CONSTRAINT FK_BC8C2783BF396750 FOREIGN KEY (id) REFERENCES users (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE value ADD CONSTRAINT FK_1D77583446AF233F FOREIGN KEY (option_id_id) REFERENCES `option` (id)');
     }
-
+ 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
@@ -189,3 +189,4 @@ final class Version20250226171708 extends AbstractMigration
         $this->addSql('DROP TABLE value');
     }
 }
+   

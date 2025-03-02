@@ -5,6 +5,10 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MerchantRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+
+
 
 #[ORM\Entity(repositoryClass: MerchantRepository::class)]
 #[ApiResource()]
@@ -16,12 +20,42 @@ class Merchant extends Users
     #[ORM\Column(length: 255)]
     private ?string $kbis = null;
 
-    #[ORM\OneToOne(mappedBy: 'merchantId', cascade: ['persist', 'remove'])]
-    private ?Shop $shop = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'merchants')]
     #[ORM\JoinColumn(nullable: false)]
     private ?City $city = null;
+
+    /**
+* @var Collection<int, Shop>
+*/
+#[ORM\OneToMany(mappedBy: 'merchantId', targetEntity: Shop::class, orphanRemoval: true)]
+private Collection $shops;
+
+
+    public function __construct()
+{
+    // ...
+    $this->shops = new ArrayCollection();
+}
+/**
+* @return Collection<int, Shop>
+*/
+public function getShops(): Collection
+{
+    return $this->shops;
+}
+
+public function addShop(Shop $shop): static
+{
+    if (!$this->shops->contains($shop)) {
+        $this->shops->add($shop);
+        $shop->setMerchantId($this);
+    }
+
+    return $this;
+}
+
 
     public function getAddress(): ?string
     {
@@ -47,23 +81,7 @@ class Merchant extends Users
         return $this;
     }
 
-    public function getShop(): ?Shop
-    {
-        return $this->shop;
-    }
-
-    public function setShop(Shop $shop): static
-    {
-        // set the owning side of the relation if necessary
-        if ($shop->getMerchantId() !== $this) {
-            $shop->setMerchantId($this);
-        }
-
-        $this->shop = $shop;
-
-        return $this;
-    }
-
+    
     public function getCity(): ?City
     {
         return $this->city;

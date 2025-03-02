@@ -9,12 +9,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;// ajout de l'import
+use Symfony\Component\Security\Core\User\UserInterface; // Ajout de l'import
+
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[ORM\InheritanceType('JOINED')]
 #[ORM\DiscriminatorColumn(name: 'class', type: 'string')]
 #[ORM\DiscriminatorMap(['Member' => Member::class, 'Merchant' => Merchant::class, 'Admin' => Admin::class, 'SuperAdmin' => SuperAdmin::class])]
-abstract class Users
+abstract class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -221,6 +224,28 @@ abstract class Users
 
         return $this;
     }
+
+    public function getRoles(): array
+    {
+        return [$this->role->value]; // Utilise la valeur de l'enum UsersRole
+    }
+
+    public function eraseCredentials(): void
+    {
+        // Si vous stockez des données sensibles temporaires sur $this, effacez-les ici
+        // $this->plainPassword = null;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getUsername(): string
+    {
+        return $this->getUserIdentifier();
+    }
+
 
     /**
      * @return Collection<int, ForumSubject>
