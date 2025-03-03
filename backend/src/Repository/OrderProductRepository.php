@@ -16,6 +16,31 @@ class OrderProductRepository extends ServiceEntityRepository
         parent::__construct($registry, OrderProduct::class);
     }
 
+    /* *
+ * Calculates the total price of all products in an order.
+ *
+ * @param int $orderId The ID of the order.
+ * @return float The total price of all products in the order.
+ */
+public function calcTotalPrice(int $orderId): float
+{
+    $totalPrice = 0.0;
+    // Find all OrderProduct entities related to the given order ID
+    $orderProducts = $this->createQueryBuilder('op')
+        ->andWhere('op.orderId = :orderId')
+        ->setParameter('orderId', $orderId)
+        ->getQuery()
+        ->getResult();
+
+    // Iterate through each OrderProduct to calculate the total price
+    foreach ($orderProducts as $orderProduct) {
+        $totalPrice += $orderProduct->getProduct()->getPrice() * $orderProduct->getQuantity();
+    }
+
+    return $totalPrice;
+}
+
+
     //    /**
     //     * @return OrderProduct[] Returns an array of OrderProduct objects
     //     */

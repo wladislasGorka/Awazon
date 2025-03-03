@@ -16,6 +16,24 @@ class MemberRepository extends ServiceEntityRepository
         parent::__construct($registry, Member::class);
     }
 
+
+    public function updateAddress($id, $address): void
+    {
+        $member = $this->find($id);
+        $member->setAddress($address);
+
+        $this->_em->persist($member);
+        $this->_em->flush();
+    }
+
+    public function updateProfilPicture($id, $profilPicture): void
+    {
+        $member = $this->find($id);
+        $member->setProfilPicture($img_profil);
+
+        $this->_em->persist($member);
+        $this->_em->flush();
+    }
     //    /**
     //     * @return Member[] Returns an array of Member objects
     //     */

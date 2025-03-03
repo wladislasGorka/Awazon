@@ -16,6 +16,26 @@ class InfoFicheShopRepository extends ServiceEntityRepository
         parent::__construct($registry, InfoFicheShop::class);
     }
 
+
+    /* *
+ * Adds information to a shop profile.
+ *
+ * @param string $name The name of the information field.
+ * @param string $value The value of the information field.
+ * @param string $icon The icon associated with the information.
+ * @return void
+ */
+public function addInfo(string $name, string $value, string $icon): void
+{
+    $infoFicheShop = new infoFicheShop();
+    $infoFicheShop->setName($name);
+    $infoFicheShop->setValue($value);
+    $infoFicheShop->setIcon($icon);
+
+    $this->_em->persist($infoFicheShop);
+    $this->_em->flush();
+}
+
     //    /**
     //     * @return InfoFicheShop[] Returns an array of InfoFicheShop objects
     //     */

@@ -16,6 +16,37 @@ class ForumSubjectRepository extends ServiceEntityRepository
         parent::__construct($registry, ForumSubject::class);
     }
 
+    /* *
+ * Finds discussions by the specified name.
+ *
+ * @param string $name The name to search for.
+ * @return Discussion[] An array of discussions with the specified name.
+ */
+public function findByName(string $name): array
+{
+    return $this->createQueryBuilder('d')
+        ->andWhere('d.name = :name')
+        ->setParameter('name', $name)
+        ->getQuery()
+        ->getResult();
+}
+
+/* *
+ * Finds discussions by the specified section.
+ *
+ * @param int $sectionId The ID of the section to search for.
+ * @return Discussion[] An array of discussions in the specified section.
+ */
+public function findBySection(int $sectionId): array
+{
+    return $this->createQueryBuilder('d')
+        ->andWhere('d.sectionId = :sectionId')
+        ->setParameter('sectionId', $sectionId)
+        ->getQuery()
+        ->getResult();
+}
+
+
     //    /**
     //     * @return ForumSubject[] Returns an array of ForumSubject objects
     //     */

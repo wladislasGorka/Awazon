@@ -17,9 +17,71 @@ class CartRepository extends ServiceEntityRepository
         parent::__construct($registry, Cart::class);
     }
 
-    //    /**
-    //     * @return Cart[] Returns an array of Cart objects
-    //     */
+   /* *
+ * Finds and returns the cart associated with a specific user.
+ *
+ * @param int $userId The ID of the user.
+ * @return Cart|null The cart associated with the user or null if not found.
+ */
+    public function findCartByUser($user): ?Cart
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.user = :val')
+            ->setParameter('val', $user)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+/* *
+ * Calculates the total price of all items in the cart.
+ *
+ * @param Cart $cart The cart object.
+ * @return float The total price of all items in the cart.
+ */
+    public function calcTotalPrice(Cart $cart): float
+    {
+        $totalPrice = 0.0;
+        foreach ($cart->getCartItems() as $cartItem) {
+            $totalPrice += $cartItem->getProduct()->getPrice() * $cartItem->getQuantity();
+        }
+        return $totalPrice;
+    }
+
+
+    /* *
+ * Calculates the total price of a specific product in the cart based on its ID.
+ *
+ * @param Cart $cart The cart object.
+ * @param int $productId The ID of the product.
+ * @return float The total price of the product in the cart.
+ */
+    public function calcPriceByIdProduct(Cart $cart, int $productId): float
+{
+    $totalPrice = 0.0;
+    foreach ($cart->getCartItems() as $cartItem) {
+        if ($cartItem->getProduct()->getId() === $productId) {
+            $totalPrice += $cartItem->getProduct()->getPrice() * $cartItem->getQuantity();
+        }
+    }
+    return $totalPrice;
+}
+
+/* *
+ * Calculates the total quantity of all items in the cart.
+ *
+ * @param Cart $cart The cart object.
+ * @return int The total quantity of all items in the cart.
+ */
+public function calcTotalQuantity(Cart $cart): int
+{
+    $totalQuantity = 0;
+    foreach ($cart->getCartItems() as $cartItem) {
+        $totalQuantity += $cartItem->getQuantity();
+    }
+    return $totalQuantity;
+}
+
+
     //    public function findByExampleField($value): array
     //    {
     //        return $this->createQueryBuilder('c')
@@ -42,3 +104,5 @@ class CartRepository extends ServiceEntityRepository
     //        ;
     //    }
 }
+
+

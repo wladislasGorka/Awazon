@@ -16,6 +16,16 @@ class FicheShopRepository extends ServiceEntityRepository
         parent::__construct($registry, FicheShop::class);
     }
 
+    public function addInfo($name, $value, $icon): void
+    {
+        $infoFicheShop = new FicheShop();
+        $infoFicheShop->setName($name);
+        $infoFicheShop->setValue($value);
+        $infoFicheShop->setIcon($icon);
+
+        $this->_em->persist($infoFicheShop);
+        $this->_em->flush();
+    }
     //    /**
     //     * @return FicheShop[] Returns an array of FicheShop objects
     //     */
