@@ -10,7 +10,6 @@
   </template>
   
   <script>
-  import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
   export default {
     data() {
@@ -29,11 +28,6 @@
           siret: this.siret,
           password: this.password
         };
-
-        const auth = getAuth();
-        createUserWithEmailAndPassword(auth, this.email, this.password).then( cred =>{
-            console.log(cred);
-        })
   
         fetch('http://localhost:8000/register/merchant', {
           method: 'POST',

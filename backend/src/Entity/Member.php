@@ -14,13 +14,13 @@ use Doctrine\ORM\Mapping as ORM;
 class Member extends Users
 {
     #[ORM\Column(length: 255)]
-    private ?string $img_profil = null;
+    private ?string $img_profil = '';
 
     #[ORM\Column(length: 255)]
-    private ?string $paypal_account = null;
+    private ?string $paypal_account = '';
 
     #[ORM\Column(length: 255)]
-    private ?string $paypal_id = null;
+    private ?string $paypal_id = '';
 
     /**
      * @var Collection<int, Order>

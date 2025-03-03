@@ -1,7 +1,9 @@
 <!-- src/components/RegisterMemberView.vue -->
 <template>
     <v-form @submit.prevent="submitForm">
-      <v-text-field v-model="name" label="Nom" required></v-text-field>
+      <v-text-field v-model="firstname" label="firstname" type="text" required></v-text-field>
+      <v-text-field v-model="name" label="name" type="text" required></v-text-field>
+      <v-text-field v-model="phone" label="phone" type="number" required></v-text-field>
       <v-text-field v-model="email" label="Email" type="email" required></v-text-field>
       <v-text-field v-model="password" label="Mot de passe" type="password" required></v-text-field>
       <v-btn type="submit" color="primary">Enregistrer en tant que membre</v-btn>
@@ -9,12 +11,13 @@
   </template>
   
   <script>
-  import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
   export default {
     data() {
       return {
+        firstname: '',
         name: '',
+        phone: '',
         email: '',
         password: ''
       };
@@ -22,17 +25,14 @@
     methods: {
       submitForm() {
         const userData = {
+          firstName: this.firstname,
           name: this.name,
+          phone: this.phone,
           email: this.email,
           password: this.password
         };
-
-        const auth = getAuth();
-        createUserWithEmailAndPassword(auth, this.email, this.password).then( cred =>{
-            console.log(cred);
-        })
   
-        fetch('http://localhost:8000/register/member', {
+        fetch('http://localhost:8000/member/registration', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -46,7 +46,9 @@
           return response.json();
         })
         .then(data => {
-          console.log('Member created successfully:', data);
+          console.log('Member created successfully');
+          this.$cookies.set('token', data.token, '1D');
+          //console.log('Token:', this.$cookies.get('token'));
         })
         .catch(error => {
           console.error('There was a problem with the fetch operation:', error);

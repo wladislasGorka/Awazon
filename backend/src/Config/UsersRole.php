@@ -4,8 +4,8 @@ namespace App\Config;
 
 enum UsersRole: string
 {
-    case Member = 'member';
-    case Merchant = 'merchant';
-    case Admin = 'admin';
-    case SuperAdmin = 'super_admin';
+    case Member = 'ROLE_MEMBER';
+    case Merchant = 'ROLE_MERCHANT';
+    case Admin = 'ROLE_ADMIN';
+    case SuperAdmin = 'ROLE_SUPER_ADMIN';
 }
