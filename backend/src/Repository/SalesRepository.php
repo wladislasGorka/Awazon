@@ -16,6 +16,22 @@ class SalesRepository extends ServiceEntityRepository
         parent::__construct($registry, Sales::class);
     }
 
+    public function updateSales($id, $slogan, $description, $pourcent, $date_start, $date_end, $salesImage, $salesTarget, $shop): void
+    {
+        $sales = $this->find($id);
+        $sales->setSlogan($slogan);
+        $sales->setDescription($description);
+        $sales->setPourcent($pourcent);
+        $sales->setDateStart($date_start);
+        $sales->setDateEnd($date_end);
+        $sales->setSalesImage($salesImage);
+        $sales->setSalesTarget($salesTarget);
+        $sales->setShop($shop);
+
+        $this->_em->persist($sales);
+        $this->_em->flush();
+    }
+
     //    /**
     //     * @return Sales[] Returns an array of Sales objects
     //     */

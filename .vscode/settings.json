@@ -63,6 +63,18 @@
         {
             "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\FicheShopRepository.php\\",
             "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\UsersRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\MemberRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\EventRepository.php\\",
+            "badge": "😀"
         }
     ]
 }

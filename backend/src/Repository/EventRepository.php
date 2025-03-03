@@ -16,6 +16,30 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
+    public function updateEvent($id, $title, $description, $date, $address, $date_start, $date_end, $path_image, $shop, $city)
+    {
+        $event = $this->find($id);
+        $event->setTitle($title);
+        $event->setDescription($description);
+        $event->setDate($date);
+        $event->setAddress($address);
+        $event->setDateStart($date_start);
+        $event->setDateEnd($date_end);
+        $event->setPathImage($path_image);
+        $event->setShop($shop);
+        $event->setCity($city);
+
+        $this->_em->persist($event);
+        $this->_em->flush();
+    }
+
+    public function deleteEvent($id)
+    {
+        $event = $this->find($id);
+
+        $this->_em->remove($event);
+        $this->_em->flush();
+    }
     //    /**
     //     * @return Event[] Returns an array of Event objects
     //     */
