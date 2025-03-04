@@ -18,7 +18,7 @@ class ShopFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create('fr_FR');
 
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 0; $i < 20; $i++) {
             $shop = new Shop();
             $shop->setName($faker->company);
             $shop->setLogo($faker->imageUrl(200, 200));
