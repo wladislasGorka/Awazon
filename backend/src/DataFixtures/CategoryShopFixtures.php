@@ -8,6 +8,8 @@ use Doctrine\Persistence\ObjectManager;
 
 class CategoryShopFixtures extends Fixture
 {
+    public const CATEGORYSHOP_REFERENCE = 'categoryShop-';
+
     public function load(ObjectManager $manager): void
     {
         // Exemples de CategoryShop
@@ -24,11 +26,15 @@ class CategoryShopFixtures extends Fixture
           'Épicerie'
         ];
 
-        foreach ($categories as $categoryName) {
+        foreach ($categories as $i=>$categoryName) {
             $category = new CategoryShop();
             $category->setName($categoryName);
             $manager->persist($category);
+
+            $referenceName = self::CATEGORYSHOP_REFERENCE . $i;
+            $this->addReference($referenceName, $category);
         }
+
 
         $manager->flush();
     }

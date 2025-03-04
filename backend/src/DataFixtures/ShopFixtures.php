@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\CategoryShop;
 use App\Entity\Shop;
 use App\Entity\City;
 use App\Entity\Merchant;
@@ -50,6 +51,12 @@ class ShopFixtures extends Fixture implements DependentFixtureInterface
             if ($this->hasReference($merchantReference, Merchant::class)) {
                 $shop->setMerchantId($this->getReference($merchantReference, Merchant::class));
             } 
+
+            $categoryReference = CategoryShopFixtures::CATEGORYSHOP_REFERENCE . $faker->numberBetween(0, 9);
+            if ($this->hasReference($categoryReference, CategoryShop::class)) {
+                $shop->addCategory($this->getReference($categoryReference, CategoryShop::class));
+            } 
+
             $manager->persist($shop);
 
             $this->addReference(self::SHOP_REFERENCE . $i, $shop);
@@ -62,7 +69,8 @@ class ShopFixtures extends Fixture implements DependentFixtureInterface
     {
         return [
             CityFixtures::class,
-            UsersFixtures::class
+            UsersFixtures::class,
+            CategoryShopFixtures::class
         ];
     }
 }

@@ -35,56 +35,40 @@
       return {
         shops: [],
         shopTypes: [],
-        selectedType: undefined
+        selectedType: null
       };
     },
+    // Repère les changements dans les filres
     watch: {
-      selectedType(value) {
-        if(value==null){
-          // Pas de type sélectionné
-          fetch('http://localhost:8000/shops', {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            this.shops = data;
-          })
-          .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-          });
-        }else{
-          // Type sélectionné
-          fetch('http://localhost:8000/shops/' + value, {
-            method: 'GET',
-            headers: {
-              'Content-Type': 'application/json'
-            }
-          })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            this.shops = data;
-          })
-          .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-          });
-        }
-      },
+      selectedType() {
+        this.shopsList();
+      }
+    },
+    methods: {
+      // Récupérer les données des shops selon les filtres
+      shopsList() {
+        fetch('http://localhost:8000/shops?type=' + this.selectedType, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          this.shops = data;
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation:', error);
+        });
+      }
     },
     mounted() {
-      // Récupérer les données des shops
+      // Récupère les données des shops
       fetch('http://localhost:8000/shops', {
         method: 'GET',
         headers: {
@@ -104,7 +88,7 @@
         console.error('There was a problem with the fetch operation:', error);
       });
 
-      // Récupérer les types de shops
+      // Récupère les types de shops
       fetch('http://localhost:8000/shops-types', {
         method: 'GET',
         headers: {

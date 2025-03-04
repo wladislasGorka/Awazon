@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Repository\ShopRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -12,21 +13,28 @@ use Symfony\Component\Serializer\SerializerInterface;
 final class ShopController extends AbstractController
 {
     //obtenir la liste des magasion selon un type
-    #[Route('/shops/{type}', name: 'app_shops_by_type')]
-    public function shopsByType(string $type, ShopRepository $shopRepository, SerializerInterface $serializer): Response
-    {
-        $shops = $shopRepository->findBy(['type' => $type]);
-        $json = $serializer->serialize($shops, 'json');
+    // #[Route('/shops/{type}', name: 'app_shops_by_type')]
+    // public function shopsByType(string $type, ShopRepository $shopRepository, SerializerInterface $serializer): Response
+    // {
+    //     $shops = $shopRepository->findBy(['type' => $type]);
+    //     $json = $serializer->serialize($shops, 'json');
 
-        return new JsonResponse($json, Response::HTTP_OK, [], true);
-    }
+    //     return new JsonResponse($json, Response::HTTP_OK, [], true);
+    // }
 
-    // Obtenir la liste des magasins
+    // Obtenir la liste des magasins, prends en compte les paramètres de la requête
     #[Route('/shops', name: 'app_shops')]
-    public function shopsList(ShopRepository $shopRepository, SerializerInterface $serializer): Response
+    public function shopsList(Request $request, ShopRepository $shopRepository, SerializerInterface $serializer): Response
     {
-        $allShops = $shopRepository->findAll();
-        $json = $serializer->serialize($allShops, 'json');
+        $type = $request->query->get('type', "null");
+
+        if ($type!="null") {
+            $shops = $shopRepository->findBy(['type' => $type]);
+            $json = $serializer->serialize($shops, 'json');
+        }else{
+            $allShops = $shopRepository->findAll();
+            $json = $serializer->serialize($allShops, 'json');
+        }
 
         return new JsonResponse($json, Response::HTTP_OK, [], true);
     }    
