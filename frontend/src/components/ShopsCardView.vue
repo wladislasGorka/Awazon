@@ -1,6 +1,6 @@
 <template>
     <v-card max-width="200" min-height="200" class="mx-auto">
-      <v-card-title>
+      <v-card-title>        
         <v-row>
           <v-col cols="12">
             <h1 class="display-2 text-subtitle-2 mb-3">
@@ -14,9 +14,12 @@
             <v-col cols="12">
                 <v-row>
                   <v-col cols="12">
-                    <h1 class="display-2 text-subtitle-1 mb-3">
+                    <p class="display-2 text-subtitle-1 mb-3">
                       {{ shop.address }}
-                    </h1>
+                    </p>
+                    <p>
+                      {{ shop.type }}
+                    </p>
                   </v-col>
                 </v-row>
             </v-col>

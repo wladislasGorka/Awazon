@@ -72,6 +72,15 @@ public function findByType(string $type): array
         ->getResult();
 }
 
+public function getTypes(): array
+{
+    return $this->createQueryBuilder('s')
+        ->select('s.type')
+        ->distinct()
+        ->getQuery()
+        ->getResult();
+}
+
 /* *
  * Finds shops by the specified name.
  *

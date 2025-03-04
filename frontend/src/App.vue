@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="mx-0">
     <v-main>
       <RouterView />
       <Navbar />
