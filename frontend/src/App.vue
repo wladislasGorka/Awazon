@@ -16,17 +16,12 @@ import FooterPage from './components/FooterView.vue';
 import { RouterView } from 'vue-router';
 
 export default {
-  name: 'App',
-  
+  name: 'App',  
   components: {
     Navbar,
     SubNavBar,
     RouterView,
     FooterPage
   },
-
-  data: () => ({
-    //
-  }),
 }
 </script>

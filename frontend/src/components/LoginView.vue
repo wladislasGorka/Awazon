@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 
 export default {
   data() {
@@ -17,6 +18,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['toggleLogin']),
     submitForm() {
       const userData = {
         email: this.email,
@@ -40,6 +42,9 @@ export default {
       .then(data => {
         console.log('User logged successfully:', data);
         this.$cookies.set('token', data.token, '1D');
+        this.$cookies.set('user', data, '1D');
+        this.toggleLogin();
+        this.$router.push('/');
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error);

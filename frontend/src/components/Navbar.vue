@@ -3,26 +3,34 @@
     <v-app-bar app>
         <RouterLink to="/"> <v-toolbar-title>My Navbar</v-toolbar-title></RouterLink>
         <v-spacer></v-spacer>
-        <RouterLink to="/Login"> <v-btn>Connexion</v-btn></RouterLink> |
-        <RouterLink to="/RegisterMember"> <v-btn>Inscription</v-btn></RouterLink> |
-        <RouterLink to="/RegisterMerchant"> <v-btn>Vendez sur Awazon</v-btn></RouterLink> |
-        <v-btn @click="logout">Deconnexion</v-btn>
+        <RouterLink to="/Login"> <v-btn v-if="!isLoggedIn">Connexion | </v-btn></RouterLink> 
+        <RouterLink to="/RegisterMember"> <v-btn v-if="!isLoggedIn">Inscription | </v-btn></RouterLink> 
+        <RouterLink to="/RegisterMerchant"> <v-btn v-if="!isLoggedIn">Vendez sur Awazon | </v-btn></RouterLink>
+        <v-btn v-if="isLoggedIn" @click="logout()"> Deconnexion</v-btn>
     </v-app-bar>
+    <SubNavBar />
 </template>
 
 <script>
     import { RouterLink } from 'vue-router';
+    import { mapGetters, mapActions } from 'vuex';
 
     export default {
         name: 'Nav-bar',
         components: {
             RouterLink,
         },
+        computed: {
+            ...mapGetters(['isLoggedIn']),
+        },
         methods: {
             logout() {
                 this.$cookies.remove('token');
+                this.$cookies.remove('user');
+                this.toggleLogin();
                 this.$router.push('/');
-            }
+            },
+            ...mapActions(['toggleLogin']),
         }
     }
 </script>
