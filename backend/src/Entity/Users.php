@@ -5,8 +5,7 @@ namespace App\Entity;
 use App\Config\UsersRole;
 use App\Config\UsersStatus;
 use App\Repository\UsersRepository;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -268,21 +267,7 @@ abstract class Users implements UserInterface, PasswordAuthenticatedUserInterfac
         return $this;
     }
 
-    public function getRoles(): array
-    {
-        return [$this->role->value]; // Utilise la valeur de l'enum UsersRole
-    }
-
-    public function eraseCredentials(): void
-    {
-        // Si vous stockez des données sensibles temporaires sur $this, effacez-les ici
-        // $this->plainPassword = null;
-    }
-
-    public function getUserIdentifier(): string
-    {
-        return (string) $this->email;
-    }
+    
 
     public function getUsername(): string
     {

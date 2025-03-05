@@ -1,7 +1,7 @@
 nelmio_cors:
     defaults:
         origin_regex: true
-        allow_origin: ['%env(CORS_ALLOW_ORIGIN)%']
+        allow_origin: ['http://localhost:8080'] # Autoriser les requêtes depuis votre frontend
         allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'PATCH', 'DELETE']
         allow_headers: ['Content-Type', 'Authorization']
         expose_headers: ['Link']
@@ -10,12 +10,18 @@ nelmio_cors:
         '^/api/':
             allow_origin: ['*']
             allow_headers: ['*']
-            allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+            allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE'] # OPTIONS inclus explicitement
+            max_age: 3600
+        '^/sales':
+            allow_origin: ['http://localhost:8080']
+            allow_credentials: true
+            allow_headers: ['Content-Type', 'Authorization']
+            allow_methods: ['GET', 'OPTIONS']
             max_age: 3600
         '^/':
             origin_regex: true
             allow_origin: ['^http://localhost:[0-9]+']
             allow_headers: ['*']
-            allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+            allow_methods: ['GET', 'OPTIONS', 'POST', 'PUT', 'DELETE'] # OPTIONS inclus explicitement
             max_age: 3600
             hosts: ['^api\.']

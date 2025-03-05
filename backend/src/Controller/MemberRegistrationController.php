@@ -6,6 +6,7 @@ use App\Entity\Member;
 use App\Config\UsersRole;
 use App\Config\UsersStatus;
 use Doctrine\ORM\EntityManagerInterface;
+
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -46,6 +47,8 @@ final class MemberRegistrationController extends AbstractController
         $em->persist($user);
         $em->flush();
 
-        return new JsonResponse(['message' => 'New Member create']);
+     
+
+        return new JsonResponse(['message' => 'New Member create'],Response::HTTP_CREATED);
     }
 }

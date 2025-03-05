@@ -162,7 +162,15 @@ public function findUsers(int $shopId): array
         ->getQuery()
         ->getResult();
 }
-
+/**
+     * @return Shop[] Returns an array of Shop objects
+     */
+    public function findAll(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->getQuery()
+            ->getResult();
+    }
 
     //    /**
     //     * @return Shop[] Returns an array of Shop objects

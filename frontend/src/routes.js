@@ -1,3 +1,4 @@
+import { createRouter, createWebHistory } from 'vue-router';
 import HelloWorld from './components/HelloWorld.vue'
 import UsersView from './components/UsersView.vue'
 import RegisterMemberView from './components/RegisterMemberView.vue'
@@ -13,6 +14,7 @@ import ContactView from './components/ContactView.vue'
 
 export const routes = [
   { path: '/', component: HelloWorld },
+  { path: '/home', component: HelloWorld },
   { path: '/Users', component: UsersView },
   { path: '/RegisterMember', component: RegisterMemberView },
   { path: '/RegisterMerchant', component: RegisterMerchantView },
@@ -25,3 +27,10 @@ export const routes = [
   { path: '/Products', component: ProductsView },
   { path: '/Contact', component: ContactView },
 ]
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes,
+});
+
+export default router;
