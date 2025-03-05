@@ -172,6 +172,36 @@ public function findUsers(int $shopId): array
         ->getResult();
 }
 
+public function findByFilters(array $filters): array
+{
+    $qb = $this->createQueryBuilder('s')
+        ->select('s.name, s.type as type, c.name as category')
+        ->join('s.categories', 'c');
+
+    foreach ($filters as $field => $value) {
+        if($field === 'category'){
+            $qb->andWhere("c.name = :$field")
+                ->setParameter($field, $value);
+        }
+        if($field === 'type'){
+            $qb->andWhere("s.$field = :$field")
+                ->setParameter($field, $value);
+        }
+    }
+
+    return $qb->getQuery()->getResult();
+
+    // $query = $this->createQueryBuilder('s');
+    // $query->where(':shopCategory MEMBER OF s.categories')
+    //     ->setParameter('shopCategory', 's.id');
+    // foreach ($filters as $field => $value) {
+    //     $query->andWhere("s.$field = :$field")
+    //         ->setParameter($field, $value);
+    // }
+
+    // return $query->getQuery()->getResult();
+}
+
 
     //    /**
     //     * @return Shop[] Returns an array of Shop objects

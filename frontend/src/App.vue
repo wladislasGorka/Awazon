@@ -1,6 +1,6 @@
 <template>
-  <v-app class="mx-0">
-    <v-main>
+  <v-app >
+    <v-main >
       <RouterView />
       <Navbar />
       <SubNavBar />

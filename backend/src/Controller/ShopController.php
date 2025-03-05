@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\CategoryShopRepository;
 use App\Repository\ShopRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -12,24 +13,21 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 final class ShopController extends AbstractController
 {
-    //obtenir la liste des magasion selon un type
-    // #[Route('/shops/{type}', name: 'app_shops_by_type')]
-    // public function shopsByType(string $type, ShopRepository $shopRepository, SerializerInterface $serializer): Response
-    // {
-    //     $shops = $shopRepository->findBy(['type' => $type]);
-    //     $json = $serializer->serialize($shops, 'json');
-
-    //     return new JsonResponse($json, Response::HTTP_OK, [], true);
-    // }
-
     // Obtenir la liste des magasins, prends en compte les paramètres de la requête
     #[Route('/shops', name: 'app_shops')]
     public function shopsList(Request $request, ShopRepository $shopRepository, SerializerInterface $serializer): Response
     {
-        $type = $request->query->get('type', "null");
-
-        if ($type!="null") {
-            $shops = $shopRepository->findBy(['type' => $type]);
+        $filters = [];
+        $params = $request->query->all();
+        foreach ($params as $key => $value) {
+            if($value != "null"){
+                $filters[$key] = $value;
+            }
+        }
+        
+        if (count($filters) > 0) {
+            //$shops = $shopRepository->findBy(['type' => $type]);
+            $shops = $shopRepository->findByFilters($filters);
             $json = $serializer->serialize($shops, 'json');
         }else{
             $allShops = $shopRepository->findAll();
@@ -47,5 +45,15 @@ final class ShopController extends AbstractController
         $types = array_map(fn($type) => $type['type'], $types);
 
         return new JsonResponse($types, Response::HTTP_OK);
+    }
+
+    // Obtenir les catégories de magasins
+    #[Route('/shops-categories', name: 'app_shop_categories')]
+    public function shopCategories(CategoryShopRepository $categoryShopRepository, SerializerInterface $serializer): Response
+    {
+        $categories = $categoryShopRepository->findAll();
+        $categories = array_map(fn($category) => $category->getName(), $categories);
+
+        return new JsonResponse($categories, Response::HTTP_OK);
     }
 }
