@@ -13,6 +13,16 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 final class ShopController extends AbstractController
 {
+    // Obtenir les détails d'un magasin
+    #[Route('/shops/{id}', name: 'app_shop_detail')]
+    public function shop(int $id, ShopRepository $shopRepository, SerializerInterface $serializer): Response
+    {
+        $shop = $shopRepository->find($id);
+        $json = $serializer->serialize($shop, 'json');
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
+    }
+
     // Obtenir la liste des magasins, prends en compte les paramètres de la requête
     #[Route('/shops', name: 'app_shops')]
     public function shopsList(Request $request, ShopRepository $shopRepository, SerializerInterface $serializer): Response

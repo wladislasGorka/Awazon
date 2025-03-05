@@ -8,6 +8,7 @@ import LogoutView from './components/LogoutView.vue'
 import EventsView from './components/EventsView.vue'
 import ForumView from './components/ForumView.vue'
 import ShopsView from './components/ShopsView.vue'
+import ShopDetailView from './components/ShopDetailView.vue'
 import ProductsView from './components/ProductsView.vue'
 import ContactView from './components/ContactView.vue'
 
@@ -21,6 +22,7 @@ export const routes = [
   { path: '/Logout', component: LogoutView },
   { path: '/Events', component: EventsView },
   { path: '/Forum', component: ForumView },
+  { path: '/Shops/:id', component: ShopDetailView },
   { path: '/Shops', component: ShopsView },
   { path: '/Products', component: ProductsView },
   { path: '/Contact', component: ContactView },

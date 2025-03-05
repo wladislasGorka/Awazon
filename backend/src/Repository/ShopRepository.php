@@ -175,7 +175,6 @@ public function findUsers(int $shopId): array
 public function findByFilters(array $filters): array
 {
     $qb = $this->createQueryBuilder('s')
-        ->select('s.name, s.type as type, c.name as category')
         ->join('s.categories', 'c');
 
     foreach ($filters as $field => $value) {
