@@ -7,50 +7,59 @@ use App\Repository\CityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CityRepository::class)]
-#[ApiResource()]
+#[ApiResource(normalizationContext: ['groups' => ['city:read']], denormalizationContext: ['groups' => ['city:write']])]
 class City
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['city:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['city:read', 'city:write'])]
     private ?string $city_name = null;
 
     #[ORM\Column]
+    #[Groups(['city:read', 'city:write'])]
     private ?int $code = null;
 
     /**
      * @var Collection<int, Member>
      */
     #[ORM\OneToMany(targetEntity: Member::class, mappedBy: 'city')]
+    #[Groups(['city:read'])]
     private Collection $members;
 
     /**
      * @var Collection<int, Merchant>
      */
     #[ORM\OneToMany(targetEntity: Merchant::class, mappedBy: 'city')]
+    #[Groups(['city:read'])]
     private Collection $merchants;
 
     /**
      * @var Collection<int, Shop>
      */
     #[ORM\OneToMany(targetEntity: Shop::class, mappedBy: 'city')]
+    #[Groups(['city:read'])]
     private Collection $shops;
 
     /**
      * @var Collection<int, Order>
      */
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'city')]
+    #[Groups(['city:read'])]
     private Collection $orders;
 
     /**
      * @var Collection<int, Event>
      */
     #[ORM\OneToMany(targetEntity: Event::class, mappedBy: 'city')]
+    #[Groups(['city:read'])]
     private Collection $events;
 
     public function __construct()
