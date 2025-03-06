@@ -20,16 +20,16 @@ class Shop
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    private ?string $name = '';
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $logo = null;
+    private ?string $logo = '';
 
     #[ORM\Column]
     private ?int $siret = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $address = null;
+    private ?string $address = '';
 
     #[ORM\Column(nullable: true)]
     private ?float $longitude = null;
@@ -38,7 +38,7 @@ class Shop
     private ?float $latitude = null;
 
     #[ORM\Column(length: 20)] // Ajustez la longueur selon vos besoins
-    private ?string $phone = null;
+    private ?string $phone = '';
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $open_date = null;
@@ -47,13 +47,13 @@ class Shop
     private ?\DateTimeInterface $creation_date = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $status = null;
+    private ?string $status = '';
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $paypal_account = null;
+    private ?string $paypal_account = '';
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $paypal_id = null;
+    private ?string $paypal_id = '';
 
     #[ORM\OneToOne(inversedBy: 'shop', cascade: ['persist', 'remove'])]
     private ?FicheShop $ficheShop = null;
@@ -65,7 +65,7 @@ class Shop
     private Collection $imagesShop;
 
     #[ORM\Column(enumType: TypeShop::class)]
-    private ?TypeShop $type = null;
+    private ?TypeShop $type = TypeShop::MAGASIN;
 
     /**
      * @var Collection<int, CategoryShop>
@@ -220,7 +220,7 @@ class Shop
         return $this;
     }
 
-    public function getPhone(): ?int
+    public function getPhone(): ?string
     {
         return $this->phone;
     }

@@ -15,10 +15,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Merchant extends Users
 {
     #[ORM\Column(length: 255)]
-    private ?string $address = null;
+    private ?string $address = '';
 
     #[ORM\Column(length: 255)]
-    private ?string $kbis = null;
+    private ?string $kbis = '';
 
 
 

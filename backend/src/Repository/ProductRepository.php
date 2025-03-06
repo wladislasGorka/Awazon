@@ -16,6 +16,17 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    // Trouver les produits d'une boutique avec le id du marchand
+    public function findByMerchant(int $merchantId): array
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.shopId', 's')
+            ->join('s.merchantId', 'm')
+            ->andWhere('m.id = :merchantId')
+            ->setParameter('merchantId', $merchantId)
+            ->getQuery()
+            ->getResult();
+    }
 
     public function findByName(string $name): ?Product
     {

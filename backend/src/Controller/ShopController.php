@@ -2,17 +2,42 @@
 
 namespace App\Controller;
 
-use App\Repository\CategoryShopRepository;
+use App\Entity\Shop;
 use App\Repository\ShopRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\CategoryShopRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class ShopController extends AbstractController
 {
+    // Creation du shop
+    #[Route('/shops/create', name: 'app_add_shop', methods: ['POST'])]
+    public function addShop(Request $request, EntityManagerInterface $em): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $shop = new Shop();
+        $shop->setName($data['name']);
+        $shop->setSiret($data['siret']);
+        $shop->setAddress($data['address']);
+        // get a random city
+        $cities = $em->getRepository('App\Entity\City')->findAll(); 
+        $city = $cities[array_rand($cities)];
+        $shop->setCity($city);
+        $shop->setOpenDate(new \DateTimeImmutable());
+        $shop->setCreationDate(new \DateTimeImmutable());
+        $shop->setMerchantId($data['merchant']);
+
+        $em->persist($shop);
+        $em->flush();
+
+        return new JsonResponse('Shop created!', Response::HTTP_CREATED, [], true);
+    }
+
     // Obtenir les produits d'un magasin
     #[Route('/shops/{id}/products', name: 'app_shop_products')]
     public function shopProducts(int $id, ShopRepository $shopRepository, SerializerInterface $serializer): Response

@@ -17,6 +17,7 @@
             </v-card-text>
                 <v-btn @click="addFavorite()" color="primary">+Fav</v-btn>
                 <v-btn @click="addCart()" color="primary">+Panier</v-btn>
+                <v-btn @click="buy()" color="primary">+Commander</v-btn>
           </v-card>
         </v-col>
       </v-row>
@@ -55,6 +56,9 @@
             },
             addCart(){
                 console.log('addCart');
+            },
+            buy(){
+                console.log('buy');
             }
         },
         mounted() {

@@ -5,6 +5,7 @@
       <RouterLink to="/Forum"> <v-btn v-if="isLoggedIn">Forum | </v-btn></RouterLink>
       <RouterLink to="/Shops"> <v-btn>Commerces | </v-btn></RouterLink>
       <RouterLink to="/Products"> <v-btn>Produits | </v-btn></RouterLink>
+      <RouterLink to="/Dashboard"> <v-btn v-if="isLoggedIn">Dashboard | </v-btn></RouterLink>
       <RouterLink to="/Contact"> <v-btn>Contact</v-btn></RouterLink> 
       <v-spacer></v-spacer>
       <v-btn>Panier</v-btn>

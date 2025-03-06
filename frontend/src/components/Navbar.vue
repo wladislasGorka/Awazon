@@ -8,7 +8,6 @@
         <RouterLink to="/RegisterMerchant"> <v-btn v-if="!isLoggedIn">Vendez sur Awazon | </v-btn></RouterLink>
         <v-btn v-if="isLoggedIn" @click="logout()"> Deconnexion</v-btn>
     </v-app-bar>
-    <SubNavBar />
 </template>
 
 <script>

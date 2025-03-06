@@ -43,6 +43,7 @@
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
+          this.$router.push({ path: '/login' });
           return response.json();
         })
         .catch(error => {
