@@ -10,6 +10,7 @@ import ForumView from './components/ForumView.vue'
 import ShopsView from './components/ShopsView.vue'
 import ShopDetailView from './components/ShopDetailView.vue'
 import ProductsView from './components/ProductsView.vue'
+import ProductDetailView from './components/ProductDetailView.vue'
 import ContactView from './components/ContactView.vue'
 
 export const routes = [
@@ -24,6 +25,7 @@ export const routes = [
   { path: '/Forum', component: ForumView },
   { path: '/Shops/:id', component: ShopDetailView },
   { path: '/Shops', component: ShopsView },
+  { path: '/Products/:id', component: ProductDetailView },
   { path: '/Products', component: ProductsView },
   { path: '/Contact', component: ContactView },
 ]

@@ -2,10 +2,13 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ProductController extends AbstractController
@@ -25,5 +28,15 @@ class ProductController extends AbstractController
         $em->flush();
 
         return new JsonResponse(['id' => $product->getId()], JsonResponse::HTTP_CREATED);
+    }
+
+    // Obtenir les détails d'un produit
+    #[Route('/products/{id}', name: 'app_product_detail')]
+    public function product(int $id, ProductRepository $productRepository, SerializerInterface $serializer): Response
+    {
+        $product = $productRepository->find($id);
+        $json = $serializer->serialize($product, 'json');
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
     }
 }
