@@ -1,24 +1,37 @@
 <template>
-    <v-container>    
-      <v-row class="text-center">
-        <v-col cols="12">
-            <h1 class="display-2 font-weight-bold mb-3">
-            FORUM
-          </h1>
-        </v-col>
-  
-        <v-col class="mb-4">
-          <h1 class="display-2 font-weight-bold mb-3">
-            Welcome to the Vuetify 3 Beta
-          </h1>
-        </v-col>
-      </v-row>
-    </v-container>
-  </template>
-  
-  <script>
-  
-  export default {
-    name: 'ForumPage',
-  }
-  </script>
+  <v-container>
+    <v-row>
+      <v-col v-for="section in sections" :key="section.id">
+        <v-card @click="goToSection(section.id)">
+          <v-card-title>{{ section.name }}</v-card-title>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      sections: [],
+    };
+  },
+  created() {
+    this.fetchSections();
+  },
+  methods: {
+    fetchSections() {
+      axios.get('/section')
+        .then(response => {
+          this.sections = response.data;
+        });
+    },
+    goToSection(id) {
+      this.$router.push(`/section/${id}`);
+    },
+  },
+};
+</script>

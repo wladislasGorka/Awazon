@@ -12,6 +12,8 @@ import ProductsView from './components/ProductsView.vue'
 import ContactView from './components/ContactView.vue'
 import CartView from './components/CartView.vue'
 import OrderView from './components/OrderView.vue'
+import ForumSubjectView from './components/ForumSubjectView.vue'
+import ForumSectionView from './components/ForumSectionView.vue'
 
 export const routes = [
   { path: '/', component: HelloWorld },
@@ -27,5 +29,7 @@ export const routes = [
   { path: '/Products', component: ProductsView },
   { path: '/Contact', component: ContactView },
   { path : '/Cart', component: CartView },
-  { path : '/Order', component: OrderView }
+  { path : '/Order', component: OrderView },
+  { path : '/ForumSubject', component: ForumSubjectView },
+  { path : '/ForumSection', component: ForumSectionView }
 ]
