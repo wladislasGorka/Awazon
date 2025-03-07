@@ -4,6 +4,8 @@
       <RouterView />
       <Navbar />
       <SubNavBar />
+      <RouterView />
+     
     </v-main>
     <FooterPage />
   </v-app>

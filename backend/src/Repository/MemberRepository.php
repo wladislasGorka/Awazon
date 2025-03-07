@@ -29,11 +29,30 @@ class MemberRepository extends ServiceEntityRepository
     public function updateProfilPicture($id, $profilPicture): void
     {
         $member = $this->find($id);
-        $member->setProfilPicture($img_profil);
+        $member->setProfilPicture($profilPicture);
 
         $this->_em->persist($member);
         $this->_em->flush();
     }
+    public function save(Member $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
+    public function remove(Member $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+}
+
     //    /**
     //     * @return Member[] Returns an array of Member objects
     //     */
@@ -58,4 +77,4 @@ class MemberRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
-}
+
