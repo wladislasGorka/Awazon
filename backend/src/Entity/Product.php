@@ -18,16 +18,16 @@ class Product
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $name = null;
+    private ?string $name = '';
 
     #[ORM\Column(length: 255)]
-    private ?string $description = null;
+    private ?string $description = '';
 
     #[ORM\Column]
     private ?float $price = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $stock = null;
+    private ?string $stock = '';
 
     /**
      * @var Collection<int, Keyword>

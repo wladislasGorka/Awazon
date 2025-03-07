@@ -20,13 +20,13 @@ class FicheShop
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $name = null;
+    private ?string $name = '';
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $description = null;
+    private ?string $description = '';
 
     #[ORM\Column(enumType: FicheShopStatus::class)]
-    private ?FicheShopStatus $status = null;
+    private ?FicheShopStatus $status = FicheShopStatus::Pending;
 
     /**
      * @var Collection<int, InfoFicheShop>

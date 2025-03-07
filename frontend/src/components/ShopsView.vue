@@ -1,8 +1,7 @@
-<template>
-  <v-container>    
+<template>   
     <v-row class="text-center">  
       <v-col cols="2" class="mb-4">
-        <v-container class="d-flex flex-wrap mb-6 bg-surface-variant">
+        <v-container class="mb-6 bg-surface-variant">
           <v-select
             v-model= "selectedType"
             :items="shopTypes"
@@ -38,7 +37,6 @@
         </v-container>
       </v-col>
     </v-row>
-  </v-container>
 </template>
   
 <script>

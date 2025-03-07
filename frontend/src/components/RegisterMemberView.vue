@@ -43,12 +43,8 @@
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
+          this.$router.push({ path: '/login' });
           return response.json();
-        })
-        .then(data => {
-          console.log('Member created successfully');
-          this.$cookies.set('token', data.token, '1D');
-          //console.log('Token:', this.$cookies.get('token'));
         })
         .catch(error => {
           console.error('There was a problem with the fetch operation:', error);

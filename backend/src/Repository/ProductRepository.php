@@ -16,6 +16,38 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+    // Trouver les produits par filtres
+    public function findByFilters(array $filters): array
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->join('p.subCategory', 'sub')
+            ->join('sub.category', 'c');
+
+        foreach ($filters as $field => $value) {
+            if($field === 'category'){
+                $qb->andWhere("c.name = :category")
+                    ->setParameter('category', $value);
+            }
+            if($field === 'sub-category'){
+                $qb->andWhere("sub.name = :subCategory")
+                    ->setParameter('subCategory', $value);
+            }
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    // Trouver les produits d'une boutique avec le id du marchand
+    public function findByMerchant(int $merchantId): array
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.shopId', 's')
+            ->join('s.merchantId', 'm')
+            ->andWhere('m.id = :merchantId')
+            ->setParameter('merchantId', $merchantId)
+            ->getQuery()
+            ->getResult();
+    }
 
     public function findByName(string $name): ?Product
     {

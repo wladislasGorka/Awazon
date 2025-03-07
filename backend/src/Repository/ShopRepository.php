@@ -189,16 +189,6 @@ public function findByFilters(array $filters): array
     }
 
     return $qb->getQuery()->getResult();
-
-    // $query = $this->createQueryBuilder('s');
-    // $query->where(':shopCategory MEMBER OF s.categories')
-    //     ->setParameter('shopCategory', 's.id');
-    // foreach ($filters as $field => $value) {
-    //     $query->andWhere("s.$field = :$field")
-    //         ->setParameter($field, $value);
-    // }
-
-    // return $query->getQuery()->getResult();
 }
 
 
