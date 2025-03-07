@@ -13,7 +13,7 @@
         </div>
         <div v-else>
           <p>Votre panier est vide.</p>
-          <RouterLink to="/Product">
+          <RouterLink to="/Products">
             <v-btn color="primary">Voir les produits</v-btn>
           </RouterLink>
         </div>
