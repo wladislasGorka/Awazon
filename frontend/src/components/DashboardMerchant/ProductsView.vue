@@ -11,7 +11,24 @@
                 <v-card-text>                
                         <v-text-field v-model="name" type="text" name="name" label="Nom" ></v-text-field>
                         <v-text-field v-model="description" type="text" name="description" label="Description" ></v-text-field>
-                        <v-text-field v-model="price" type="number" step="0.01" name="price" label="Prix" ></v-text-field>                
+                        <v-text-field v-model="price" type="number" step="0.01" name="price" label="Prix" ></v-text-field>    
+                        <v-select
+                            v-model= "selectedCategory"
+                            :items="productCategory"
+                            label="Catégorie"
+                            clearable
+                            density="compact"
+                            variant="outlined"
+                        ></v-select>
+
+                        <v-select
+                            v-model= "selectedSubCategory"
+                            :items="productSubCategory"
+                            label="Sous-catégorie"
+                            clearable
+                            density="compact"
+                            variant="outlined"
+                        ></v-select>            
                 </v-card-text>
                 <v-btn type="submit" color="success" @click="overlayAdd = false" > Ajouter </v-btn>
             </v-form>            
@@ -82,6 +99,12 @@
         data() {
             return {
                 products: [],
+                productCategories: [],
+                productSubCategories: [],
+                productCategory: [],
+                productSubCategory: [],                
+                selectedCategory: null,
+                selectedSubCategory: null,
                 overlayAdd: false,
                 overlayEdit: false,
                 overlayDelete: false,
@@ -92,14 +115,17 @@
                 selectedProduct: null,
             }
         },
-        mounted() {
-            this.getProducts();
-        },
         methods: {
             getProducts() {
                 fetch('http://localhost:8000/products/merchant/' + this.$cookies.get('user').id)
                     .then(response => response.json())
                     .then(data => this.products = data);
+            },
+            setProductCategory(){
+                this.productCategory = Object.keys(this.productCategories);
+            },
+            setProductSubCategory(category){
+                this.productSubCategory = this.productCategories[category] || this.productSubCategories;
             },
             openEditOverlay(product) {
                 this.selectedProduct = product;
@@ -159,6 +185,7 @@
                     description: this.description,
                     price: this.price,
                     merchant: this.$cookies.get('user').id,
+                    subCategory: this.selectedSubCategory,
                 };
                 fetch('http://localhost:8000/api/products/create', {
                     method: 'POST',
@@ -175,7 +202,58 @@
                     this.getProducts();
                 })
             }
-        }
+        },
+        watch: {
+            selectedCategory() {
+                this.selectedSubCategory = null;
+                this.setProductSubCategory(this.selectedCategory);
+            },
+        },      
+        mounted() {
+            this.getProducts();
+            
+            // Récupère les sous-catégories des produits
+            fetch('http://localhost:8000/products/sub-category', {
+                method: 'GET',
+                headers: {
+                'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                this.productSubCategories = data;
+                this.setProductSubCategory();
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation (type):', error);
+            });
+
+            // Récupère les sous-catégories des produits
+            fetch('http://localhost:8000/products/category/smart', {
+                method: 'GET',
+                headers: {
+                'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                this.productCategories = JSON.parse(data);
+                this.setProductCategory();
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation (type):', error);
+            });
+        },
     };
 
 </script>

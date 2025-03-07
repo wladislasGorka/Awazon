@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\SubCategory;
 use App\Repository\ProductRepository;
 use App\Repository\ShopRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,10 +31,9 @@ class ProductController extends AbstractController
         $product->setDescription($data['description']);
         $product->setShopId($shop);
         $product->setStock('En stock');
-        // on donne une catégorie aléatoire
-        $cats = $entityManager->getRepository('App\Entity\SubCategory')->findAll(); 
-        $cat = $cats[array_rand($cats)];
-        $product->setSubCategory($cat);
+        // on donne une sous-categorie en fonction du nom 
+        $cats = $entityManager->getRepository(SubCategory::class)->findBy(['name' => $data['subCategory']]);
+        $product->setSubCategory($cats[0]);
 
         $entityManager->persist($product);
         $entityManager->flush();
@@ -57,6 +57,29 @@ class ProductController extends AbstractController
     {
         $product = $productRepository->find($id);
         $json = $serializer->serialize($product, 'json');
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
+    }
+
+    // Obtenir les produits
+    #[Route('/products', name: 'app_products', methods: ['GET'])]
+    public function products(Request $request, ProductRepository $productRepository, SerializerInterface $serializer): Response
+    {
+        $filters = [];
+        $params = $request->query->all();
+        foreach ($params as $key => $value) {
+            if($value != "null"){
+                $filters[$key] = $value;
+            }
+        }
+
+        if (count($filters) > 0) {
+            $products = $productRepository->findByFilters($filters);
+            $json = $serializer->serialize($products, 'json');
+        }else{
+            $allProducts = $productRepository->findAll();
+            $json = $serializer->serialize($allProducts, 'json');
+        }
 
         return new JsonResponse($json, Response::HTTP_OK, [], true);
     }

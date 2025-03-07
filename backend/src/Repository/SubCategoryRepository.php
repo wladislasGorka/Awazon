@@ -16,6 +16,15 @@ class SubCategoryRepository extends ServiceEntityRepository
         parent::__construct($registry, SubCategory::class);
     }
 
+    // récupère le nom des sous-catégories
+    public function findNames(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->select('s.name')
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return SubCategory[] Returns an array of SubCategory objects
     //     */
