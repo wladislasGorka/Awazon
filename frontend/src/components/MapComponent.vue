@@ -1,23 +1,21 @@
 <template>
   <div class="mapouter">
     <div class="gmap_canvas">
-      <iframe
+      <div
+        id="map"
         width="820"
         height="560"
-        id="gmap_canvas"
-        src="https://maps.google.com/maps?q=3+place+du+14+juillet+34500+B%C3%A9ziers+France&t=&z=13&ie=UTF8&iwloc=&output=embed"
-        frameborder="0"
-        scrolling="no"
-        marginheight="0"
-        marginwidth="0">
-      </iframe>
+        style="overflow: hidden; background: none !important;"
+      ></div>
+      <a href="https://online.stopwatch-timer.net/">timer stopwatch</a><br />
+      <a href="https://textcaseconvert.com/"></a><br />
+      <a href="https://www.embedmaps.co">google maps embed</a>
     </div>
   </div>
 </template>
 
 <script>
-
-import L from 'leaflet'; // Importez Leaflet
+import L from "leaflet";
 
 export default {
   name: "MapComponent",
@@ -27,28 +25,24 @@ export default {
     };
   },
   mounted() {
-    this.initMap();
+    this.$nextTick(() => {
+      this.initMap();
+    });
   },
   methods: {
     async initMap() {
-      // Initialisation de la carte
-      this.map = L.map("map").setView([48.8566, 2.3522], 13); // Coordonnées par défaut (Paris)
+      try {
+        // Initialisation de la carte avec les coordonnées de Béziers
+        this.map = L.map("map").setView([43.3442, 3.2158], 13);
 
-      // Ajouter les tuiles (OpenStreetMap)
-      L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      }).addTo(this.map);
-
-      // Charger les données des magasins
-      const response = await fetch("http://localhost:8000/api/shops");
-      const shops = await response.json();
-
-      // Ajouter des marqueurs pour chaque magasin
-      shops.forEach((shop) => {
-        L.marker([shop.latitude, shop.longitude])
-          .addTo(this.map)
-          .bindPopup(`<b>${shop.name}</b><br>${shop.address}`);
-      });
+        // Ajouter les tuiles (OpenStreetMap)
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution:
+            '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        }).addTo(this.map);
+      } catch (error) {
+        console.error("Erreur lors de l'initialisation de la carte :", error);
+      }
     },
   },
 };
@@ -61,11 +55,14 @@ export default {
   height: 560px;
   width: 820px;
 }
-
 .gmap_canvas {
   overflow: hidden;
   background: none !important;
   height: 560px;
   width: 820px;
+}
+#map {
+  height: 400px;
+  width: 100%;
 }
 </style>
