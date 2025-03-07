@@ -2,16 +2,19 @@
 
 namespace App\Controller;
 
+use App\Config\TypeShop;
 use App\Entity\Shop;
 use App\Repository\ShopRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\CategoryShopRepository;
+use App\Repository\FicheShopRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class ShopController extends AbstractController
 {
@@ -47,6 +50,48 @@ final class ShopController extends AbstractController
         $json = $serializer->serialize($products, 'json');
 
         return new JsonResponse($json, Response::HTTP_OK, [], true);
+    }
+
+    // Obtenir les détails d'un magasin selon id du commercant
+    #[Route('/api/shops/merchant/{id}', name: 'app_shop_merchant', methods: ['GET'])]
+    #[IsGranted('ROLE_MERCHANT')]
+    public function shopByMerchant(int $id, ShopRepository $shopRepository, SerializerInterface $serializer): Response
+    {
+        $shop = $shopRepository->findBy(['merchantId' => $id]);
+        $json = $serializer->serialize($shop[0], 'json');
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
+    }
+
+    // Update les détails d'un magasin selon id du commercant
+    #[Route('/api/shops/merchant/{id}', name: 'app_shop_merchant_update', methods: ['PUT'])]
+    #[IsGranted('ROLE_MERCHANT')]
+    public function UpdateShop(int $id, Request $request, ShopRepository $shopRepository, FicheShopRepository $ficheShopRepository, EntityManagerInterface $em)
+    {
+        $data = json_decode($request->getContent(), true);
+        // recupere le shop du commercant
+        $shops = $shopRepository->findBy(['merchantId' => $id]);
+        $shop = $shops[0];
+        // mise à jour des valeurs
+        $shop->setName($data['name']);
+        $shop->setLogo($data['logo']);
+        $shop->setAddress($data['address']);
+        $shop->setPhone($data['phone']);
+        if($data['type']==='Vendeur'){
+            $shop->setType(TypeShop::MAGASIN);
+        }else{
+            $shop->setType(TypeShop::RESTAURANT);
+        }
+        // recupere la fiche shop
+        $ficheShopId = $shop->getFicheShop()->getId();
+        $ficheShops = $ficheShopRepository->findById($ficheShopId);
+        $ficheShop = $ficheShops[0];
+        // mise à jour de la fiche du commerce
+        $ficheShop->setName($data['name']);
+
+        $em->flush();
+
+        return new Response('ok',Response::HTTP_OK);
     }
 
     // Obtenir les détails d'un magasin

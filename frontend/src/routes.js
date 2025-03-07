@@ -19,6 +19,7 @@ import ForumSubjectView from './components/ForumSubjectView.vue'
 import ForumSectionView from './components/ForumSectionView.vue'
 // Dashboard Merchant Routes
 import DashboardMerchantView from './components/DashboardMerchantView.vue'
+import DashboardMerchantShopView from './components/DashboardMerchant/ShopView.vue'
 import DashboardMerchantProductsView from './components/DashboardMerchant/ProductsView.vue'
 
 
@@ -43,13 +44,8 @@ export const routes = [
   { path : '/ForumSubject', component: ForumSubjectView },
   { path : '/ForumSection', component: ForumSectionView },
   // Dashboard Merchant Routes
+  { path: '/Dashboard/:id/Shop', component: DashboardMerchantShopView },
   { path: '/Dashboard/:id/Products', component: DashboardMerchantProductsView },
   { path: '/Dashboard', component: DashboardMerchantView },
+
 ]
-
-const router = createRouter({
-  history: createWebHistory(),
-  routes,
-});
-
-export default router;
