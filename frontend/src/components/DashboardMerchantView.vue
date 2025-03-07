@@ -5,11 +5,7 @@
                 <v-card>
                     <v-card-title>Commerce</v-card-title>
                     <v-card-text>
-<<<<<<< HEAD
                         <RouterLink :to="`/dashboard/${userID}/shop`"><v-btn>Voir sa fiche commerce</v-btn></RouterLink>
-=======
-                        <v-btn>Voir sa fiche commerce</v-btn>
->>>>>>> bfea1609030764b01b9ffcdec3a5b9d6a1204309
                     </v-card-text>
                 </v-card>
             </v-col>
