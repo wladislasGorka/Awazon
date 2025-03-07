@@ -18,6 +18,7 @@ class UsersFixtures extends Fixture
 {
     private UserPasswordHasherInterface $passwordHasher;
     public const MERCHANT_REFERENCE = 'merchant-';
+    public const MEMBER_REFERENCE = 'member-';
 
     public function __construct(UserPasswordHasherInterface $passwordHasher)
     {
@@ -59,6 +60,8 @@ class UsersFixtures extends Fixture
             $member->setPassword($hashedPassword);
 
             $manager->persist($member);
+            $this->addReference(self::MEMBER_REFERENCE . $i, $member);
+ 
         }
 
         // Création de Marchands

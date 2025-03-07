@@ -40,9 +40,9 @@
           ></v-text-field>
 
           <v-select
-            v-model="city_id"
+            
             :items="city"
-            item-text="city_name"
+            item-title="city_name"
             item-value="id"
             label="Sélectionner la ville"
             :rules="[v => !!v || 'Ville requise']"
@@ -84,8 +84,6 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   name: "EventsPage",
   data() {
@@ -97,49 +95,64 @@ export default {
       date_start: "",
       date_end: "",
       path_image: null,
-      merchant_id: "", // Auto-filled merchant ID
+      shop_id: null,
       showForm: false,
-      city: [], // List of cities
+      city: [],
       valid: false
     };
   },
   created() {
     this.fetchCity();
-    this.fetchMerchant();
+    this.fetchShop();
   },
   methods: {
-    // Fetch city data from the backend
-    async fetchCity() {
-      try {
-        const token = localStorage.getItem('authToken');
-        const response = await axios.get("http://127.0.0.1:8000/city", {
-          headers: {
-            'Authorization': `Bearer ${token}`
+    fetchCity() {
+      fetch("http://127.0.0.1:8000/city", {
+        method: 'GET',
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
           }
+          return response.json();
+        })
+        .then(data => {
+          this.city = data;
+          console.log("City data fetched:", data);
+        })
+        .catch(error => {
+          console.error("Error fetching city:", error.message);
         });
-        this.city = response.data;
-      } catch (error) {
-        console.error("Error fetching city:", error.message);
-      }
     },
 
-    // Fetch merchant data to auto-fill the merchant ID
-    async fetchMerchant() {
-      try {
-        const token = localStorage.getItem('authToken');
-        const response = await axios.get("http://127.0.0.1:8000/merchant/me", { // Adjust the endpoint if necessary
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        });
-        this.merchant_id = response.data.id; // Assuming the response contains the merchant ID
-      } catch (error) {
-        console.error("Error fetching merchant:", error.message);
-      }
-    },
+    fetchShop() {
+  const shop = this.$cookies.get('shop');
+  if (!shop || !shop.id) {
+    console.error("Shop ID is not available.");
+    return;
+  }
 
-    // Handle form submission
-    async submitForm() {
+  fetch(`http://127.0.0.1:8000/events/${shop.id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json();
+  })
+  .then(data => {
+    this.shop_id = data.id;
+  })
+  .catch(error => {
+    console.error("Error fetching shop:", error.message);
+  });
+},
+
+    submitForm() {
       if (this.$refs.form.validate()) {
         const formData = new FormData();
         formData.append("title", this.title);
@@ -154,28 +167,32 @@ export default {
           formData.append("path_image", this.path_image);
         }
 
-        try {
-          const token = localStorage.getItem('authToken');
-          const response = await axios.post("http://127.0.0.1:8000/events", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              'Authorization': `Bearer ${token}`
-            },
+        fetch("http://127.0.0.1:8000/events", {
+          method: 'POST',
+          body: formData
+        })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log("Event created successfully:", data);
+            this.resetForm();
+          })
+          .catch(error => {
+            console.error("Error creating event:", error.message);
           });
-          console.log("Event created successfully:", response.data);
-          this.resetForm();
-        } catch (error) {
-          console.error("Error creating event:", error.response ? error.response.data : error.message);
-        }
       }
     },
 
-    // Reset form fields after submission
     resetForm() {
       this.title = "";
       this.description = "";
       this.address = "";
       this.city_id = null;
+      this.city_name = "";
       this.date_start = "";
       this.date_end = "";
       this.path_image = null;
@@ -211,13 +228,13 @@ export default {
 }
 
 .animated-btn {
-  background-color: #673ab7; /* Purple color */
+  background-color: #673ab7;
   transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
   margin-top: 20px;
 }
 
 .animated-btn:hover {
-  background-color: #512da8; /* Darker purple on hover */
+  background-color: #512da8; 
   transform: translateY(-2px);
 }
 

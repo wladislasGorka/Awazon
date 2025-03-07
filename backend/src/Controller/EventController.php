@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Event;
 use App\Entity\City;
+use App\Entity\Merchant;
+use App\Entity\Shop;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -70,6 +72,7 @@ class EventController extends AbstractController
         $event->setDateStart($dateStart);
         $event->setDateEnd($dateEnd);
         $event->setPathImage($imagePath);
+        $event->setShopId($data['shop_id'] ?? null);
 
         // Save event in DB
         $entityManager->persist($event);
@@ -84,7 +87,23 @@ class EventController extends AbstractController
             'date_end' => $event->getDateEnd()->format('Y-m-d H:i:s'),
             'path_image' => $event->getPathImage(),
             'city' => $event->getCity()->getCityName(),
+            'address' => $event->getAddress(),
+            'shop_id' => $event->getShopId(),
         ]);
+    }
+
+    #[Route('/events/{id}', name: 'get_event', methods: ['GET'])]
+    public function getEvent(int $id, EntityManagerInterface $entityManager, SerializerInterface $serializer): JsonResponse
+    {
+        $event = $entityManager->getRepository(Event::class)->find($id);
+
+        if (!$event) {
+            return $this->json(['error' => 'Event not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $eventData = $serializer->serialize($event, 'json', ['groups' => 'event:read']);
+
+        return new JsonResponse($eventData, Response::HTTP_OK, [], true);
     }
 
     // Endpoint for fetching city

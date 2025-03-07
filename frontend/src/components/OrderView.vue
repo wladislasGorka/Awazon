@@ -1,4 +1,3 @@
-<!-- src/components/OrderView.vue -->
 <template>
     <v-container>
       <v-stepper v-model="step">
@@ -29,8 +28,6 @@
   </template>
   
   <script>
-  import axios from 'axios';
-  
   export default {
     data() {
       return {
@@ -38,6 +35,7 @@
         billingAddress: '',
         shippingAddress: '',
         paymentInfo: '',
+        cartId: '',
       };
     },
     methods: {
@@ -49,14 +47,25 @@
           address_bill: this.billingAddress,
           shipping_address: this.shippingAddress,
           payment_info: this.paymentInfo,
-          cartId: this.cartId, // Assuming you have a cartId available
-          // Add other required order data
+          cartId: this.cartId, // Ajouter d'autres données de commande nécessaires
         };
   
-        axios.post('http://localhost:8000/api/orders', orderData)
+        fetch('http://localhost:8000/order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(orderData),
+        })
           .then(response => {
-            console.log('Order placed:', response.data);
-            // Handle order placement success, e.g., navigate to order confirmation page
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            console.log('Order placed:', data);
+            // manage the succes of the order
           })
           .catch(error => {
             console.error('Error placing order:', error);
@@ -67,6 +76,5 @@
   </script>
   
   <style scoped>
-  /* Add any required styling here */
   </style>
   

@@ -33,14 +33,11 @@
 </template>
 
 <script>
-import SubNavBar from './SubNavBar.vue';
-import CartView from './CartView.vue';
+
 
 export default {
   name: 'HelloWorld',
   components: {
-    SubNavBar,
-    CartView,
   },
   data() {
     return {

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Controller;
 
 use App\Entity\Order;
@@ -31,7 +30,9 @@ class OrderController extends AbstractController
         $order->setNumber(rand(100000, 999999)); // Set a random order number
         $order->setCreationDate(new \DateTime());
         $order->setAddressBill($data['address_bill']);
-        $order->setPickupDate(new \DateTime($data['pickup_date']));
+        if (isset($data['pickup_date'])) {
+            $order->setPickupDate(new \DateTime($data['pickup_date']));
+        }
         $order->setStatus('PENDING'); // Set initial status
 
         foreach ($cart->getCarts() as $cartItem) {

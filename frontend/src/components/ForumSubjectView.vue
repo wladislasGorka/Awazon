@@ -23,8 +23,6 @@
   </template>
   
   <script>
-  import axios from 'axios';
-  
   export default {
     data() {
       return {
@@ -37,14 +35,43 @@
     },
     methods: {
       fetchSubjectAndMessages() {
-        axios.get(`/subject/${this.$route.params.id}`)
-          .then(response => {
-            this.subject = response.data;
-          });
-        axios.get(`/message?subject_id=${this.$route.params.id}`)
-          .then(response => {
-            this.messages = response.data;
-          });
+        fetch(`/ForumSubject/${this.$route.params.id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          this.subject = data;
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation for subject:', error);
+        });
+  
+        fetch(`/message?subject_id=${this.$route.params.id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          this.messages = data;
+        })
+        .catch(error => {
+          console.error('There was a problem with the fetch operation for messages:', error);
+        });
       },
     },
   };

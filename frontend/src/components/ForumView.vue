@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col v-for="section in sections" :key="section.id">
+      <v-col v-for="section in section" :key="section.id">
         <v-card @click="goToSection(section.id)">
           <v-card-title>{{ section.name }}</v-card-title>
         </v-card>
@@ -11,26 +11,38 @@
 </template>
 
 <script>
-import axios from 'axios';
-
 export default {
   data() {
     return {
-      sections: [],
+      section: [],
     };
   },
   created() {
-    this.fetchSections();
+    this.fetchsection();
   },
   methods: {
-    fetchSections() {
-      axios.get('/section')
-        .then(response => {
-          this.sections = response.data;
-        });
+    fetchsection() {
+      fetch('/ForumSection', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        this.section = data;
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
     },
     goToSection(id) {
-      this.$router.push(`/section/${id}`);
+      this.$router.push(`/forumSection/${id}`);
     },
   },
 };

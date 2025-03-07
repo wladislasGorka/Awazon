@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\ForumMessage;
 use App\Entity\ForumSubject;
+use App\Entity\ForumSection;
+use App\Entity\User;
 use App\Repository\ForumMessageRepository;
 use App\Repository\ForumSubjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ForumController extends AbstractController
 {
-    #[Route('/api/subjects', name: 'create_subject', methods: ['POST'])]
+    #[Route('/subject', name: 'create_subject', methods: ['POST'])]
     public function createSubject(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -28,7 +30,7 @@ class ForumController extends AbstractController
         return new JsonResponse(['id' => $subject->getId()], JsonResponse::HTTP_CREATED);
     }
 
-    #[Route('/api/subjects', name: 'get_subjects', methods: ['GET'])]
+    #[Route('/subject', name: 'get_subject', methods: ['GET'])]
     public function getSubjects(ForumSubjectRepository $subjectRepo): JsonResponse
     {
         $subjects = $subjectRepo->findAll();
@@ -46,7 +48,7 @@ class ForumController extends AbstractController
         return new JsonResponse($data, JsonResponse::HTTP_OK);
     }
 
-    #[Route('/api/messages', name: 'create_message', methods: ['POST'])]
+    #[Route('/message', name: 'create_message', methods: ['POST'])]
     public function createMessage(Request $request, ForumSubjectRepository $subjectRepo, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -68,7 +70,7 @@ class ForumController extends AbstractController
         return new JsonResponse(['id' => $message->getId()], JsonResponse::HTTP_CREATED);
     }
 
-    #[Route('/api/messages', name: 'get_messages', methods: ['GET'])]
+    #[Route('/message', name: 'get_message', methods: ['GET'])]
     public function getMessages(ForumMessageRepository $messageRepo): JsonResponse
     {
         $messages = $messageRepo->findAll();
@@ -81,6 +83,35 @@ class ForumController extends AbstractController
                 'date_creation' => $message->getDateCreation()->format('Y-m-d H:i:s'),
                 'user' => $message->getUser()->getUsername(),
                 'forumSubject' => $message->getForumSubject()->getName(),
+            ];
+        }
+
+        return new JsonResponse($data, JsonResponse::HTTP_OK);
+    }
+
+    #[Route('/section', name: 'create_section', methods: ['POST'])]
+    public function createSection(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $section = new ForumSection();
+        $section->setName($data['name']);
+
+        $em->persist($section);
+        $em->flush();
+
+        return new JsonResponse(['id' => $section->getId()], JsonResponse::HTTP_CREATED);
+    }
+
+    #[Route('/section', name: 'get_section', methods: ['GET'])]
+    public function getSections(EntityManagerInterface $em): JsonResponse
+    {
+        $sections = $em->getRepository(ForumSection::class)->findAll();
+        $data = [];
+
+        foreach ($sections as $section) {
+            $data[] = [
+                'id' => $section->getId(),
+                'name' => $section->getName(),
             ];
         }
 

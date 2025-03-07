@@ -6,7 +6,7 @@
       <RouterLink to="/Products"> <v-btn>Produits</v-btn></RouterLink> |
       <RouterLink to="/Contact"> <v-btn>Contact</v-btn></RouterLink> 
       <v-spacer></v-spacer>
-      <RouterLink to="/Cart"> <v-btn>Cart</v-btn></RouterLink>
+      <RouterLink to="/Cart"> <v-btn>Panier</v-btn></RouterLink>
       
       <v-btn>Langue</v-btn>
       <v-btn>Theme</v-btn>

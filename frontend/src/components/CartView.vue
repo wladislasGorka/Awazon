@@ -1,4 +1,3 @@
-<!-- src/components/CartView.vue -->
 <template>
   <v-container>
     <v-row>
@@ -8,12 +7,13 @@
           <ul>
             <li v-for="item in cartItems" :key="item.id">
               {{ item.product.name }} - {{ item.quantity }} x {{ item.product.price }} €
+              <v-btn @click="deleteCartItem(item.id)">Supprimer</v-btn>
             </li>
           </ul>
         </div>
         <div v-else>
           <p>Votre panier est vide.</p>
-          <RouterLink to="/Products">
+          <RouterLink to="/Product">
             <v-btn color="primary">Voir les produits</v-btn>
           </RouterLink>
         </div>
@@ -22,7 +22,7 @@
         <v-card>
           <v-card-title>Total: {{ totalPrice }} €</v-card-title>
           <v-card-actions>
-            <RouterLink to="/order">
+            <RouterLink to="/Order">
               <v-btn color="primary" v-if="cartItems.length">Commander</v-btn>
             </RouterLink>
           </v-card-actions>
@@ -33,7 +33,6 @@
 </template>
 
 <script>
-import axios from 'axios';
 import { RouterLink } from 'vue-router';
 
 export default {
@@ -54,12 +53,41 @@ export default {
   },
   methods: {
     fetchCart() {
-      axios.get('http://localhost:8000/api/cart')
+      fetch(`http://localhost:8000/cart/`+this.$cookies.get('user').id, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
         .then(response => {
-          this.cartItems = response.data;
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Cart data fetched:', data); // Debugging statement
+          this.cartItems = data;
         })
         .catch(error => {
           console.error('Error fetching cart:', error);
+        });
+    },
+    deleteCartItem(id) {
+      fetch(`http://localhost:8000/cart/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          this.cartItems = this.cartItems.filter(item => item.id !== id);
+        })
+        .catch(error => {
+          console.error('Error deleting cart item:', error);
         });
     }
   },
@@ -70,5 +98,4 @@ export default {
 </script>
 
 <style scoped>
-/* Add any required styling here */
 </style>
