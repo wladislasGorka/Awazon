@@ -5,16 +5,21 @@ import RegisterMerchantView from './components/RegisterMerchantView.vue'
 import ProductView from './components/ProductView.vue'
 import LoginView from './components/LoginView.vue'
 import LogoutView from './components/LogoutView.vue'
-import EventsView from './components/EventsView.vue'
+import EventsView from './components/EventView.vue'
 import ForumView from './components/ForumView.vue'
 import ShopsView from './components/ShopsView.vue'
 import ShopDetailView from './components/ShopDetailView.vue'
 import ProductsView from './components/ProductsView.vue'
 import ProductDetailView from './components/ProductDetailView.vue'
 import ContactView from './components/ContactView.vue'
+import CartView from './components/CartView.vue'
+import OrderView from './components/OrderView.vue'
+import ForumSubjectView from './components/ForumSubjectView.vue'
+import ForumSectionView from './components/ForumSectionView.vue'
 // Dashboard Merchant Routes
 import DashboardMerchantView from './components/DashboardMerchantView.vue'
 import DashboardMerchantProductsView from './components/DashboardMerchant/ProductsView.vue'
+
 
 export const routes = [
   { path: '/', component: HelloWorld },
@@ -31,9 +36,11 @@ export const routes = [
   { path: '/Products/:id', component: ProductDetailView },
   { path: '/Products', component: ProductsView },
   { path: '/Contact', component: ContactView },
-  
+  { path : '/Cart', component: CartView },
+  { path : '/Order', component: OrderView },
+  { path : '/ForumSubject', component: ForumSubjectView },
+  { path : '/ForumSection', component: ForumSectionView },
   // Dashboard Merchant Routes
   { path: '/Dashboard/:id/Products', component: DashboardMerchantProductsView },
   { path: '/Dashboard', component: DashboardMerchantView },
-
 ]

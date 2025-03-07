@@ -41,7 +41,7 @@ class CartRepository extends ServiceEntityRepository
     public function calcTotalPrice(Cart $cart): float
     {
         $totalPrice = 0.0;
-        foreach ($cart->getCartItems() as $cartItem) {
+        foreach ($cart->getCarts() as $cartItem) {
             $totalPrice += $cartItem->getProduct()->getPrice() * $cartItem->getQuantity();
         }
         return $totalPrice;
@@ -58,7 +58,7 @@ class CartRepository extends ServiceEntityRepository
     public function calcPriceByIdProduct(Cart $cart, int $productId): float
 {
     $totalPrice = 0.0;
-    foreach ($cart->getCartItems() as $cartItem) {
+    foreach ($cart->getCarts() as $cartItem) {
         if ($cartItem->getProduct()->getId() === $productId) {
             $totalPrice += $cartItem->getProduct()->getPrice() * $cartItem->getQuantity();
         }
@@ -75,7 +75,7 @@ class CartRepository extends ServiceEntityRepository
 public function calcTotalQuantity(Cart $cart): int
 {
     $totalQuantity = 0;
-    foreach ($cart->getCartItems() as $cartItem) {
+    foreach ($cart->getCarts() as $cartItem) {
         $totalQuantity += $cartItem->getQuantity();
     }
     return $totalQuantity;

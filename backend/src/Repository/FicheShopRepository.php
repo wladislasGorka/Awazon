@@ -18,7 +18,7 @@ class FicheShopRepository extends ServiceEntityRepository
 
     public function addInfo($name, $value, $icon): void
     {
-        $infoFicheShop = new FicheShop();
+        $infoFicheShop = new infoFicheShop();
         $infoFicheShop->setName($name);
         $infoFicheShop->setValue($value);
         $infoFicheShop->setIcon($icon);
