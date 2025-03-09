@@ -1,7 +1,6 @@
 <template>
   <v-app >
     <v-main >
-      <RouterView />
       <Navbar />
       <SubNavBar />
       <RouterView />
