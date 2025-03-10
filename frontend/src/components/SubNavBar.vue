@@ -4,7 +4,7 @@
     <RouterLink to="/Forum"> <v-btn v-if="isLoggedIn">Forum | </v-btn></RouterLink>
     <RouterLink to="/Shops"> <v-btn>Commerces | </v-btn></RouterLink>
     <RouterLink to="/Products"> <v-btn>Produits | </v-btn></RouterLink>
-    <RouterLink to="/Dashboard"> <v-btn v-if="isLoggedIn && this.$cookies.get('user').roles['ROLE_MEMBER']" >Dashboard | </v-btn></RouterLink>
+    <RouterLink to="/Dashboard"> <v-btn v-if="isLoggedIn && this.$cookies.get('user').roles['ROLE_MERCHANT']" >Dashboard | </v-btn></RouterLink>
     <RouterLink to="/Contact"> <v-btn>Contact</v-btn></RouterLink> 
     <v-spacer></v-spacer>
     <RouterLink to="/Cart"> <v-btn v-if="isLoggedIn">Panier</v-btn></RouterLink>

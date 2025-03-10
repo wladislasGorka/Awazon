@@ -81,6 +81,23 @@ public function calcTotalQuantity(Cart $cart): int
     return $totalQuantity;
 }
 
+// Trouver les paniers dans un array
+public function findByProductsId($userId, Array $productsId)
+{
+    $qb = $this->createQueryBuilder('c');
+
+    $qb->andWhere('c.memberId = :userId')
+        ->setParameter('userId', $userId);
+
+    foreach ($productsId as $id) {
+        $qb->orWhere('c.productId = :id')
+            ->setParameter('id', $id);
+    }
+
+    return $qb->getQuery()->getResult();
+
+}
+
 
     //    public function findByExampleField($value): array
     //    {
