@@ -1,11 +1,9 @@
 <template>
     <div class="chatbot-container">
-      <!-- Image instead of icon -->
       <v-btn icon class="chatbot-icon" @click="toggleChat">
-        <v-img src="/images/chat-icon.png" alt="Chat" width="50" height="50" contain></v-img>
+        <v-img src="/images/awaai.PNG" alt="Chat" width="50" height="50" contain></v-img>
       </v-btn>
   
-      <!-- Chat Window -->
       <v-card v-if="isOpen" class="chatbot-window" ref="chatbotWindow">
         <v-card-title>Awai - Votre assistant</v-card-title>
         <v-card-text>
@@ -41,16 +39,38 @@
           { text: "Bienvenue sur Awazon ! Je suis Awa-ai, comment puis-je vous aider ?", sender: "bot" }
         ],
         responses: {
-          "produit": "Vous pouvez voir nos produits en cliquant sur l'onglet 'Produits'.",
-          "événements": "Les événements sont accessibles via la section 'Événements'.",
-          "problème": "Pour toute aide, contactez notre support.",
-          "bonjour": "Bonjour ! Comment puis-je vous aider ?",
-          "aide": "Je peux vous aider à naviguer sur Awazon ! Demandez-moi ce que vous cherchez.",
-          "salut": "Salut ! Comment puis-je vous aider ?",
-          "merci": "De rien ! N'hésitez pas si vous avez d'autres questions.",
-          "commande": "Vous pouvez passer une commande en ajoutant des produits à votre panier.",
-          "livraison": "Les délais de livraison vous sont communiqués par nos commerçants."
-        }
+  "produit": "Vous pouvez voir nos produits en cliquant sur l'onglet 'Produits'.",
+  "événements": "Les événements sont accessibles via la section 'Événements'.",
+  "problème": "Pour toute aide, contactez notre support.",
+  "bonjour": "Bonjour ! Comment puis-je vous aider ?",
+  "aide": "Je peux vous aider à naviguer sur Awazon ! Demandez-moi ce que vous cherchez.",
+  "salut": "Salut ! Comment puis-je vous aider ?",
+  "slt" : "Salut ! Comment puis-je vous aider ?",
+  "cc" : "Salut ! Comment puis-je vous aider ?",
+  "hello": "Hello! Comment puis-je vous aider?",
+  "hi": "Hi! Comment puis-je vous aider?",
+  "merci": "De rien ! N'hésitez pas si vous avez d'autres questions.",
+  "commande": "Vous pouvez passer une commande en ajoutant des produits à votre panier.",
+  "livraison": "Les délais de livraison vous sont communiqués par nos commerçants.",
+  "contact": "Vous pouvez nous contacter via le formulaire de contact sur notre site.",
+  "adresse": "Nous sommes situés au 123 Rue de la Paix, 75008 Paris.",
+  "horaires": "Nos horaires d'ouverture sont de 9h à 18h du lundi au vendredi.",
+  "paiement": "Nous acceptons les cartes de crédit, PayPal et les virements bancaires.",
+  "retour": "Pour retourner un produit, veuillez suivre les instructions sur notre page de retours.",
+  "support": "Notre équipe support est disponible 24/7 pour vous aider.",
+  "promotion": "Consultez nos offres promotionnelles actuelles dans la section 'Promotions'.",
+  "annuler": "Pour annuler une commande, veuillez contacter notre service client.",
+  "réclamation": "Pour toute réclamation, remplissez le formulaire sur notre page Réclamations.",
+  "newsletter": "Inscrivez-vous à notre newsletter pour recevoir les dernières nouvelles et offres.",
+  "compte": "Vous pouvez gérer votre compte dans la section 'Profile'.",
+  "Profile": "Pour accéder à votre compte, cliquez sur 'Profile' en haut de la page.",
+  "création de compte": "Pour créer un compte, veuillez cliquer sur 'S'inscrire'.",
+  "détails du compte": "Vous pouvez modifier les détails de votre compte dans la section 'Profile'.",
+  "authentification": "Veuillez vous connecter pour accéder à cette fonctionnalité.",
+  "inscription": "Pour vous inscrire, cliquez sur 'S'inscrire' et suivez les instructions.",
+  "connexion": "Pour vous connecter, cliquez sur 'Connexion' et entrez vos identifiants."
+}
+
       };
     },
     methods: {
@@ -63,7 +83,7 @@
         }
       },
       closeChatOnClickOutside(event) {
-        // Check if the click is outside the chatbot window
+        
         if (this.$el && !this.$el.contains(event.target)) {
           this.isOpen = false;
           document.removeEventListener("click", this.closeChatOnClickOutside);

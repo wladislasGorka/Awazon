@@ -12,17 +12,17 @@
       </v-col>
 
       <v-col cols="12" class="mt-5">
-        <!-- Sort events by most recent -->
+       
         <v-btn @click="sortEvents" color="purple" dark>
           Afficher les plus récents
         </v-btn>
       </v-col>
 
-      <!-- Calendar View -->
+     
       <v-col cols="12" class="mt-5">
         <v-row>
           <v-col v-for="(event, index) in sortedEvents" :key="index" cols="12" sm="6" md="4">
-            <!-- Event Card -->
+           
             <v-card class="pa-0" :style="`background-image: url(${event.path_image}); background-size: cover; background-position: center;`">
               <v-img
                 src=""
@@ -46,7 +46,7 @@
         </v-alert>
       </v-col>
 
-      <!-- Form for creating an event -->
+      
       <v-row v-if="showForm" class="mt-5 fade-in justify-center">
         <v-col cols="12" md="8">
           <v-form ref="form" v-model="valid" @submit.prevent="submitForm" class="animated-form">
@@ -132,13 +132,13 @@ export default {
       showForm: false,
       city: [],
       valid: false,
-      events: [], // Store events here
-      sortedEvents: [] // Sorted events for display
+      events: [], 
+      sortedEvents: [] 
     };
   },
   created() {
     this.fetchCity();
-    this.fetchEvents(); // Fetch events on component load
+    this.fetchEvents(); 
   },
   methods: {
     fetchCity() {
@@ -153,14 +153,13 @@ export default {
     },
 
     fetchEvents() {
-      // Fetch events from your API
       fetch("http://127.0.0.1:8000/events", {
         method: 'GET',
       })
         .then(response => response.json())
         .then(data => {
-          this.events = data; // Store fetched events
-          this.sortEvents(); // Sort events after fetching
+          this.events = data;
+          this.sortEvents();
         })
         .catch(error => console.error("Error fetching events:", error));
     },
@@ -171,13 +170,13 @@ export default {
     },
 
     attendEvent(event) {
-      // Logic to allow the user to attend the event
+      // Implement logic to attend an event
       console.log("User attending event:", event);
-      // Here you can make an API call or update the UI to show attendance
+     
     },
 
     submitForm() {
-      // Handle form submission to create an event
+    
       const formData = new FormData();
       formData.append("title", this.title);
       formData.append("description", this.description);
