@@ -1,4 +1,3 @@
-import { createRouter, createWebHistory } from 'vue-router';
 import HelloWorld from './components/HelloWorld.vue'
 import UsersView from './components/UsersView.vue'
 import RegisterMemberView from './components/RegisterMemberView.vue'
@@ -40,7 +39,7 @@ export const routes = [
   { path: '/Products', component: ProductsView },
   { path: '/Contact', component: ContactView },
   { path : '/Cart', component: CartView },
-  { path : '/Order', component: OrderView },
+  { path : '/Order/:id', component: OrderView },
   { path : '/ForumSubject', component: ForumSubjectView },
   { path : '/ForumSection', component: ForumSectionView },
   // Dashboard Merchant Routes

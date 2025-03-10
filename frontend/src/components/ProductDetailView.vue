@@ -88,6 +88,7 @@ export default {
         },
         buy() {
             console.log('buy');
+            this.$router.push(`/Order/${this.product.id}`);
         }
     },
     mounted() {
