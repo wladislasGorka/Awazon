@@ -3,11 +3,11 @@
     <v-row>
       <v-col cols="8">
         <h2>Votre Panier</h2>
-        <div v-if="cartItems.length">
+        <div v-if="cartProduct.length">
           <ul>
-            <li v-for="item in cartItems" :key="item.id">
-              {{ item.product.name }} - {{ item.quantity }} x {{ item.product.price }} €
-              <v-btn @click="deleteCartItem(item.id)">Supprimer</v-btn>
+            <li v-for="product in cartProduct" :key="product[0].id">
+              {{ product.name }} - {{ product[0].quantity }} x {{ product.price }} €
+              <v-btn @click="deleteCartproduct(product[0].id)">Supprimer</v-btn>
             </li>
           </ul>
         </div>
@@ -20,10 +20,10 @@
       </v-col>
       <v-col cols="4">
         <v-card>
-          <v-card-title>Total: {{ totalPrice }} €</v-card-title>
+          <v-card-title>Total: {{ totalPrice() }} €</v-card-title>
           <v-card-actions>
             <RouterLink to="/Order">
-              <v-btn color="primary" v-if="cartItems.length">Commander</v-btn>
+              <v-btn color="primary" v-if="cartProduct.length">Commander</v-btn>
             </RouterLink>
           </v-card-actions>
         </v-card>
@@ -41,19 +41,27 @@ export default {
   },
   data() {
     return {
-      cartItems: [],
+      cartProduct: [],
     };
   },
   computed: {
-    totalPrice() {
-      return this.cartItems.reduce((total, item) => {
-        return total + item.product.price * item.quantity;
-      }, 0);
-    },
+    
   },
   methods: {
+
+    totalPrice() {
+      let totalPrice = 0;
+      this.cartProduct.forEach(product => {
+       let productPrice = product.price
+        totalPrice += productPrice * product[0].quantity;
+        console.log(product.price);
+      });
+      return totalPrice;
+
+    },
     fetchCart() {
-      fetch(`http://localhost:8000/cart/`+this.$cookies.get('user').id, {
+
+      fetch(`http://localhost:8000/cart/`+this.$cookies.get("user").id, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -66,14 +74,14 @@ export default {
           return response.json();
         })
         .then(data => {
-          console.log('Cart data fetched:', data); // Debugging statement
-          this.cartItems = data;
+          console.log('Cart data fetched:', data); 
+          this.cartProduct = data;
         })
         .catch(error => {
           console.error('Error fetching cart:', error);
         });
     },
-    deleteCartItem(id) {
+    deleteCartproduct(id) {
       fetch(`http://localhost:8000/cart/${id}`, {
         method: 'DELETE',
         headers: {
@@ -84,13 +92,17 @@ export default {
           if (!response.ok) {
             throw new Error('Network response was not ok');
           }
-          this.cartItems = this.cartItems.filter(item => item.id !== id);
+          this.cartProduct = this.cartProduct.filter(product => product.id !== id);
+
+          this.fetchCart();
         })
         .catch(error => {
-          console.error('Error deleting cart item:', error);
+          console.error('Error deleting cart product:', error);
         });
     }
-  },
+      
+    },
+  
   created() {
     this.fetchCart();
   },
@@ -98,4 +110,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

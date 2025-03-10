@@ -81,6 +81,16 @@ public function calcTotalQuantity(Cart $cart): int
     return $totalQuantity;
 }
 
+public function findByProduct($memberId): array
+{
+        $query = $this->createQueryBuilder('c')
+            ->select('c', 'p.price', 'p.name')
+            ->innerJoin('c.productId', 'p')
+            ->andWhere('c.memberId = :val')
+            ->setParameter('val', $memberId)
+            ->getQuery();
+        return $query->getResult();
+}
 
     //    public function findByExampleField($value): array
     //    {

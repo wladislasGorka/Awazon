@@ -10,14 +10,21 @@ use App\Repository\MemberRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 final class CartController extends AbstractController
 {
-   #[Route('/api/cart', name: 'create_cart', methods: ['POST'])]
+    private $serializer;
+
+    public function __construct(SerializerInterface $serializer)
+    {
+        $this->serializer = $serializer;
+    }
+
+    #[Route('/cart', name: 'create_cart', methods: ['POST'])]
     public function createCart(Request $request, EntityManagerInterface $em, ProductRepository $productRepository, MemberRepository $memberRepository): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -41,19 +48,18 @@ final class CartController extends AbstractController
         $em->persist($cart);
         $em->flush();
 
-        return new JsonResponse(['id' => $cart->getId()], JsonResponse::HTTP_CREATED);
+        $json = $this->serializer->serialize($product, 'json');
+
+        return new JsonResponse(['id' => $cart->getId(), 'product' => $json], JsonResponse::HTTP_CREATED);
     }
 
-   #[Route('/cart/{id}', name: 'get_cart', methods: ['GET'])]
-    public function getCart(int $id, CartRepository $cartRepository, SerializerInterface $serializer): Response
+    #[Route('/cart/{id}', name: 'get_cart', methods: ['GET'])]
+    public function getCartByMember(int $id, CartRepository $cartRepository): JsonResponse
     {
-        $cart = $cartRepository->find($id);
-        if (!$cart) {
-            return new JsonResponse(['error' => 'Cart not found'], JsonResponse::HTTP_NOT_FOUND);
-        }
+        $carts = $cartRepository->findByProduct($id);
+        $json = $this->serializer->serialize($carts, 'json');
 
-        $json = $serializer->serialize($cart, 'json');
-        return new JsonResponse($json, Response::HTTP_OK, [], true);
+        return new JsonResponse($json, JsonResponse::HTTP_OK, [], true);
     }
 
     #[Route('/cart', name: 'update_cart', methods: ['PUT'])]

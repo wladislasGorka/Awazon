@@ -16,7 +16,7 @@
               </v-list>
             </v-card-text>
                 <v-btn @click="addFavorite()" color="primary">+Fav</v-btn>
-                <v-btn @click="addCart()" color="primary">+Panier</v-btn>
+                <v-btn @click="addToCart()" color="primary">+Panier</v-btn>
                 <v-btn @click="buy()" color="primary">+Commander</v-btn>
           </v-card>
         </v-col>
@@ -25,48 +25,24 @@
 </template>
 
 <script>
-    export default{
-        name: 'ProductDetailView',
-        data() {
-            return {
-                product: {}
-            }
-        },
-        methods: {
-            addFavorite() {
-                // fetch('http://localhost:8000/member/addFav', {
-                //     method: 'POST',
-                //     headers: {
-                //         'Content-Type': 'application/json'
-                //     },
-                //     body: JSON.stringify({
-                //         shop: this.shop.id
-                //         // user: this.$store.state.user.id
-                //     })
-                // })
-                // .then(response => {
-                //     if (!response.ok) {
-                //         throw new Error('Network response was not ok');
-                //     }
-                //     return response.json();
-                // })
-                // .catch(error => {
-                //     console.error('There was a problem with the fetch operation:', error);
-                // });
-            },
-            addCart(){
-                console.log('addCart');
-            },
-            buy(){
-                console.log('buy');
-            }
-        },
-        mounted() {
-            fetch('http://localhost:8000/products/' + this.$route.params.id, {
-                method: 'GET',
+export default {
+    name: 'ProductDetailView',
+    data() {
+        return {
+            product: {}
+        };
+    },
+    methods: {
+        addFavorite() {
+            /* fetch('http://localhost:8000/api/favorite', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                body: JSON.stringify({
+                    productId: this.product.id,
+                    memberId: this.$cookies.get('user').id
+                })
             })
             .then(response => {
                 if (!response.ok) {
@@ -75,11 +51,64 @@
                 return response.json();
             })
             .then(data => {
-                this.product = data;
+                console.log('Product added to favorites:', data);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            }); */
+        },
+        // method to add a product to the cart
+        addToCart() {
+            fetch('http://localhost:8000/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                   
+                },
+                body: JSON.stringify({
+                    productId: this.product.id,
+                    memberId: this.$cookies.get('user').id,
+                    quantity: 1,
+                    addTime: new Date().toISOString(),
+                    price: this.product.price
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Product added to cart:', data);
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);
             });
+        },
+        buy() {
+            console.log('buy');
         }
+    },
+    mounted() {
+        fetch('http://localhost:8000/products/' + this.$route.params.id, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            this.product = data;
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
     }
+};
 </script>

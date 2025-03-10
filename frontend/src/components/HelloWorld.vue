@@ -95,7 +95,7 @@ export default {
   font-size: 4rem; /* Texte grand et visible */
   font-weight: bold; /* Texte gras */
   text-align: center; /* Centré horizontalement */
-  color: #0078d7; /* Couleur principale */
+  color: #8100d7; /* Couleur principale */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre subtile pour du relief */
   letter-spacing: 1px; /* Espacement des lettres */
   margin: 20px 0; /* Espacement autour */

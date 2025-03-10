@@ -99,12 +99,13 @@ export default {
 </script>
 
 <style scoped>
-/* CSS Animations */
+
 .animated-form {
   max-width: 600px;
   margin: 0 auto;
   padding: 20px;
-  background: #fff;
+  background: var(--form-bg-color); 
+  color: var(--form-text-color); 
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   animation: fadeInUp 0.5s ease-out;
@@ -115,17 +116,17 @@ export default {
 }
 
 .animated-input:focus, .animated-textarea:focus {
-  box-shadow: 0 0 10px 2px rgba(103, 58, 183, 0.5); /* Purple glow */
+  box-shadow: 0 0 10px 2px rgba(103, 58, 183, 0.5);
   transform: scale(1.05);
 }
 
 .animated-btn {
-  background-color: #673ab7; /* Purple color */
+  background-color: #673ab7; 
   transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 .animated-btn:hover {
-  background-color: #512da8; /* Darker purple on hover */
+  background-color: #512da8; 
   transform: translateY(-2px);
 }
 
@@ -141,6 +142,22 @@ export default {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --form-bg-color: #333;
+    --form-text-color: #fff;
+  }
+}
+
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --form-bg-color: #fff;
+    --form-text-color: #000;
   }
 }
 </style>
