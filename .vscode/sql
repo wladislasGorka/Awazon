@@ -1,0 +1,16 @@
+SELECT COLUMN_NAME, DATA_TYPE 
+FROM information_schema.COLUMNS
+WHERE TABLE_NAME = 'testprojectworkplace' 
+  AND COLUMN_NAME = 'shop_id_id';
+
+
+DESCRIBE nom_de_la_table;
+
+SELECT TABLE_NAME 
+FROM INFORMATION_SCHEMA.COLUMNS 
+WHERE COLUMN_NAME = 'shop_id' 
+      AND TABLE_SCHEMA = 'testprojectworkplace';
+
+ALTER TABLE votre_table
+RENAME COLUMN shop_id_id TO shop_id;
+

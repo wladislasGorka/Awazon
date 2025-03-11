@@ -206,7 +206,7 @@ class Member extends Users
     {
         if (!$this->carts->contains($cart)) {
             $this->carts->add($cart);
-            $cart->setMemberId($this);
+            $cart->setMember($this);
         }
 
         return $this;
@@ -216,8 +216,8 @@ class Member extends Users
     {
         if ($this->carts->removeElement($cart)) {
             // set the owning side to null (unless already changed)
-            if ($cart->getMemberId() === $this) {
-                $cart->setMemberId(null);
+            if ($cart->getMember() === $this) {
+                $cart->setMember(null);
             }
         }
 

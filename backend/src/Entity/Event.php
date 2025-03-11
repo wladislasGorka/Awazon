@@ -36,7 +36,8 @@ class Event
     #[ORM\Column(length: 255)]
     private ?string $path_image = null;
 
-    #[ORM\ManyToOne(inversedBy: 'events')]
+    #[ORM\ManyToOne(targetEntity: "App\Entity\Shop", inversedBy: "events")]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Shop $shop = null;
 
     /**

@@ -40,10 +40,7 @@ export default {
 },
 
   methods: {
-    mounted() {
-  this.fetchSales();
-  this.fetchShop();
-},
+  
   fetchSales() {
     fetch('http://localhost:8000/sales')
       .then(response => {

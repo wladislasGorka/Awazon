@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProductRepository;
+use App\DataFixtures\ShopFixtures;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +16,7 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private ?int $id;
 
     #[ORM\Column(length: 50)]
     private ?string $name = '';
@@ -66,9 +67,9 @@ class Product
     #[ORM\OneToMany(targetEntity: Cart::class, mappedBy: 'productId', orphanRemoval: true)]
     private Collection $carts;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\ManyToOne(targetEntity: Shop::class, inversedBy: 'product')]    
     #[ORM\JoinColumn(nullable: false)]
-    private ?Shop $shopId = null;
+    private ?Shop $shop = null;
 
     /**
      * @var Collection<int, Member>
@@ -82,7 +83,7 @@ class Product
     #[ORM\OneToMany(targetEntity: ReviewProduct::class, mappedBy: 'product')]
     private Collection $reviews;
 
-    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[ORM\ManyToOne(inversedBy: 'product')]
     #[ORM\JoinColumn(nullable: false)]
     private ?SubCategory $subCategory = null;
     
@@ -325,7 +326,7 @@ class Product
     {
         if (!$this->carts->contains($cart)) {
             $this->carts->add($cart);
-            $cart->setProductId($this);
+            $cart->setProduct($this);
         }
 
         return $this;
@@ -335,22 +336,22 @@ class Product
     {
         if ($this->carts->removeElement($cart)) {
             // set the owning side to null (unless already changed)
-            if ($cart->getProductId() === $this) {
-                $cart->setProductId(null);
+            if ($cart->getProduct() === $this) {
+                $cart->setProduct(null);
             }
         }
 
         return $this;
     }
 
-    public function getShopId(): ?Shop
+    public function getShop(): ?Shop
     {
-        return $this->shopId;
+        return $this->shop;
     }
 
-    public function setShopId(?Shop $shopId): static
+    public function setShop(?Shop $shopId): static
     {
-        $this->shopId = $shopId;
+        $this->shop = $shopId;
 
         return $this;
     }
@@ -411,4 +412,11 @@ class Product
 
         return $this;
     }
+    public function getDependencies(): array
+    {
+        return [
+            ShopFixtures::class, 
+        ];
+    }
+
 }
