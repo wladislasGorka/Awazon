@@ -19,7 +19,7 @@
           <v-text-field v-model="siret" label="Siret" type="number" required></v-text-field>
         </v-col>
       </v-row>      
-      <v-btn type="submit" color="primary">Enregistrer en tant que Marchand</v-btn>
+      <v-btn type="submit" color="primary">Devenir Vendeur</v-btn>
     </v-container>
   </v-form>
     

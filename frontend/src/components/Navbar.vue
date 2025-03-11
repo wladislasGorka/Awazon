@@ -1,7 +1,7 @@
 <!-- src/components/Navbar.vue -->
 <template>
     <v-app-bar app>
-        <RouterLink to="/"> <v-toolbar-title>My Navbar</v-toolbar-title></RouterLink>
+        <RouterLink to="/"> <v-toolbar-title>Accueil</v-toolbar-title></RouterLink>
         <v-spacer></v-spacer>
         <RouterLink to="/Login"> <v-btn v-if="!isLoggedIn">Connexion | </v-btn></RouterLink> 
         <RouterLink to="/RegisterMember"> <v-btn v-if="!isLoggedIn">Inscription | </v-btn></RouterLink> 

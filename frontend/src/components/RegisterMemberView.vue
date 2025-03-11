@@ -6,7 +6,7 @@
       <v-text-field v-model="phone" label="phone" type="number" required></v-text-field>
       <v-text-field v-model="email" label="Email" type="email" required></v-text-field>
       <v-text-field v-model="password" label="Mot de passe" type="password" required></v-text-field>
-      <v-btn type="submit" color="primary">Enregistrer en tant que membre</v-btn>
+      <v-btn type="submit" color="primary">Devenir membre</v-btn>
     </v-form>
   </template>
   

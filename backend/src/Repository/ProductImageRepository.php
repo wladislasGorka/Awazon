@@ -16,28 +16,34 @@ class ProductImageRepository extends ServiceEntityRepository
         parent::__construct($registry, ProductImage::class);
     }
 
-    //    /**
-    //     * @return ProductImage[] Returns an array of ProductImage objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('p.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * Trouver les images par produit
+     *
+     * @param int $productId
+     * @return ProductImage[] Retourne un tableau d'objets ProductImage
+     */
+    public function findByProduct(int $productId): array
+    {
+        return $this->createQueryBuilder('pi')
+            ->andWhere('pi.product = :productId')
+            ->setParameter('productId', $productId)
+            ->orderBy('pi.id', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
-    //    public function findOneBySomeField($value): ?ProductImage
-    //    {
-    //        return $this->createQueryBuilder('p')
-    //            ->andWhere('p.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Trouver une image spécifique par son nom
+     *
+     * @param string $imageName
+     * @return ProductImage|null Retourne une image ou null si aucune image ne correspond
+     */
+    public function findOneByName(string $imageName): ?ProductImage
+    {
+        return $this->createQueryBuilder('pi')
+            ->andWhere('pi.name = :imageName')
+            ->setParameter('imageName', $imageName)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }
