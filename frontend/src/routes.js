@@ -1,4 +1,3 @@
-import { createRouter, createWebHistory } from 'vue-router';
 import HelloWorld from './components/HelloWorld.vue'
 import UsersView from './components/UsersView.vue'
 import RegisterMemberView from './components/RegisterMemberView.vue'
