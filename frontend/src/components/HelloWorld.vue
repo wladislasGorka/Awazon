@@ -1,149 +1,143 @@
 <template>
-  <v-container>
-    <v-row class="text-center">
-      <v-col cols="12">
-        <v-img
-          :src="require('../assets/logo.svg')"
-          class="my-3"
-          contain
-          height="200"
-        />
-      </v-col>
-
-      <v-col class="mb-4">
-        <h1 class="display-2 font-weight-bold mb-3">
-          Welcome to the Vuetify 3 Beta
-        </h1>
-
-
-        <p class="subheading font-weight-regular">
-          For help and collaboration with other Vuetify developers,
-          <br>please join our online
-          <a
-            href="https://community.vuetifyjs.com"
-            target="_blank"
-          >Discord Community</a>
-        </p>
-      </v-col>
-
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-5">
-          What's next?
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(next, i) in whatsNext"
-            :key="i"
-            :href="next.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ next.text }}
-          </a>
-        </v-row>
-      </v-col>
-
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-5">
-          Important Links
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(link, i) in importantLinks"
-            :key="i"
-            :href="link.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ link.text }}
-          </a>
-        </v-row>
-      </v-col>
-
-      <v-col
-        class="mb-5"
-        cols="12"
-      >
-        <h2 class="headline font-weight-bold mb-5">
-          Ecosystem
-        </h2>
-
-        <v-row justify="center">
-          <a
-            v-for="(eco, i) in ecosystem"
-            :key="i"
-            :href="eco.href"
-            class="subheading mx-3"
-            target="_blank"
-          >
-            {{ eco.text }}
-          </a>
-        </v-row>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-app>
+    <v-container>
+      <v-row justify="center"  class="mt-5">
+        <v-col cols="12" md="8">
+          <h1 class="beautiful-title">Bienvenue sur AWAZON</h1>
+          
+           <div class="icons-divider">
+            <span v-for="n in 7" :key="n" class="icon-item">
+            <v-icon>mdi-star</v-icon>
+            <v-icon>mdi-storefront</v-icon>
+            <v-icon>mdi-tag</v-icon>
+            <v-icon>mdi-cart</v-icon>            </span>
+          </div>
+        </v-col>
+      </v-row>
+ 
+      <SalesSlider :sales="sales" />
+      <ShopSlider :shops="shop" />
+      <ProductSlider :products="products" />
+      <div v-if="fetchError" class="error-message">
+        {{ fetchError }}
+      </div>
+    </v-container>
+  </v-app>
 </template>
 
 <script>
+import SalesSlider from './SalesSlider.vue';
+import ShopSlider from './ShopSlider.vue';
+import ProductSlider from './ProductSlider.vue';
 
 export default {
   name: 'HelloWorld',
+  components: {
+    SalesSlider,
+    ShopSlider,
+    ProductSlider,
+    
+  },
+  data() {
+    return {
+      sales: [],
+      shop: [],
+      products: [],
+      fetchError: null,
+    };
+  },
+  mounted() {
+  this.fetchSales();
+  this.fetchShop();
+  this.fetchProduct();
+},
 
-  data: () => ({
-    ecosystem: [
-      {
-        text: 'vuetify-loader',
-        href: 'https://github.com/vuetifyjs/vuetify-loader/tree/next',
-      },
-      {
-        text: 'github',
-        href: 'https://github.com/vuetifyjs/vuetify/tree/next',
-      },
-      {
-        text: 'awesome-vuetify',
-        href: 'https://github.com/vuetifyjs/awesome-vuetify',
-      },
-    ],
-    importantLinks: [
-      {
-        text: 'Chat',
-        href: 'https://community.vuetifyjs.com',
-      },
-      {
-        text: 'Made with Vuetify',
-        href: 'https://madewithvuejs.com/vuetify',
-      },
-      {
-        text: 'Twitter',
-        href: 'https://twitter.com/vuetifyjs',
-      },
-      {
-        text: 'Articles',
-        href: 'https://medium.com/vuetify',
-      },
-    ],
-    whatsNext: [
-      {
-        text: 'Explore components',
-        href: 'https://vuetifyjs.com',
-      },
-      {
-        text: 'Roadmap',
-        href: 'https://vuetifyjs.com/introduction/roadmap/',
-      },
-      {
-        text: 'Frequently Asked Questions',
-        href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions',
-      },
-    ],
-  }),
+  methods: {
+  
+  fetchSales() {
+    fetch('http://localhost:8000/sales')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        this.sales = data;
+        console.log('Sales data fetched successfully:', this.sales);
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des ventes:', error);
+        this.fetchError = error.message;
+      });
+  },
+
+  fetchShop() {
+    fetch('http://localhost:8000/shop')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        this.shop = data;
+        console.log('Shop data fetched successfully:', this.shop);
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des magasins:', error);
+        this.fetchError = error.message;
+      });
+     },
+     fetchProduct() {
+    fetch('http://localhost:8000/product')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        this.products = data;
+        console.log('Product data fetched successfully:', this.products);
+        console.log(data);
+      })
+      .catch(error => {
+        console.error('Erreur lors de la récupération des produits:', error);
+        this.fetchError = error.message;
+      });
 }
+
+ 
+    }
+    
+  }
+
 </script>
+
+<style scoped>
+.error-message {
+  color: red;
+  margin-top: 20px;
+}
+
+.beautiful-title {
+  font-size: 4rem; /* Texte grand et visible */
+  font-weight: bold; /* Texte gras */
+  text-align: center; /* Centré horizontalement */
+  background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+            background-clip: text;
+            color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre subtile pour du relief */
+  letter-spacing: 1px; /* Espacement des lettres */
+  margin: 20px 0; /* Espacement autour */
+}
+.icons-divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px; /* Espacement entre les icônes */
+  margin: 20px 0; /* Espacement autour */
+}
+</style>

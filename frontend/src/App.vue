@@ -1,28 +1,30 @@
 <template>
   <v-app>
     <v-main>
-      <HelloWorld/>
-      <v-container>
-        <user-form></user-form>
-      </v-container>
+      <RouterView />
+      <Navbar />
+      <SubNavBar />
     </v-main>
+    <FooterPage />
+    <AwaiView />
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-import UserForm from './components/UserForm.vue';
+import Navbar from './components/Navbar.vue';
+import SubNavBar from './components/SubNavBar.vue';
+import FooterPage from './components/FooterView.vue';
+import AwaiView from './components/AwaiView.vue'; 
+import { RouterView } from 'vue-router';
 
 export default {
   name: 'App',
-  
   components: {
-    HelloWorld,
-    UserForm
-  },
-
-  data: () => ({
-    //
-  }),
+    Navbar,
+    SubNavBar,
+    RouterView,
+    FooterPage,
+    AwaiView
+  }
 }
 </script>

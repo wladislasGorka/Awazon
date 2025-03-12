@@ -1,0 +1,80 @@
+{
+    "folder-color.pathColors": [
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\CartRepository.php\\",
+            "badge": "🤡"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\NewsletterRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\MerchantRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\ForumMessageRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\ForumSubjectRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\ForumSectionRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\InfoFicheShopRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\ProductRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\ProductInfoRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\ShopRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\TicketRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\ReportRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\OrderProductRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\OrderRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\OrderShopRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\FicheShopRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\UsersRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\MemberRepository.php\\",
+            "badge": "😀"
+        },
+        {
+            "folderPath": "testProjectWorkplace\\backend\\src\\Repository\\EventRepository.php\\",
+            "badge": "😀"
+        }
+    ]
+}
