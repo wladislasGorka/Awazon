@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\GiftCodeRepository;
+use App\DataFixtures\ProductFixtures;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -16,7 +17,7 @@ class GiftCode
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?int $id = null;
+    private ?int $id;
 
     #[ORM\Column(length: 50)]
     private ?string $code = null;
@@ -36,9 +37,9 @@ class GiftCode
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'giftCode')]
     private Collection $orders;
 
-    #[ORM\ManyToOne(inversedBy: 'giftCodes')]
+    #[ORM\ManyToOne(targetEntity: Shop::class, inversedBy: 'giftCode')]  
     #[ORM\JoinColumn(nullable: false)]
-    private ?Shop $shopId = null;
+    private ?Shop $shop = null;
 
     /**
      * @var Collection<int, GiftCodeTarget>
@@ -135,14 +136,14 @@ class GiftCode
         return $this;
     }
 
-    public function getShopId(): ?Shop
+    public function getShop(): ?Shop
     {
-        return $this->shopId;
+        return $this->shop;
     }
 
-    public function setShopId(?Shop $shopId): static
+    public function setShop(?Shop $shopId): static
     {
-        $this->shopId = $shopId;
+        $this->shop = $shopId;
 
         return $this;
     }

@@ -17,6 +17,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
     private const STOCK = 'stock';
     private const SUBCATEGORY_REFERENCE_KEY = 'subCategoryReferenceKey';
     private const SHOP_REFERENCE_KEY = 'shopReferenceKey';
+    public const PRODUCT_REFERENCE = 'product-'; // Ajout de la constante pour les références
 
     public function load(ObjectManager $manager): void
     {
@@ -53,7 +54,16 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
                 'subCategoryReferenceKey' => 3,
                 'shopReferenceKey' => 3,
             ],
+            [
+                'name' => 'Jupe Longue',
+                'description' => 'Jupe longue à motif mexicain.',
+                'price' => 50.99,
+                'stock' => 'En stock',
+                'subCategoryReferenceKey' => 4,
+                'shopReferenceKey' => 4,
+            ],
         ];
+        $i = 0; // Ajout du compteur
 
         foreach ($products as $productData) {
             $product = new Product();
@@ -71,12 +81,14 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
 
             $shopReference = ShopFixtures::SHOP_REFERENCE . $productData[self::SHOP_REFERENCE_KEY];
             if ($this->hasReference($shopReference, Shop::class)) {
-                $product->setShopId($this->getReference($shopReference, Shop::class));
+                $product->setShop($this->getReference($shopReference, Shop::class));
             } else {
                 error_log("Shop reference not found: " . $shopReference);
             }
 
             $manager->persist($product);
+            $this->addReference(self::PRODUCT_REFERENCE . $i, $product);
+$i++;
         }
 
         $manager->flush();

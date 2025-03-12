@@ -2,7 +2,6 @@
 
 namespace App\Repository;
 
-
 use App\Entity\Cart;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,44 +16,42 @@ class CartRepository extends ServiceEntityRepository
         parent::__construct($registry, Cart::class);
     }
 
-   /* *
- * Finds and returns the cart associated with a specific user.
- *
- * @param int $userId The ID of the user.
- * @return Cart|null The cart associated with the user or null if not found.
- */
+    /**
+     * Trouver un panier associé à un utilisateur spécifique.
+     */
     public function findCartByUser($user): ?Cart
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.user = :val')
-            ->setParameter('val', $user)
+            ->andWhere('c.member = :user')
+            ->setParameter('user', $user)
             ->getQuery()
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
-/* *
- * Calculates the total price of all items in the cart.
- *
- * @param Cart $cart The cart object.
- * @return float The total price of all items in the cart.
- */
+
+    /**
+     * Calculer le prix total d'un panier.
+     */
     public function calcTotalPrice(Cart $cart): float
     {
-        $totalPrice = 0.0;
-        foreach ($cart->getCarts() as $cartItem) {
-            $totalPrice += $cartItem->getProduct()->getPrice() * $cartItem->getQuantity();
+        $product = $cart->getProduct();
+        if ($product === null) {
+            return 0.0;
         }
-        return $totalPrice;
+
+        return $product->getPrice() * $cart->getQuantity();
     }
 
+    /**
+     * Calculer la quantité totale d'articles dans un panier.
+     */
+    public function calcTotalQuantity(Cart $cart): int
+    {
+        return $cart->getQuantity();
+    }
 
-    /* *
- * Calculates the total price of a specific product in the cart based on its ID.
- *
- * @param Cart $cart The cart object.
- * @param int $productId The ID of the product.
- * @return float The total price of the product in the cart.
- */
+    /**
+     * Calculer le prix total pour un produit spécifique dans un panier.
+     */
     public function calcPriceByIdProduct(Cart $cart, int $productId): float
 {
     $totalPrice = 0.0;
@@ -131,5 +128,3 @@ public function findByProductsId($userId, Array $productsId)
     //        ;
     //    }
 }
-
-
