@@ -19,7 +19,7 @@
         <v-card-actions>
           <v-text-field 
             v-model="userInput" 
-            label="Écrivez ici..." 
+            label="Écrivez ici..."
             @keyup.enter="sendMessage"
             class="chat-input"
           ></v-text-field>
@@ -68,7 +68,10 @@
   "détails du compte": "Vous pouvez modifier les détails de votre compte dans la section 'Profile'.",
   "authentification": "Veuillez vous connecter pour accéder à cette fonctionnalité.",
   "inscription": "Pour vous inscrire, cliquez sur 'S'inscrire' et suivez les instructions.",
-  "connexion": "Pour vous connecter, cliquez sur 'Connexion' et entrez vos identifiants."
+  "connexion": "Pour vous connecter, cliquez sur 'Connexion' et entrez vos identifiants.",
+  "idiot" : "Toi même !",
+  "connerie" : "Je suis désolé, je ne suis pas programmé pour répondre à ce genre de questions.",
+  
 }
 
       };
