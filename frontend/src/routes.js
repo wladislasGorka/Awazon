@@ -20,6 +20,7 @@ import ForumSectionView from './components/ForumSectionView.vue'
 import DashboardMerchantView from './components/DashboardMerchantView.vue'
 import DashboardMerchantShopView from './components/DashboardMerchant/ShopView.vue'
 import DashboardMerchantProductsView from './components/DashboardMerchant/ProductsView.vue'
+import DashboardMerchantOrdersView from './components/DashboardMerchant/OrdersView.vue'
 
 
 export const routes = [
@@ -39,12 +40,13 @@ export const routes = [
   { path: '/Products', component: ProductsView },
   { path: '/Contact', component: ContactView },
   { path : '/Cart', component: CartView },
-  { path : '/Order/:id', component: OrderView },
+  { path : '/Order', component: OrderView },
   { path : '/ForumSubject', component: ForumSubjectView },
   { path : '/ForumSection', component: ForumSectionView },
   // Dashboard Merchant Routes
   { path: '/Dashboard/:id/Shop', component: DashboardMerchantShopView },
   { path: '/Dashboard/:id/Products', component: DashboardMerchantProductsView },
+  { path: '/Dashboard/:id/Orders', component: DashboardMerchantOrdersView },
   { path: '/Dashboard', component: DashboardMerchantView },
 
 ]

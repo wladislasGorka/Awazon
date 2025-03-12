@@ -5,7 +5,7 @@
           <RouterLink to="/Forum" v-if="isLoggedIn" class="subnav-btn">Forum</RouterLink>
           <RouterLink to="/Shops" class="subnav-btn">Commerces</RouterLink>
           <RouterLink to="/Products" class="subnav-btn">Produits</RouterLink>
-          <RouterLink to="/Dashboard" v-if="isLoggedIn && this.$cookies.get('user').roles['ROLE_MERCHANT']" class="subnav-btn">Dashboard</RouterLink>
+          <RouterLink to="/Dashboard" v-if="isLoggedIn && this.$cookies.get('user').roles[1]==='ROLE_MERCHANT'" class="subnav-btn">Dashboard</RouterLink>
           <RouterLink to="/Contact" class="subnav-btn">Contact</RouterLink>
           
           <v-spacer></v-spacer>

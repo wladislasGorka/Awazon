@@ -16,6 +16,18 @@ class OrderShopRepository extends ServiceEntityRepository
         parent::__construct($registry, OrderShop::class);
     }
 
+    public function findOneOrderShop($orderId, $userId)
+    {
+        $query = $this->createQueryBuilder('orderShop')
+            ->join('App\Entity\Shop', 'shop', 'WITH', 'shop.id = orderShop.shop')
+            ->andWhere('shop.merchantId = :merchantId')
+            ->andWhere('orderShop.orderId = :orderId')
+            ->setParameter('merchantId', $userId)
+            ->setParameter('orderId', $orderId);
+        
+        return $query->getQuery()->getSingleResult();
+    }
+
     /* *
  * Finds and returns OrderShop entities by status.
  *
