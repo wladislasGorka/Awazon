@@ -35,11 +35,11 @@ class ShopFixtures extends Fixture implements DependentFixtureInterface
             $shop = new Shop();
             $shop->setName($faker->company);
             $shop->setLogo($logoUrl[$faker->numberBetween(0, 7)]);
-            $shop->setSiret($faker->numberBetween(10000000000000, 99999999999999));
+            $shop->setSiret((int) $faker->numberBetween(10000000000000, 99999999999999));
             $shop->setAddress($faker->address);
             $shop->setLongitude($faker->longitude);
             $shop->setLatitude($faker->latitude);
-            $shop->setPhone($faker->randomNumber(9, true));
+            $shop->setPhone($faker->phoneNumber(9, true));
             $shop->setCreationDate(new \DateTime());
             $shop->setStatus($faker->randomElement(['active', 'inactive']));
 

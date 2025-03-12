@@ -37,7 +37,7 @@
                 <v-card>
                     <v-card-title>Commandes</v-card-title>
                     <v-card-text>
-                        <v-btn>Gestion des commandes</v-btn>
+                        <RouterLink :to="`/dashboard/${userID}/orders`"><v-btn>Gestion des commandes</v-btn></RouterLink>
                     </v-card-text>
                 </v-card>
             </v-col>

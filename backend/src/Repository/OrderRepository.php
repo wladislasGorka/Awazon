@@ -16,6 +16,34 @@ class OrderRepository extends ServiceEntityRepository
         parent::__construct($registry, Order::class);
     }
 
+    public function findAllByMerchant($id)
+    {
+        $query = $this->createQueryBuilder('o')
+            ->select('o as order','orderShop.status as orderStatus')
+            ->join('App\Entity\OrderShop', 'orderShop', 'WITH', 'o.id = orderShop.orderId')
+            ->join('App\Entity\Shop', 'shop', 'WITH', 'orderShop.shop = shop.id')
+            ->andWhere('shop.merchantId = :id')
+            ->setParameter('id', $id);
+
+        return $query->getQuery()->getResult();
+    }
+
+    public function findAllProductsByMerchant($id)
+    {
+        $query = $this->createQueryBuilder('o')
+            ->select('o.id as orderId','product.id','product.name','product.description','product.price','product.stock','orderProduct.quantity','orderProduct.total_price')
+            ->join('App\Entity\OrderProduct', 'orderProduct', 'WITH', 'o.id = orderProduct.orderId')
+            ->join('App\Entity\Product', 'product', 'WITH', 'orderProduct.product = product.id')
+            ->join('App\Entity\Shop', 'shop', 'WITH', 'product.shopId = shop.id')
+            ->andWhere('shop.merchantId = :id')
+            ->setParameter('id', $id)
+            ->orderBy('o.id');
+
+        return $query->getQuery()->getResult();
+    }
+
+    
+
      /* *
  * Finds and returns all orders.
  *

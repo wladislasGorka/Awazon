@@ -4,7 +4,7 @@
       <!-- Titre Principal -->
       <v-row justify="center"  class="slider-title-row">
         <v-col cols="12" class="text-center">
-          <h1 class="slider-title">Shops</h1>
+          <h1 class="slider-title">Boutiques/Restaurants :</h1>
         </v-col>
       </v-row>
 
@@ -20,6 +20,22 @@
                 <strong>Téléphone:</strong> {{ shop.phone }}<br />
                 <strong>Type:</strong> {{ shop.type }}
               </v-card-text>
+              <v-card-actions class="card-actions">
+                <v-btn
+                  v-if="shop.type.toLowerCase() === 'restaurant'"
+                  color="success"
+                  @click="reserve(shop.id)"
+                >
+                  Réserver
+                </v-btn>
+                <v-btn
+                  v-else-if="shop.type.toLowerCase() === 'magasin'"
+                  color="primary"
+                  @click="viewProducts(shop.id)"
+                >
+                  Nos produits
+                </v-btn>
+              </v-card-actions>
             </v-card>
           </div>
         </v-carousel-item>
@@ -37,6 +53,18 @@ export default {
       required: true,
     },
   },
+  methods: {
+    reserve(shopId) {
+      //  réservation 
+      console.log(`Réservation pour le restaurant avec l'ID ${shopId}.`);
+      alert(`Vous avez choisi de réserver le restaurant avec l'ID ${shopId}.`);
+    },
+    viewProducts(shopId) {
+      // produits 
+      console.log(`Afficher les produits pour le magasin avec l'ID ${shopId}.`);
+      this.$router.push({ path: `/shop/${shopId}/products` });
+    },
+  },
 };
 </script>
 
@@ -49,7 +77,9 @@ export default {
 .slider-title {
   font-size: 3rem; /* Taille du texte */
   font-weight: bold; /* Texte gras */
-  color: #00bfff; /* Bleu clair */
+  background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+            background-clip: text;
+            color: transparent;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Légère ombre */
   margin: 0; /* Pas de marge par défaut */
   text-align: center; /* Centré horizontalement */
@@ -62,9 +92,9 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%; /* Remplit toute la hauteur de l'élément */
-  text-align: center; /* Centre le texte horizontalement */
-  background: rgba(0, 0, 0, 0.6); /* Fond sombre semi-transparent */
+  height: 100%; 
+  text-align: center; 
+  background: rgba(0, 0, 0, 0.6); 
   color: white; /* Contraste avec le texte */
   padding: 20px;
   box-sizing: border-box;

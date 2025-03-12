@@ -87,7 +87,8 @@ export default {
             });
         },
         buy() {
-            console.log('buy');
+            this.addToCart();
+            this.$router.push(`/Cart`);
         }
     },
     mounted() {

@@ -22,7 +22,7 @@ abstract class Users implements UserInterface, PasswordAuthenticatedUserInterfac
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    protected ?int $id = null;
+    protected ?int $id;
 
     #[ORM\Column(length: 50)]
     protected ?string $name = null;
@@ -36,8 +36,8 @@ abstract class Users implements UserInterface, PasswordAuthenticatedUserInterfac
     #[ORM\Column(type: 'string', length: 255)]
     protected ?string $password = null;
 
-    #[ORM\Column]
-    protected ?int $phone = null;
+    #[ORM\Column(type: 'string')]
+    protected ?string $phone = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     protected ?\DateTimeInterface $register_date = null;
@@ -54,8 +54,8 @@ abstract class Users implements UserInterface, PasswordAuthenticatedUserInterfac
     #[ORM\Column(enumType: UsersRole::class)]
     protected ?UsersRole $role = null;
 
-    #[ORM\Column(type: 'json')]
-    private array $roles = [];
+    #[ORM\Column(type: Types::TEXT, nullable: true)] // Changed to TEXT
+    private ?string $roles = null;
 
     /**
      * @var Collection<int, ForumSubject>
@@ -173,15 +173,23 @@ abstract class Users implements UserInterface, PasswordAuthenticatedUserInterfac
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+       // Optionnellement, on ajoute le rôle unique défini par `role`
+       if ($this->role !== null) {
+        return ['ROLE_USER']; // Default role
+    }
+    $roles = json_decode($this->roles, true);
+    if (!is_array($roles)) {
+        return ['ROLE_USER'];
+    }
 
-        return array_unique($roles);
+    $roles[] = 'ROLE_USER';
+
+    return array_unique($roles);
     }
 
     public function setRoles(array $roles): self
     {
-        $this->roles = $roles;
-
+        $this->roles = json_encode($roles);
         return $this;
     }
 

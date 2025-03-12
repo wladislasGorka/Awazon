@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use App\DataFixtures\ProductFixtures;
+use App\DataFixtures\ShopFixtures;
 use App\Config\ReservationStatus;
 use App\Repository\ReservationRepository;
 use Doctrine\DBAL\Types\Types;
@@ -35,10 +37,10 @@ class Reservation
     #[ORM\Column(enumType: ReservationStatus::class)]
     private ?ReservationStatus $status = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\ManyToOne(inversedBy: 'reservation')]
     private ?Member $memberId = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\ManyToOne(targetEntity: Shop::class, inversedBy: 'reservation')]    
     #[ORM\JoinColumn(nullable: false)]
     private ?Shop $shopId = null;
 
@@ -142,4 +144,5 @@ class Reservation
 
         return $this;
     }
+   
 }

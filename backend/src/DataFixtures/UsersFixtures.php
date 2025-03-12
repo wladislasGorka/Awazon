@@ -13,8 +13,10 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class UsersFixtures extends Fixture
+
+class UsersFixtures extends Fixture implements DependentFixtureInterface
 {
     private UserPasswordHasherInterface $passwordHasher;
     public const MERCHANT_REFERENCE = 'merchant-';
@@ -36,7 +38,7 @@ class UsersFixtures extends Fixture
             $member = new Member();
             $member->setName($faker->lastName);
             $member->setFirstName($faker->firstName);
-            $member->setEmail($faker->email);/** @phpstan-ignore-next-line */
+            $member->setEmail($faker->email);
             $member->setPhone($faker->randomNumber(9, true)); // Utilisation de randomNumber
             $member->setRegisterDate(new \DateTimeImmutable());
             //dump($member->getRegisterDate()); // Vérifier la valeur définie
@@ -50,7 +52,7 @@ class UsersFixtures extends Fixture
             $member->setPaypalId($faker->uuid);
  
             // Récupérer une ville aléatoire
- $cityReference = CityFixtures::CITY_REFERENCE . $faker->numberBetween(0, 3);
+ $cityReference = CityFixtures::CITY_REFERENCE . City::class;
  /** @phpstan-ignore-next-line */
  if ($this->hasReference($cityReference,City::class)) {
      $city = $this->getReference($cityReference, City::class);

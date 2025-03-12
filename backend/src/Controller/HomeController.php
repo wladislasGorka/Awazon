@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\SalesRepository;
 use App\Repository\ShopRepository;
+use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,7 +13,11 @@ use Symfony\Component\HttpFoundation\Response;
 final class HomeController extends AbstractController
 
 {
-   
+    #[Route('/', name: 'homepage', methods: ['GET'])]
+    public function homepage(): Response
+    {
+        return $this->redirect('http://localhost:8080');    
+    }
     #[Route('/sales', name: 'sales', methods: ['GET'])]
     public function index( SalesRepository $salesRepository): JsonResponse
     {
@@ -76,13 +81,13 @@ final class HomeController extends AbstractController
                     'longitude' => $shop->getLongitude(),
                     'latitude' => $shop->getLatitude(),
                     'phone' => $shop->getPhone(),
-                    'open_date' => $shop->getOpenDate()?->format('Y-m-d'), // Formate la date d'ouverture
-                    'creation_date' => $shop->getCreationDate()?->format('Y-m-d'), // Formate la date de création
+                    'open_date' => $shop->getOpenDate()?->format('Y-m-d'), 
+                    'creation_date' => $shop->getCreationDate()?->format('Y-m-d'), 
                     'status' => $shop->getStatus(),
                     'paypal_account' => $shop->getPaypalAccount(),
                     'type' => $shop->getType()?->name, // TypeShop
                     'imagesShop' => $images,
-                    'city' => $shop->getCity()?->getCityName(), // Vérifie la présence de la ville
+                    'city' => $shop->getCity()?->getCityName(), 
                 ];
             }
 
@@ -92,7 +97,41 @@ final class HomeController extends AbstractController
             return new JsonResponse(['error' => 'Une erreur interne est survenue'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
-
+    #[Route('/product', name: 'products', methods: ['GET'])]
+    public function getProducts(ProductRepository $productRepository): JsonResponse
+    {
+        try {
+            $products = $productRepository->findAll(); // Récupère tous les produits
+    
+            if (!$products) {
+                return new JsonResponse(['message' => 'Aucun produit trouvé'], Response::HTTP_NOT_FOUND);
+            }
+          
+            $data = [];
+            foreach ($products as $product) {
+                $images = [];
+                foreach ($product->getProductImage() as $image) {
+                    $images[] = $image->getName(); // Récupère les noms des images
+                }
+                
+                $data[] = [
+                    'id' => $product->getId(),
+                    'name' => $product->getName(),
+                    'description' => $product->getDescription(),
+                    'price' => $product->getPrice(),
+                    'stock' => $product->getStock(),
+                    'category' => $product->getSubCategory()?->getName(), 
+                    'images' => $image, // Images du produit!!
+                ];
+            }
+    
+            return new JsonResponse($data, Response::HTTP_OK);
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            return new JsonResponse(['error' => 'Une erreur interne est survenue'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+    
     
     }
 

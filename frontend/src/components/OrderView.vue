@@ -36,6 +36,7 @@
         shippingAddress: '',
         paymentInfo: '',
         cartId: '',
+        productsId: []
       };
     },
     methods: {
@@ -47,31 +48,33 @@
           address_bill: this.billingAddress,
           shipping_address: this.shippingAddress,
           payment_info: this.paymentInfo,
-          cartId: this.cartId, // Ajouter d'autres données de commande nécessaires
+          //cartId: this.cartId, // Ajouter d'autres données de commande nécessaires
+          userId: this.$cookies.get('user').id,
+          productsId: this.productsId,
         };
   
-        fetch('http://localhost:8000/order', {
+        fetch('http://localhost:8000/order/create', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(orderData),
         })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then(data => {
-            console.log('Order placed:', data);
-            // manage the succes of the order
-          })
-          .catch(error => {
-            console.error('Error placing order:', error);
-          });
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log('Order placed:', data);
+          // manage the succes of the order
+        })
+        .catch(error => {
+          console.error('Error placing order:', error);
+        });
       }
-    }
+    },
   };
   </script>
   
