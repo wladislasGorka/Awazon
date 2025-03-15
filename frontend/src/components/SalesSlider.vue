@@ -1,5 +1,4 @@
 <template>
-  <v-app>
     <v-container>
       <!-- Titre Principal -->
       <v-row justify="center" class="slider-title-row">
@@ -8,7 +7,7 @@
         </v-col>
       </v-row>
 
-      <v-carousel>
+      <v-carousel  height="350">
         <v-carousel-item v-for="sale in sales" :key="sale.id">
           <div class="slider-card">
             <v-card class="text-center">
@@ -38,7 +37,6 @@
         </v-carousel-item>
       </v-carousel>
     </v-container>
-  </v-app>
 </template>
 
 

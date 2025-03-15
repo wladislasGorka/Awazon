@@ -172,19 +172,20 @@ abstract class Users implements UserInterface, PasswordAuthenticatedUserInterfac
     public function getRoles(): array
     {
         $roles = $this->roles;
+        $roles = json_decode($roles);
         // guarantee every user at least has ROLE_USER
        // Optionnellement, on ajoute le rôle unique défini par `role`
-       if ($this->role !== null) {
-        return ['ROLE_USER']; // Default role
-    }
-    $roles = json_decode($this->roles, true);
-    if (!is_array($roles)) {
-        return ['ROLE_USER'];
-    }
+    //    if ($this->role !== null) {
+    //         return ['ROLE_USER']; // Default role
+    //     }
+    //     $roles = json_decode($this->roles, true);
+    //     if (!is_array($roles)) {
+    //         return ['ROLE_USER'];
+    //     }
 
-    $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_USER';
 
-    return array_unique($roles);
+        return array_unique($roles);
     }
 
     public function setRoles(array $roles): self

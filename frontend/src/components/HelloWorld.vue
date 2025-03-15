@@ -89,8 +89,8 @@ export default {
         this.fetchError = error.message;
       });
      },
-     fetchProduct() {
-    fetch('http://localhost:8000/product')
+  fetchProduct() {
+    fetch('http://localhost:8000/products')
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

@@ -52,7 +52,7 @@ COPY frontend/package.json frontend/package-lock.json ./
 
 RUN npm ci --ignore-scripts
 
-COPY frontend/ .
+COPY frontend/ ./
 
 ARG NODE_GID=1000
 RUN groupadd -g $NODE_GID node && useradd -r -u 1000 -g node node
@@ -60,7 +60,6 @@ RUN groupadd -g $NODE_GID node && useradd -r -u 1000 -g node node
 RUN chown -R node:node /var/www/frontend
 
 USER node
-RUN npm run build
 
 # Construction du backend
 FROM base AS backend
@@ -72,6 +71,8 @@ COPY backend/composer.json backend/composer.lock ./
 RUN composer install --no-dev --optimize-autoloader --ignore-platform-reqs --no-scripts --no-interaction
 
 COPY backend/ ./
+
+RUN mkdir -p /var/www/backend/public /var/www/backend/var
 
 # On change les droits sur les dossiers
 RUN chown -R www-data:www-data /var/www/backend/public /var/www/backend/var
@@ -90,7 +91,7 @@ COPY --from=frontend /var/www/frontend/build /usr/share/nginx/html
 
 COPY --from=backend /var/www/backend/public /var/www/backend/public
 
-COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 

@@ -1,5 +1,4 @@
 <template>
-  <v-app>
     <v-container>
       <!-- Titre Principal -->
       <v-row justify="center"  class="slider-title-row">
@@ -9,7 +8,7 @@
       </v-row>
 
       <!-- Carousel -->
-      <v-carousel>
+      <v-carousel height="380">
         <v-carousel-item v-for="shop in shops" :key="shop.id">
           <div class="slider-card">
             <v-card class="text-center">
@@ -41,7 +40,6 @@
         </v-carousel-item>
       </v-carousel>
     </v-container>
-  </v-app>
 </template>
 
 <script>

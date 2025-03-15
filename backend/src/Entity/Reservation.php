@@ -37,10 +37,10 @@ class Reservation
     #[ORM\Column(enumType: ReservationStatus::class)]
     private ?ReservationStatus $status = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reservation')]
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
     private ?Member $memberId = null;
 
-    #[ORM\ManyToOne(targetEntity: Shop::class, inversedBy: 'reservation')]    
+    #[ORM\ManyToOne(targetEntity: Shop::class, inversedBy: 'reservations')]    
     #[ORM\JoinColumn(nullable: false)]
     private ?Shop $shopId = null;
 

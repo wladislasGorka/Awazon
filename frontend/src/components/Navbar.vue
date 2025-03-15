@@ -2,8 +2,7 @@
   <v-app-bar app elevation="4" :color="$vuetify.theme.dark ? 'deep-purple darken-3' : 'deep-purple lighten-1'" dark>
     <v-container class="d-flex align-center">
       <RouterLink to="/" class="nav-title">
-        <v-toolbar>
-  <v-img src="/images/logoAwazon.png" height="40"/></v-toolbar>
+        <v-img src="/images/logoAwazon.png" width="200" height="100"/>
       </RouterLink>
 
       <v-spacer></v-spacer>
@@ -16,6 +15,7 @@
         placeholder="Search..."
         prepend-inner-icon="mdi-magnify"
         color="white"
+        min-width="100"
       ></v-text-field>
 
       <v-spacer></v-spacer>

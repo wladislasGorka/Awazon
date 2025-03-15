@@ -25,8 +25,6 @@ class CityFixtures extends Fixture
             $referenceName = self::CITY_REFERENCE . $i;
             $this->addReference($referenceName, $city);
 
-            dump($referenceName); // Vérifier le nom de la référence
-            dump($city); // Vérifier l'objet City créé
         }
 
         $manager->flush();

@@ -88,7 +88,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
 
             $manager->persist($product);
             $this->addReference(self::PRODUCT_REFERENCE . $i, $product);
-$i++;
+            $i++;
         }
 
         $manager->flush();

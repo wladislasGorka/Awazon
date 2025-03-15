@@ -41,7 +41,7 @@ class ProductRepository extends ServiceEntityRepository
     public function findByMerchant(int $merchantId): array
     {
         return $this->createQueryBuilder('p')
-            ->join('p.shopId', 's')
+            ->join('p.shop', 's')
             ->join('s.merchantId', 'm')
             ->andWhere('m.id = :merchantId')
             ->setParameter('merchantId', $merchantId)

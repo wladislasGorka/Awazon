@@ -37,7 +37,7 @@ class GiftCode
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'giftCode')]
     private Collection $orders;
 
-    #[ORM\ManyToOne(targetEntity: Shop::class, inversedBy: 'giftCode')]  
+    #[ORM\ManyToOne(targetEntity: Shop::class, inversedBy: 'giftCodes')]  
     #[ORM\JoinColumn(nullable: false)]
     private ?Shop $shop = null;
 
