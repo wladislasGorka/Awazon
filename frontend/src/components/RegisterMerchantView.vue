@@ -20,8 +20,9 @@
         </v-col>
       </v-row>      
       <v-btn type="submit" color="primary">Devenir Vendeur</v-btn>
+    </v-form>
     </v-container>
-  </v-form>
+  
     
   </template>
   

@@ -69,7 +69,7 @@ class CartRepository extends ServiceEntityRepository
  * @param Cart $cart The cart object.
  * @return int The total quantity of all items in the cart.
  */
-public function calcTotalQuantity(Cart $cart): int
+public function calcTotalQuantityY(Cart $cart): int
 {
     $totalQuantity = 0;
     foreach ($cart->getCarts() as $cartItem) {
