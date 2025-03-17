@@ -33,7 +33,8 @@
         "symfony/serializer": "7.2.*",
         "symfony/twig-bundle": "7.2.*",
         "symfony/validator": "7.2.*",
-        "symfony/yaml": "7.2.*"
+        "symfony/yaml": "7.2.*",
+        "web-token/jwt-bundle": "^4.0"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^4.0",

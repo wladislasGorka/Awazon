@@ -202,6 +202,9 @@
             "./config/routes/web_profiler.yaml"
         ]
     },
+    "web-token/jwt-bundle": {
+        "version": "4.0.4"
+    },
     "zenstruck/foundry": {
         "version": "2.3",
         "recipe": {

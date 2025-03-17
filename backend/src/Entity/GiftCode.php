@@ -136,12 +136,12 @@ class GiftCode
         return $this;
     }
 
-    public function getShop(): ?Shop
+    public function getShopId(): ?Shop
     {
         return $this->shop;
     }
 
-    public function setShop(?Shop $shopId): static
+    public function setShopId(?Shop $shopId): static
     {
         $this->shop = $shopId;
 

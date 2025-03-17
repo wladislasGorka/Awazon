@@ -1,79 +1,70 @@
 <template>
-    <v-container>
-      <v-row>
-        <v-col>
-          <v-card>
-            <v-card-title>{{ subject.name }}</v-card-title>
-            <v-card-text>
-              <p>Section: {{ subject.forumSection }}</p>
-              <p>Created by: {{ subject.user }}</p>
-            </v-card-text>
-          </v-card>
-        </v-col>
-        <v-col v-for="message in messages" :key="message.id">
-          <v-card>
-            <v-card-text>
-              {{ message.message }}
-              <small>{{ message.date_creation }} by {{ message.user }}</small>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        subject: {},
-        messages: [],
-      };
-    },
-    created() {
-      this.fetchSubjectAndMessages();
-    },
-    methods: {
-      fetchSubjectAndMessages() {
-        fetch(`/ForumSubject/${this.$route.params.id}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        .then(response => {
+  <v-container>
+    <v-row v-if="loading">
+      <v-col class="text-center">
+        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+      </v-col>
+    </v-row>
+    <v-row v-else-if="error">
+      <v-col class="text-center">
+        <p class="error--text">{{ error }}</p>
+      </v-col>
+    </v-row>
+    <v-row v-else>
+      <v-col v-for="subject in subjects" :key="subject.id">
+        <v-card @click="goToSubject(subject.id)">
+          <v-card-title>{{ subject.name }}</v-card-title>
+          <v-card-text>
+            <p>Créé par: {{ subject.user.email }}</p>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      subjects: [],
+      loading: true,
+      error: null,
+    };
+  },
+  created() {
+    this.fetchSubjects();
+  },
+  methods: {
+    fetchSubjects() {
+      this.loading = true;
+      this.error = null;
+      fetch(`/forum-subject?forum-section_id=${this.$route.params.id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => {
           if (!response.ok) {
-            throw new Error('Network response was not ok');
+            throw new Error('Erreur de réseau');
           }
           return response.json();
         })
-        .then(data => {
-          this.subject = data;
+        .then((data) => {
+          this.subjects = data;
         })
-        .catch(error => {
-          console.error('There was a problem with the fetch operation for subject:', error);
+        .catch((error) => {
+          console.error('Erreur lors de la récupération des sujets:', error);
+          this.error = 'Impossible de charger les sujets.';
+        })
+        .finally(() => {
+          this.loading = false;
         });
-  
-        fetch(`/message?subject_id=${this.$route.params.id}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then(data => {
-          this.messages = data;
-        })
-        .catch(error => {
-          console.error('There was a problem with the fetch operation for messages:', error);
-        });
-      },
     },
-  };
-  </script>
-  
+    goToSubject(id) {
+      this.$router.push(`/forum-message/${id}`);
+    },
+  },
+};
+</script>

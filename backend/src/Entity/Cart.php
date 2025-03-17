@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Metadata\ApiResource;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ApiResource()]

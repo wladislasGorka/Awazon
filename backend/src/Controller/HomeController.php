@@ -17,7 +17,8 @@ final class HomeController extends AbstractController
     public function index( SalesRepository $salesRepository): JsonResponse
     {
         try {
-            $sales = $salesRepository->findAll(); // Récupère toutes les promotions
+            $sales = $salesRepository->findAll();
+           // Récupère toutes les promotions
             
             if (!$sales) {
                 return new JsonResponse(['message' => 'Aucune promotion trouvée'], Response::HTTP_NOT_FOUND);

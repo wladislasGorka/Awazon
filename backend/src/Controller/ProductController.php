@@ -29,7 +29,7 @@ class ProductController extends AbstractController
         $product->setName($data['name']);
         $product->setPrice($data['price']);
         $product->setDescription($data['description']);
-        $product->setShop($shop);
+        $product->setShopid($shop);
         $product->setStock('En stock');
         // on donne une sous-categorie en fonction du nom 
         $cats = $entityManager->getRepository(SubCategory::class)->findBy(['name' => $data['subCategory']]);
@@ -91,7 +91,7 @@ class ProductController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $product = $productRepository->find($data['id']);
+        $product = $productRepository->find($data['Id']);
         $product->setName($data['name']);
         $product->setPrice(floatval($data['price']));
         $product->setDescription($data['description']);

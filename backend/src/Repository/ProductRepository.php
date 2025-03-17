@@ -21,7 +21,7 @@ class ProductRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->join('p.subCategory', 'sub')
-            ->join('sub.category', 'c');
+            ->join('subCategory', 'c');
 
         foreach ($filters as $field => $value) {
             if($field === 'category'){
@@ -167,17 +167,7 @@ public function findByValue(string $value): array
         ->getResult();
 }
 
-/* *
- * Finds all products.
- *
- * @return Product[] An array of all products.
- */
-public function findAll(): array
-{
-    return $this->createQueryBuilder('p')
-        ->getQuery()
-        ->getResult();
-}
+
 
 /* *
  * Adds an option to a product.

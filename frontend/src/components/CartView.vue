@@ -65,7 +65,7 @@ export default {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-        },
+        }
       })
         .then(response => {
           if (!response.ok) {
@@ -86,7 +86,7 @@ export default {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-        },
+        }
       })
         .then(response => {
           if (!response.ok) {

@@ -62,14 +62,14 @@ export default {
             fetch('http://localhost:8000/cart', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
-                   
+                    'Content-Type': 'application/json',
+                    //'Authorization': 'Bearer ' + this.$cookies.get('token'),
                 },
+            
                 body: JSON.stringify({
-                    productId: this.product.id,
+                    productId: this.id,
                     memberId: this.$cookies.get('user').id,
                     quantity: 1,
-                    addTime: new Date().toISOString(),
                     price: this.product.price
                 })
             })
@@ -95,8 +95,9 @@ export default {
         fetch('http://localhost:8000/products/' + this.$route.params.id, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             }
+           
         })
         .then(response => {
             if (!response.ok) {

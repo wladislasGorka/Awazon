@@ -86,16 +86,5 @@ class SalesRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    /**
-     * Récupère toutes les promotions.
-     *
-     * @return Sales[]
-     */
-    public function findAll(): array
-    {
-        return $this->createQueryBuilder('s')
-            ->orderBy('s.id', 'ASC')
-            ->getQuery()
-            ->getResult();
-    }
+   
 }

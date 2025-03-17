@@ -125,8 +125,8 @@ export default {
   font-size: 4rem; /* Texte grand et visible */
   font-weight: bold; /* Texte gras */
   text-align: center; /* Centré horizontalement */
-  background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-            background-clip: text;
+  background-image: linear-gradient(to right, violet, indigo, blue);           
+   background-clip: text;
             color: transparent;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Ombre subtile pour du relief */
   letter-spacing: 1px; /* Espacement des lettres */

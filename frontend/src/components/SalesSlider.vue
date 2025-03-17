@@ -88,8 +88,8 @@ export default {
 .slider-title {
   font-size: 3rem; /* Taille du texte */
   font-weight: bold; /* Texte gras */
-  background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-            background-clip: text;
+  background-image: linear-gradient(to right, violet, indigo, blue);            
+  background-clip: text;
             color: transparent;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Légère ombre */
   margin: 0; /* Pas de marge par défaut */
