@@ -21,7 +21,7 @@ class ProductRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('p')
             ->join('p.subCategory', 'sub')
-            ->join('sub.category', 'c');
+            ->join('subCategory', 'c');
 
         foreach ($filters as $field => $value) {
             if($field === 'category'){
@@ -41,7 +41,7 @@ class ProductRepository extends ServiceEntityRepository
     public function findByMerchant(int $merchantId): array
     {
         return $this->createQueryBuilder('p')
-            ->join('p.shopId', 's')
+            ->join('p.shop', 's')
             ->join('s.merchantId', 'm')
             ->andWhere('m.id = :merchantId')
             ->setParameter('merchantId', $merchantId)
@@ -167,17 +167,7 @@ public function findByValue(string $value): array
         ->getResult();
 }
 
-/* *
- * Finds all products.
- *
- * @return Product[] An array of all products.
- */
-public function findAll(): array
-{
-    return $this->createQueryBuilder('p')
-        ->getQuery()
-        ->getResult();
-}
+
 
 /* *
  * Adds an option to a product.

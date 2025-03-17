@@ -3,7 +3,7 @@
     <v-container class="d-flex align-center">
       <RouterLink to="/" class="nav-title">
         <v-toolbar>
-  <v-img src="/images/logoAwazon.png" height="40"/></v-toolbar>
+  <v-img src="/images/logoAwazon.png" /></v-toolbar>
       </RouterLink>
 
       <v-spacer></v-spacer>

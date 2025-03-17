@@ -18,7 +18,8 @@
           <v-text-field v-model="addressShop" label="Adresse de la boutique" type="text" required class="mb-4"></v-text-field>
           <v-text-field v-model="siret" label="Siret" type="number" required class="mb-4"></v-text-field>
         </v-col>
-      </v-row>      
+      </v-row>  
+      
       <v-btn type="submit" color="primary">Devenir Vendeur</v-btn>
     </v-form>
     </v-container>

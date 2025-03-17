@@ -54,7 +54,7 @@ export default {
   padding: 0.5rem 1rem;
   border-radius: 8px;
   background: linear-gradient(45deg, #fcdbb5, #efa4ef);
-  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 

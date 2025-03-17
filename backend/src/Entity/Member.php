@@ -37,7 +37,7 @@ class Member extends Users
     /**
      * @var Collection<int, Cart>
      */
-    #[ORM\OneToMany(targetEntity: Cart::class, mappedBy: 'memberId', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Cart::class, mappedBy: 'member', orphanRemoval: true)]
     private Collection $carts;
 
     #[ORM\OneToOne(mappedBy: 'member', cascade: ['persist', 'remove'])]
