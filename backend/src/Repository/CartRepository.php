@@ -44,25 +44,7 @@ class CartRepository extends ServiceEntityRepository
     /**
      * Calculer la quantité totale d'articles dans un panier.
      */
-    public function calcTotalQuantity(Cart $cart): int
-    {
-        return $cart->getQuantity();
-    }
-
-    /**
-     * Calculer le prix total pour un produit spécifique dans un panier.
-     */
-    public function calcPriceByIdProduct(Cart $cart, int $productId): float
-{
-    $totalPrice = 0.0;
-    foreach ($cart->getCarts() as $cartItem) {
-        if ($cartItem->getProduct()->getId() === $productId) {
-            $totalPrice += $cartItem->getProduct()->getPrice() * $cartItem->getQuantity();
-        }
-    }
-    return $totalPrice;
-}
-
+    
 /* *
  * Calculates the total quantity of all items in the cart.
  *
@@ -71,19 +53,17 @@ class CartRepository extends ServiceEntityRepository
  */
 public function calcTotalQuantity(Cart $cart): int
 {
-    $totalQuantity = 0;
-    foreach ($cart->getCarts() as $cartItem) {
-        $totalQuantity += $cartItem->getQuantity();
-    }
-    return $totalQuantity;
+    // Puisque chaque instance de Cart représente un seul produit,
+    // renvoyez simplement la quantité associée.
+    return $cart->getQuantity();
 }
 
 public function findByProduct($memberId): array
 {
         $query = $this->createQueryBuilder('c')
             ->select('c', 'p.price', 'p.name')
-            ->innerJoin('c.productId', 'p')
-            ->andWhere('c.memberId = :val')
+            ->innerJoin('c.product', 'p')
+            ->andWhere('c.member = :val')
             ->setParameter('val', $memberId)
             ->getQuery();
         return $query->getResult();
@@ -93,8 +73,8 @@ public function findByProductsId($userId, Array $productsId)
 {
     $qb = $this->createQueryBuilder('c');
 
-    $qb->andWhere('c.memberId = :userId')
-        ->setParameter('userId', $userId);
+    $qb->andWhere('c.member = :userId')
+        ->setParameter('user', $userId);
 
     foreach ($productsId as $id) {
         $qb->orWhere('c.productId = :id')

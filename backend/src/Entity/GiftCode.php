@@ -37,7 +37,7 @@ class GiftCode
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'giftCode')]
     private Collection $orders;
 
-    #[ORM\ManyToOne(targetEntity: Shop::class, inversedBy: 'giftCode')]  
+    #[ORM\ManyToOne(targetEntity: Shop::class, inversedBy: 'giftCodes')]  
     #[ORM\JoinColumn(nullable: false)]
     private ?Shop $shop = null;
 
@@ -136,12 +136,12 @@ class GiftCode
         return $this;
     }
 
-    public function getShop(): ?Shop
+    public function getShopId(): ?Shop
     {
         return $this->shop;
     }
 
-    public function setShop(?Shop $shopId): static
+    public function setShopId(?Shop $shopId): static
     {
         $this->shop = $shopId;
 

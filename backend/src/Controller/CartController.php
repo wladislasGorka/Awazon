@@ -41,9 +41,8 @@ final class CartController extends AbstractController
 
         $cart = new Cart();
         $cart->setQuantity($data['quantity']);
-        $cart->setAddTime(new \DateTime());
-        $cart->setProductId($product);
-        $cart->setMemberId($member);
+        $cart->setProduct($product);
+        $cart->setMember($member);
 
         $em->persist($cart);
         $em->flush();

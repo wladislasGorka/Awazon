@@ -82,7 +82,7 @@ class Shop
     /**
      * @var Collection<int, GiftCode>
      */
-    #[ORM\OneToMany(targetEntity: GiftCode::class, mappedBy: 'shopId')]
+    #[ORM\OneToMany(targetEntity: GiftCode::class, mappedBy: 'shop')]
     private Collection $giftCodes;
 
     /**
@@ -98,7 +98,7 @@ class Shop
     /**
      * @var Collection<int, Product>
      */
-    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'shopId', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'shop', orphanRemoval: true)]
     private Collection $products;
 
     /**

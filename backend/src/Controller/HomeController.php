@@ -13,16 +13,13 @@ use Symfony\Component\HttpFoundation\Response;
 final class HomeController extends AbstractController
 
 {
-    #[Route('/', name: 'homepage', methods: ['GET'])]
-    public function homepage(): Response
-    {
-        return $this->redirect('http://localhost:8080');    
-    }
+   
     #[Route('/sales', name: 'sales', methods: ['GET'])]
     public function index( SalesRepository $salesRepository): JsonResponse
     {
         try {
-            $sales = $salesRepository->findAll(); // Récupère toutes les promotions
+            $sales = $salesRepository->findAll();
+           // Récupère toutes les promotions
             
             if (!$sales) {
                 return new JsonResponse(['message' => 'Aucune promotion trouvée'], Response::HTTP_NOT_FOUND);
