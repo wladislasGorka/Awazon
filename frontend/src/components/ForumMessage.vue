@@ -19,12 +19,9 @@
 </template>
 
 <script>
-import ForumMessage from './ForumMessage.vue';
+
 
 export default {
-  components: {
-    ForumMessage,
-  },
   data() {
     return {
       forumMessage: null,

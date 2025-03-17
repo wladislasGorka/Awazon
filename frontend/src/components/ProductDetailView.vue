@@ -67,7 +67,7 @@ export default {
                 },
             
                 body: JSON.stringify({
-                    productId: this.id,
+                    productId: this.product.id,
                     memberId: this.$cookies.get('user').id,
                     quantity: 1,
                     price: this.product.price
