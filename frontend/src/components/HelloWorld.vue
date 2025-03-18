@@ -47,13 +47,12 @@ export default {
       currentIndex: 0
     };
   },
-  mounted() {
-  this.fetchSales();
-  this.fetchShop();
-  this.fetchProduct();
-},
-
   methods: {
+    startWordRotation() {
+      setInterval(() => {
+        this.currentIndex = (this.currentIndex + 1) % this.words.length;
+      }, 2000);
+    },
   
   fetchSales() {
     fetch('http://localhost:8000/sales')
@@ -89,7 +88,7 @@ export default {
         console.error('Erreur lors de la récupération des magasins:', error);
         this.fetchError = error.message;
       });
-     },
+},
   fetchProduct() {
     fetch('http://localhost:8000/products')
       .then(response => {
@@ -107,57 +106,24 @@ export default {
         console.error('Erreur lors de la récupération des produits:', error);
         this.fetchError = error.message;
       });
+},
+
+},
+      computed: {
+        currentWord() {
+          return this.words[this.currentIndex];
+        }
+      },
+      mounted() {
+        this.fetchSales();
+        this.fetchShop();
+        this.fetchProduct();
+
+        // Change word every 2 seconds
+        this.startWordRotation();
+      },
+
 }
-
- 
-  computed: {
-    currentWord() {
-      return this.words[this.currentIndex];
-    }
-  },
-  mounted() {
-    this.fetchSales();
-    this.fetchShop();
-    this.fetchProduct();
-
-    // Change word every 2 seconds
-    this.startWordRotation();
-  },
-  methods: {
-    fetchSales() {
-      fetch('http://localhost:8000/sales')
-        .then(response => {
-          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-          return response.json();
-        })
-        .then(data => this.sales = data)
-        .catch(error => this.fetchError = error.message);
-    },
-    fetchShop() {
-      fetch('http://localhost:8000/shop')
-        .then(response => {
-          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-          return response.json();
-        })
-        .then(data => this.shop = data)
-        .catch(error => this.fetchError = error.message);
-    },
-    fetchProduct() {
-      fetch('http://localhost:8000/product')
-        .then(response => {
-          if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-          return response.json();
-        })
-        .then(data => this.products = data)
-        .catch(error => this.fetchError = error.message);
-    },
-    startWordRotation() {
-      setInterval(() => {
-        this.currentIndex = (this.currentIndex + 1) % this.words.length;
-      }, 2000);
-    }
-  }
-};
 </script>
 
 <style scoped>
