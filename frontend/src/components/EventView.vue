@@ -6,7 +6,7 @@
       </v-col>
 
       <v-col cols="12">
-        <v-btn color="purple" dark @click="showForm = true" class="animated-btn" v-if="isLoggedIn && this.$cookies.get('user').roles['ROLE_MERCHANT']">
+        <v-btn color="purple" dark @click="showForm = true" class="animated-btn" v-if="isLoggedIn && this.$cookies.get('user').roles[1]==='ROLE_MERCHANT'">
           Créer un événement
         </v-btn>
       </v-col>

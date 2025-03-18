@@ -34,7 +34,7 @@ class OrderRepository extends ServiceEntityRepository
             ->select('o.id as orderId','product.id','product.name','product.description','product.price','product.stock','orderProduct.quantity','orderProduct.total_price')
             ->join('App\Entity\OrderProduct', 'orderProduct', 'WITH', 'o.id = orderProduct.orderId')
             ->join('App\Entity\Product', 'product', 'WITH', 'orderProduct.product = product.id')
-            ->join('App\Entity\Shop', 'shop', 'WITH', 'product.shopId = shop.id')
+            ->join('App\Entity\Shop', 'shop', 'WITH', 'product.shop = shop.id')
             ->andWhere('shop.merchantId = :id')
             ->setParameter('id', $id)
             ->orderBy('o.id');

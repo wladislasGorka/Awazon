@@ -10,7 +10,7 @@
           
           <v-spacer></v-spacer>
           
-          <RouterLink to="/Cart" v-if="isLoggedIn" class="subnav-btn">Panier</RouterLink>
+          <RouterLink to="/Cart" v-if="isLoggedIn" class="cart-btn">🛒</RouterLink>
           <v-btn class="subnav-btn">Langue</v-btn>
           <v-switch class="theme-toggle" @click="toggleTheme"></v-switch>
       </v-container>
@@ -87,5 +87,12 @@ export default {
 
 .theme-toggle:hover {
   transform: rotate(10deg);
+}
+
+.cart-btn {
+  font-size: 1.5rem;
+  margin-left: 1rem;
+  transition: transform 0.3s ease-in-out;
+
 }
 </style>

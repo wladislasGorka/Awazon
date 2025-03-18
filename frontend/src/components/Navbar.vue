@@ -2,8 +2,8 @@
   <v-app-bar app elevation="4" :color="$vuetify.theme.dark ? 'deep-purple darken-3' : 'deep-purple lighten-1'" dark>
     <v-container class="d-flex align-center">
       <RouterLink to="/" class="nav-title">
-        <v-toolbar>
-  <v-img src="/images/logoAwazon.png" /></v-toolbar>
+       
+  <v-img src="/images/logoAwazon.png" width="200" height="100" />
       </RouterLink>
 
       <v-spacer></v-spacer>
