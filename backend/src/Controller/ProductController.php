@@ -91,7 +91,7 @@ class ProductController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        $product = $productRepository->find($data['Id']);
+        $product = $productRepository->find($data['id']);
         $product->setName($data['name']);
         $product->setPrice(floatval($data['price']));
         $product->setDescription($data['description']);

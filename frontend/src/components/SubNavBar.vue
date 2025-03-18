@@ -3,8 +3,8 @@
       <v-container class="d-flex align-center">
           <RouterLink to="/Events" class="subnav-btn">Événements</RouterLink>
           <RouterLink to="/Forum" v-if="isLoggedIn" class="subnav-btn">Forum</RouterLink>
-          <RouterLink to="/Shops" class="subnav-btn">Commerces</RouterLink>
-          <RouterLink to="/Products" class="subnav-btn">Produits</RouterLink>
+          <RouterLink to="/Shops" v-if="!isLoggedIn || this.$cookies.get('user').roles[1]==='ROLE_MEMBER'" class="subnav-btn">Commerces</RouterLink>
+          <RouterLink to="/Products" v-if="!isLoggedIn || this.$cookies.get('user').roles[1]==='ROLE_MEMBER'" class="subnav-btn">Produits</RouterLink>
           <RouterLink to="/Dashboard" v-if="isLoggedIn && this.$cookies.get('user').roles[1]==='ROLE_MERCHANT'" class="subnav-btn">Dashboard</RouterLink>
           <RouterLink to="/Contact" class="subnav-btn">Contact</RouterLink>
           
