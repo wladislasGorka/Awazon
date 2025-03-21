@@ -211,4 +211,16 @@ public function addOption(int $productId, string $option): void
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function searchProducts(string $query): array
+{
+
+    $qb = $this->createQueryBuilder('p');
+
+    $qb->where('p.name LIKE :query OR p.description LIKE :query')
+       ->setParameter('query', '%'.$query.'%')
+       ->orderBy('p.name', 'ASC');
+
+    return $qb->getQuery()->getResult();
+}
 }

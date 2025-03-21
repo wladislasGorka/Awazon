@@ -81,7 +81,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
 
             $shopReference = ShopFixtures::SHOP_REFERENCE . $productData[self::SHOP_REFERENCE_KEY];
             if ($this->hasReference($shopReference, Shop::class)) {
-                $product->setShop($this->getReference($shopReference, Shop::class));
+                $product->setShopId($this->getReference($shopReference, Shop::class));
             } else {
                 error_log("Shop reference not found: " . $shopReference);
             }

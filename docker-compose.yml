@@ -4,7 +4,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: backend
-    container_name: ocishop-backend
+    container_name: awazon-backend
     restart: unless-stopped
     ports:
       - "8000:8000"
@@ -13,20 +13,20 @@ services:
     environment:
       APP_ENV: dev
       APP_DEBUG: '0'
-      DATABASE_URL: "mysql://symfony_user:symfony_password@symfony-database:3306/symfony_db"
+      DATABASE_URL: "mysql://root:password@symfony-database:3306/testProjectWorplace"
     depends_on:
       symfony-database:
         condition: service_healthy
     networks:
       - symfony_network
-    command: ["symfony", "serve", "--dir=/var/www/backend", "--port=8000", "--allow-all-ip"]
+    command: ["/usr/local/bin/symfony", "serve", "--dir=/var/www/backend", "--port=8000", "--allow-all-ip"]
 
   frontend:
     build:
       context: .
       dockerfile: Dockerfile
-      target: frontend
-    container_name: ocishop-frontend
+      target: frontend-build
+    container_name: awazon-frontend
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -45,9 +45,9 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: secure_root_password
-      MYSQL_USER: ${MYSQL_USER:-symfony_user}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-symfony_password}
-      MYSQL_DATABASE: ${MYSQL_DATABASE:-symfony_db}
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-testProjectWorkplace}
     ports:
       - "3306:3306"
     volumes:
@@ -63,7 +63,7 @@ services:
 
   webdb:
     image: webdb/app
-    container_name: ocishop-db-manager
+    container_name: awazon-db-manager
     restart: always
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -73,8 +73,7 @@ services:
       - DB_PASSWORD=symfony_password
       - DB_NAME=symfony_db
     volumes:
-      - "$HOME/.ssh:/root/.ssh:ro"
-      - "$HOME/.webdb:/usr/src/app/static/version"
+      - db_data:/var/lib/mysql
     ports:
       - "127.0.0.1:22071:22071"
     networks:
@@ -102,6 +101,6 @@ volumes:
 
 networks:
   symfony_network:
-    name: ocishop_symfony_network
+    name: awazon_symfony_network
     driver: bridge
 

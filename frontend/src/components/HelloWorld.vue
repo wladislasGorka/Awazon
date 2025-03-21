@@ -2,16 +2,29 @@
   <v-app>
     <v-container>
       <v-row justify="center" class="mt-5">
+      </v-row>
+
+      <v-row justify="center" class="mt-5">
         <v-col cols="12" md="8">
+          <link
+            rel="stylesheet"
+            href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+            integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+            crossorigin=""
+          />
           <h1 class="beautiful-title">
-          Awazon
+            Awazon
           </h1>
 
           <h2 class="animated-text">
             <span :key="currentWord" class="fade">{{ currentWord }}</span>
           </h2>
-<v-divider class="mb-5"></v-divider>
+          <v-divider class="mb-5"></v-divider>
+          <v-col cols="12" md="10">
+          <div id="map" class="leaflet-map"></div>
         </v-col>
+        </v-col>
+        
       </v-row>
 
       <SalesSlider :sales="sales" />
@@ -26,16 +39,19 @@
 </template>
 
 <script>
+import L from 'leaflet';
 import SalesSlider from './SalesSlider.vue';
 import ShopSlider from './ShopSlider.vue';
 import ProductSlider from './ProductSlider.vue';
+
+import 'leaflet/dist/leaflet.js';
 
 export default {
   name: 'HelloWorld',
   components: {
     SalesSlider,
     ShopSlider,
-    ProductSlider
+    ProductSlider,
   },
   data() {
     return {
@@ -43,87 +59,50 @@ export default {
       shop: [],
       products: [],
       fetchError: null,
-      words: ['Acheter', 'Vendez', 'Agissez'], // Your rotating words
-      currentIndex: 0
+      words: ['Acheter', 'Vendez', 'Agissez'], 
+      currentIndex: 0,
+      map: null, 
     };
   },
   methods: {
+    
     startWordRotation() {
       setInterval(() => {
         this.currentIndex = (this.currentIndex + 1) % this.words.length;
       }, 2000);
     },
-  
-  fetchSales() {
-    fetch('http://localhost:8000/sales')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        this.sales = data;
-        console.log('Sales data fetched successfully:', this.sales);
-      })
-      .catch(error => {
-        console.error('Erreur lors de la récupération des ventes:', error);
-        this.fetchError = error.message;
-      });
+
+    
+    initMap() {
+      
+      this.map = L.map('map').setView([43.3443, 3.2158], 13);
+
+      
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      }).addTo(this.map);
+
+      
+      L.marker([43.3443, 3.2158])
+        .addTo(this.map)
+        .bindPopup(`<b>Béziers</b><br>La magie d'Awazon commence ici.`)
+        .openPopup();
+    },
   },
+  computed: {
+    currentWord() {
+      return this.words[this.currentIndex];
+    },
+  },
+  mounted() {
+    
+    this.initMap();
 
-  fetchShop() {
-    fetch('http://localhost:8000/shop')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        this.shop = data;
-        console.log('Shop data fetched successfully:', this.shop);
-      })
-      .catch(error => {
-        console.error('Erreur lors de la récupération des magasins:', error);
-        this.fetchError = error.message;
-      });
-},
-  fetchProduct() {
-    fetch('http://localhost:8000/products')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(data => {
-        this.products = data;
-        console.log('Product data fetched successfully:', this.products);
-        console.log(data);
-      })
-      .catch(error => {
-        console.error('Erreur lors de la récupération des produits:', error);
-        this.fetchError = error.message;
-      });
-},
-
-},
-      computed: {
-        currentWord() {
-          return this.words[this.currentIndex];
-        }
-      },
-      mounted() {
-        this.fetchSales();
-        this.fetchShop();
-        this.fetchProduct();
-
-        // Change word every 2 seconds
-        this.startWordRotation();
-      },
-
-}
+    
+    this.startWordRotation();
+  },
+};
 </script>
 
 <style scoped>
@@ -163,22 +142,30 @@ export default {
 }
 
 @keyframes fadeInOut {
-  0% { opacity: 0; transform: translateY(10px); }
-  10% { opacity: 1; transform: translateY(0px); }
-  90% { opacity: 1; transform: translateY(0px); }
-  100% { opacity: 0; transform: translateY(-10px); }
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+  90% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
 }
 
-.icons-divider {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin: 20px 0;
-}
-
-.v-divider {
-  margin-top: 30%;
+.leaflet-map {
+  height: 400px;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 20px;
+  margin-left: 10%;
 }
 </style>

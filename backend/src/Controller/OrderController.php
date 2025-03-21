@@ -70,7 +70,7 @@ class OrderController extends AbstractController
             $em->persist($orderProduct);
 
             if(!in_array($cart->getProduct()->getShop(),$distinctShopInCarts)){
-                array_push($distinctShopInCarts,$cart->getProduct()->getShop());
+                array_push($distinctShopInCarts,$cart->getProduct()->getShopId());
             }            
 
             //On enlève le produit du panier
@@ -80,7 +80,7 @@ class OrderController extends AbstractController
         foreach($distinctShopInCarts as $shop){
             $orderShop = new OrderShop();
             $orderShop->setStatus(OrderShopStatus::Pending);
-            $orderShop->setShop($shop);
+            $orderShop->setShopId($shop);
             $orderShop->setOrderId($order);
             $em->persist($orderShop);
         }

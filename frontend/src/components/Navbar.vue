@@ -7,16 +7,23 @@
 
       <v-spacer></v-spacer>
 
-      <v-text-field
-        class="search-bar"
-        dense
-        outlined
+     
+      <v-autocomplete
+        v-model="searchQuery"
+        :items="searchResults"
+        label="Rechercher un produit..."
+        item-text="name"
+        item-value="id"
+        return-object
+        variant="outlined"
         hide-details
-        placeholder="Search..."
-        prepend-inner-icon="mdi-magnify"
+        dense
         color="white"
-        min-width="100"
-      ></v-text-field>
+        min-width="300"
+        @input="searchItems"
+        prepend-inner-icon="mdi-magnify"
+        placeholder="Search..."
+      ></v-autocomplete>
 
       <v-spacer></v-spacer>
 
@@ -34,6 +41,27 @@
       </div>
     </v-container>
   </v-app-bar>
+
+  <v-menu v-if="searchResults.length > 0" bottom left>
+    <v-list>
+      <v-list-item-group v-if="searchResults.length">
+        <v-list-item
+          v-for="result in searchResults"
+          :key="result.id"
+          @click="goToResult(result)"
+        >
+          <v-list-item-content>
+            <v-list-item-title>{{ result.name }}</v-list-item-title>
+            <v-list-item-subtitle>{{ result.type }}</v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list-item-group>
+    </v-list>
+  </v-menu>
+
+  <v-snackbar v-model="errorMessageVisible" color="red" timeout="3000">
+    {{ errorMessage }}
+  </v-snackbar>
 </template>
 
 <script>
@@ -43,6 +71,15 @@ import { mapGetters, mapActions } from 'vuex';
 export default {
   name: 'Nav-bar',
   components: { RouterLink },
+  data() {
+    return {
+      searchQuery: null,
+      searchResults: [],
+      debounceTimeout: null,
+      errorMessageVisible: false,
+      errorMessage: '',
+    };
+  },
   computed: {
     ...mapGetters(['isLoggedIn']),
   },
@@ -53,8 +90,43 @@ export default {
       this.toggleLogin();
       this.$router.push('/');
     },
+
+    searchProducts() {
+      if (this.debounceTimeout) {
+        clearTimeout(this.debounceTimeout);
+      }
+
+      this.debounceTimeout = setTimeout(() => {
+        if (!this.searchQuery || this.searchQuery.trim() === '') {
+          this.searchResults = [];
+          return;
+        }
+
+        fetch(`http://localhost:8000/products/search?q=${this.searchQuery}`)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.length === 0) {
+              this.errorMessage = 'No results found';
+              this.errorMessageVisible = true;
+              this.searchResults = [];
+            } else {
+              this.searchResults = data;
+            }
+          })
+          .catch((error) => {
+            console.error('Error fetching search results:', error);
+            this.errorMessage = 'An error occurred while fetching results';
+            this.errorMessageVisible = true;
+          });
+      }, 500);
+    },
+    goToResult(result) {
+      if (result.type === 'product') {
+        this.$router.push(`/product/${result.id}`);
+      } 
+    },
     ...mapActions(['toggleLogin']),
-  }
+  },
 };
 </script>
 
@@ -71,13 +143,6 @@ export default {
   opacity: 0.8;
 }
 
-.search-bar {
-  max-width: 300px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  padding: 4px;
-}
-
 .nav-links {
   display: flex;
   align-items: center;
@@ -91,30 +156,6 @@ export default {
   padding: 0.5rem 1rem;
   border-radius: 8px;
   transition: color 0.3s, transform 0.3s, background 0.3s, text-decoration 0.3s;
-  position: relative;
-}
-
-.nav-btn .v-btn {
-  position: relative;
-}
-
-.nav-btn .v-btn::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 0;
-  height: 2px;
-  background: linear-gradient(45deg, #ff5733, #c70039);
-  transition: width 0.3s;
-}
-
-.nav-btn:hover .v-btn {
-  color: #ffcc00;
-}
-
-.nav-btn:hover .v-btn::after {
-  width: 100%;
 }
 
 .logout-btn {
@@ -125,5 +166,17 @@ export default {
 
 .logout-btn:hover {
   box-shadow: 0 4px 15px rgba(255, 87, 51, 0.5);
+}
+
+@media (max-width: 600px) {
+  .v-app-bar {
+    padding: 0 16px;
+  }
+  .nav-links {
+    display: none;
+  }
+  .v-app-bar-nav-icon {
+    display: block;
+  }
 }
 </style>

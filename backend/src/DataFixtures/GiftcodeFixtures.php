@@ -30,7 +30,7 @@ class GiftcodeFixtures extends Fixture implements DependentFixtureInterface
             // Associe un shop aléatoire
             if (!empty($shops)) {
                 $shop = $shops[array_rand($shops)];
-                $giftCode->setShop($shop);
+                $giftCode->setShopId($shop);
             }
 
             $manager->persist($giftCode);

@@ -112,4 +112,25 @@ class ProductController extends AbstractController
 
         return new JsonResponse('Product deleted!', Response::HTTP_OK, [], true);
     }
+    // Rechercher des produits
+    #[Route('/products/search', name: 'app_product_search', methods: ['GET'])]
+    public function searchProducts(Request $request, ProductRepository $productRepository, SerializerInterface $serializer): Response
+    {
+        $searchQuery = $request->query->get('q');
+
+        if (!$searchQuery) {
+            return new JsonResponse('No search query provided!', Response::HTTP_BAD_REQUEST);
+        }
+
+        
+        $products = $productRepository->searchProducts($searchQuery);
+
+        if (empty($products)) {
+            return new JsonResponse('No products matching your search', Response::HTTP_NOT_FOUND);
+        }
+
+        $json = $serializer->serialize($products, 'json');
+
+        return new JsonResponse($json, Response::HTTP_OK, [], true);
+    }
 }

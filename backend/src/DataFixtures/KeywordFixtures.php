@@ -39,7 +39,7 @@ class KeywordFixtures extends Fixture implements DependentFixtureInterface
         $product = new Product();
         $product->setName($faker->company());
         $product->setPrice($faker->randomFloat(2, 10, 1000));
-        $product->setShop($shop);
+        $product->setShopId($shop);
         $product->setSubCategory($subCategory); // Associer la SubCategory au Product
         $manager->persist($product);
 
