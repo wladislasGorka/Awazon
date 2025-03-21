@@ -6,6 +6,7 @@ use App\Entity\Event;
 use App\Entity\City;
 use App\Entity\Merchant;
 use App\Entity\Shop;
+use App\Repository\EventRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,11 +19,22 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 class EventController extends AbstractController
 {
+    // Récupérer les events
+    #[Route('/events', name: 'app_event', methods: ['GET'])]
+    public function getEvents(EventRepository $eventRepository, SerializerInterface $serializer): JsonResponse
+    {
+        $events = $eventRepository->findAll();
+
+        $json = $serializer->serialize($events, 'json');
+
+        return JsonResponse::fromJsonString($json, JsonResponse::HTTP_OK);
+    }
+
     // Endpoint for creating an event
     #[Route('/events', name: 'create_event', methods: ['POST'])]
     public function createEvent(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
-        $data = $request->request->all();
+        $data = json_decode($request->getContent(), true);
         $imageFile = $request->files->get('path_image');  // Get the uploaded file
 
         // Validate input
@@ -33,9 +45,8 @@ class EventController extends AbstractController
         if (!isset($data['city_name'])) {
             return $this->json(['error' => 'Missing city_name'], Response::HTTP_BAD_REQUEST);
         }
-
         // Fetch city by name
-        $city = $entityManager->getRepository(City::class)->findOneBy(['city_name' => $data['city_name']]);
+        $city = $entityManager->getRepository(City::class)->findById($data['city_name']);
 
         if (!$city) {
             return $this->json(['error' => 'City not found'], Response::HTTP_BAD_REQUEST);
@@ -68,11 +79,14 @@ class EventController extends AbstractController
         $event->setTitle($data['title'] ?? 'Untitled Event');
         $event->setDescription($data['description'] ?? '');
         $event->setAddress($data['address'] ?? '');
-        $event->setCity($city);
+        $event->setCity($city[0]);
         $event->setDateStart($dateStart);
         $event->setDateEnd($dateEnd);
-        $event->setPathImage($imagePath);
-        $event->setShopId($data['shop_id'] ?? null);
+        $event->setPathImage("");
+
+        $merchant = $entityManager->getRepository(Merchant::class)->findOneBy(['id'=>$data['merchantId']]);
+        $shops = $merchant->getShops();
+        $event->setShop($shops[0]);
 
         // Save event in DB
         $entityManager->persist($event);
@@ -88,7 +102,7 @@ class EventController extends AbstractController
             'path_image' => $event->getPathImage(),
             'city' => $event->getCity()->getCityName(),
             'address' => $event->getAddress(),
-            'shop_id' => $event->getShopId(),
+            'shop_id' => $event->getShop(),
         ]);
     }
 

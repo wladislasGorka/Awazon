@@ -64,10 +64,10 @@ class Product
     /**
      * @var Collection<int, Cart>
      */
-    #[ORM\OneToMany(targetEntity: Cart::class, mappedBy: 'productId', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: Cart::class, mappedBy: 'product', orphanRemoval: true)]
     private Collection $carts;
 
-    #[ORM\ManyToOne(targetEntity: Shop::class, inversedBy: 'product')]    
+    #[ORM\ManyToOne(targetEntity: Shop::class, inversedBy: 'products')]    
     #[ORM\JoinColumn(nullable: false)]
     private ?Shop $shop = null;
 
@@ -83,7 +83,7 @@ class Product
     #[ORM\OneToMany(targetEntity: ReviewProduct::class, mappedBy: 'product')]
     private Collection $reviews;
 
-    #[ORM\ManyToOne(inversedBy: 'product')]
+    #[ORM\ManyToOne(inversedBy: 'products')]
     #[ORM\JoinColumn(nullable: false)]
     private ?SubCategory $subCategory = null;
     
@@ -344,12 +344,12 @@ class Product
         return $this;
     }
 
-    public function getShop(): ?Shop
+    public function getShopId(): ?Shop
     {
         return $this->shop;
     }
 
-    public function setShop(?Shop $shopId): static
+    public function setShopId(?Shop $shopId): static
     {
         $this->shop = $shopId;
 

@@ -42,7 +42,7 @@ class OrderController extends AbstractController
     public function createOrder(Request $request, EntityManagerInterface $em, CartRepository $cartRepository, OrderRepository $orderRepository): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $carts = $cartRepository->findBy(['memberId' => $data['userId']]);
+        $carts = $cartRepository->findBy(['member' => $data['userId']]);
 
         if (!$carts) {
             return new JsonResponse(['error' => 'Cart not found'], JsonResponse::HTTP_NOT_FOUND);
@@ -63,14 +63,14 @@ class OrderController extends AbstractController
         $distinctShopInCarts=[]; // Obtenir les boutiques concerné par la langue.
         foreach ($carts as $cart) {
             $orderProduct = new OrderProduct();
-            $orderProduct->setProduct($cart->getProductId());
+            $orderProduct->setProduct($cart->getProduct());
             $orderProduct->setQuantity($cart->getQuantity());
-            $orderProduct->setTotalPrice($cart->getProductId()->getPrice() * $cart->getQuantity());
+            $orderProduct->setTotalPrice($cart->getProduct()->getPrice() * $cart->getQuantity());
             $orderProduct->setOrderId($order);
             $em->persist($orderProduct);
 
-            if(!in_array($cart->getProductId()->getShopId(),$distinctShopInCarts)){
-                array_push($distinctShopInCarts,$cart->getProductId()->getShopId());
+            if(!in_array($cart->getProduct()->getShop(),$distinctShopInCarts)){
+                array_push($distinctShopInCarts,$cart->getProduct()->getShopId());
             }            
 
             //On enlève le produit du panier
@@ -80,7 +80,7 @@ class OrderController extends AbstractController
         foreach($distinctShopInCarts as $shop){
             $orderShop = new OrderShop();
             $orderShop->setStatus(OrderShopStatus::Pending);
-            $orderShop->setShop($shop);
+            $orderShop->setShopId($shop);
             $orderShop->setOrderId($order);
             $em->persist($orderShop);
         }

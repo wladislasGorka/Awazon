@@ -3,14 +3,14 @@
       <v-container class="d-flex align-center">
           <RouterLink to="/Events" class="subnav-btn">Événements</RouterLink>
           <RouterLink to="/Forum" v-if="isLoggedIn" class="subnav-btn">Forum</RouterLink>
-          <RouterLink to="/Shops" class="subnav-btn">Commerces</RouterLink>
-          <RouterLink to="/Products" class="subnav-btn">Produits</RouterLink>
+          <RouterLink to="/Shops" v-if="!isLoggedIn || this.$cookies.get('user').roles[1]==='ROLE_MEMBER'" class="subnav-btn">Commerces</RouterLink>
+          <RouterLink to="/Products" v-if="!isLoggedIn || this.$cookies.get('user').roles[1]==='ROLE_MEMBER'" class="subnav-btn">Produits</RouterLink>
           <RouterLink to="/Dashboard" v-if="isLoggedIn && this.$cookies.get('user').roles[1]==='ROLE_MERCHANT'" class="subnav-btn">Dashboard</RouterLink>
           <RouterLink to="/Contact" class="subnav-btn">Contact</RouterLink>
           
           <v-spacer></v-spacer>
           
-          <RouterLink to="/Cart" v-if="isLoggedIn" class="subnav-btn">Panier</RouterLink>
+          <RouterLink to="/Cart" v-if="isLoggedIn" class="cart-btn">🛒</RouterLink>
           <v-btn class="subnav-btn">Langue</v-btn>
           <v-switch class="theme-toggle" @click="toggleTheme"></v-switch>
       </v-container>
@@ -54,7 +54,7 @@ export default {
   padding: 0.5rem 1rem;
   border-radius: 8px;
   background: linear-gradient(45deg, #fcdbb5, #efa4ef);
-  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -87,5 +87,12 @@ export default {
 
 .theme-toggle:hover {
   transform: rotate(10deg);
+}
+
+.cart-btn {
+  font-size: 1.5rem;
+  margin-left: 1rem;
+  transition: transform 0.3s ease-in-out;
+
 }
 </style>

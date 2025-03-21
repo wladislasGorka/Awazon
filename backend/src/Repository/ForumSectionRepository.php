@@ -55,4 +55,17 @@ public function findByRole(string $role): array
     //            ->getOneOrNullResult()
     //        ;
     //    }
+    /**
+ * Trouve toutes les sections disponibles dans la base de données.
+ *
+ * @return ForumSection[] Un tableau contenant toutes les sections.
+ */
+public function findAllSections(): array
+{
+    return $this->createQueryBuilder('s')
+        ->orderBy('s.name', 'ASC') // Vous pouvez trier les sections par nom ou un autre champ
+        ->getQuery()
+        ->getResult();
+}
+
 }

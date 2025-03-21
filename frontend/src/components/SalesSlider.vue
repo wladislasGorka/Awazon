@@ -1,47 +1,42 @@
 <template>
-  <v-app>
-    <v-container>
-      <!-- Titre Principal -->
-      <v-row justify="center" class="slider-title-row">
-        <v-col cols="12" class="text-center">
-          <h1 class="slider-title">Promotions :</h1>
-        </v-col>
-      </v-row>
+  <v-container>
+    <!-- Titre Principal -->
+    <v-row justify="center" class="slider-title-row">
+      <v-col cols="12" class="text-center">
+        <h1 class="slider-title">Promotions :</h1>
+      </v-col>
+    </v-row>
 
-      <v-carousel>
-        <v-carousel-item v-for="sale in sales" :key="sale.id">
-          <div class="slider-card">
-            <v-card class="text-center">
-              <v-img
-                v-for="image in sale.salesImages"
-                :key="image"
-                :src="`/images/SalesImages/${image}`"
-                class="slider-image"
-                cover
-              ></v-img>
+    <v-carousel height="350" show-arrows="hover" cycle>
+      <v-carousel-item v-for="sale in sales" :key="sale.id">
+        <div class="slider-card">
+          <v-card class="text-center">
+            <!-- Use the first image for each sale -->
+            <v-img
+              :src="`/images/SalesImages/${sale.salesImages[0]}`"
+              class="slider-image"
+              cover
+            ></v-img>
 
-              <v-card-text class="card-content">
-                <v-card-title class="title">{{ sale.slogan }}</v-card-title>
-                <v-card-subtitle class="subtitle">{{ sale.description }}</v-card-subtitle>
-                <strong class="discount">{{ sale.pourcent }}% de réduction</strong>
-                <br />
-                Du {{ sale.date_start }} au {{ sale.date_end }}
-              </v-card-text>
+            <v-card-text class="card-content">
+              <v-card-title class="title">{{ sale.slogan }}</v-card-title>
+              <v-card-subtitle class="subtitle">{{ sale.description }}</v-card-subtitle>
+              <strong class="discount">{{ sale.pourcent }}% de réduction</strong>
+              <br />
+              Du {{ sale.date_start }} au {{ sale.date_end }}
+            </v-card-text>
 
-              <v-card-actions class="card-actions">
-                <v-btn color="primary" @click="redirectToProduct(sale.id)">
-                  En profiter
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </div>
-        </v-carousel-item>
-      </v-carousel>
-    </v-container>
-  </v-app>
+            <v-card-actions class="card-actions">
+              <v-btn color="primary" @click="redirectToProduct(sale.id)">
+                En profiter
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </div>
+      </v-carousel-item>
+    </v-carousel>
+  </v-container>
 </template>
-
-
 
 <script>
 export default {
@@ -52,10 +47,9 @@ export default {
       required: true,
     },
   },
-
   methods: {
     redirectToProduct(productId) {
-      // Redirige vers la page /Products/:id produit détail????
+      // Redirect to the product detail page
       this.$router.push({ path: `/Products/${productId}` });
     },
   },
@@ -90,8 +84,8 @@ export default {
 .slider-title {
   font-size: 3rem; /* Taille du texte */
   font-weight: bold; /* Texte gras */
-  background-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-            background-clip: text;
+  background-image: linear-gradient(to right, violet, indigo, blue);            
+  background-clip: text;
             color: transparent;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Légère ombre */
   margin: 0; /* Pas de marge par défaut */

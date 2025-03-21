@@ -6,14 +6,14 @@
       </v-col>
 
       <v-col cols="12">
-        <v-btn color="purple" dark @click="showForm = true" class="animated-btn" v-if="isLoggedIn && this.$cookies.get('user').roles['ROLE_MERCHANT']">
+        <v-btn color="purple" dark @click="showForm = true" class="animated-btn" v-if="isLoggedIn && this.$cookies.get('user').roles[1]==='ROLE_MERCHANT'">
           Créer un événement
         </v-btn>
       </v-col>
 
       <v-col cols="12" class="mt-5">
        
-        <v-btn @click="sortEvents" color="purple" dark>
+        <v-btn @click="fetchEvents()" color="purple" dark>
           Afficher les plus récents
         </v-btn>
       </v-col>
@@ -21,13 +21,12 @@
      
       <v-col cols="12" class="mt-5">
         <v-row>
-          <v-col v-for="(event, index) in sortedEvents" :key="index" cols="12" sm="6" md="4">
+          <v-col v-for="(event, index) in events" :key="index" cols="12" sm="6" md="4">
            
             <v-card class="pa-0" :style="`background-image: url(${event.path_image}); background-size: cover; background-position: center;`">
               <v-img
                 src=""
                 alt="Event Image"
-                height="200px"
                 class="event-image-overlay"
                 :style="{ backgroundImage: `url(${event.path_image})`, backgroundSize: 'cover', backgroundPosition: 'center' }"
               >
@@ -37,6 +36,15 @@
                 <v-card-actions class="pa-0">
                   <v-btn color="purple" dark @click="attendEvent(event)">Participer</v-btn>
                 </v-card-actions>
+                <v-card-text>
+                  <span>{{ event.description }}</span>
+                  <br>
+                  <span>Date début: {{ event.date_start }}</span>
+                  <br>
+                  <span>Date Fin: {{ event.date_start }}</span>
+                  <br>
+                  <span>Adresse: {{ event.address }}</span>
+                </v-card-text>
               </v-img>
             </v-card>
           </v-col>
@@ -73,6 +81,7 @@
             ></v-text-field>
 
             <v-select
+              v-model= "city_id"
               :items="city"
               item-title="city_name"
               item-value="id"
@@ -117,6 +126,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: "EventsPage",
   data() {
@@ -127,14 +138,18 @@ export default {
       city_id: null,
       date_start: "",
       date_end: "",
-      path_image: null,
+      path_image: "",
       shop_id: null,
       showForm: false,
       city: [],
       valid: false,
       events: [], 
-      sortedEvents: [] 
+      sortedEvents: [],
+      merchantId: null,
     };
+  },
+  computed: {
+      ...mapGetters(['isLoggedIn']),
   },
   created() {
     this.fetchCity();
@@ -159,7 +174,7 @@ export default {
         .then(response => response.json())
         .then(data => {
           this.events = data;
-          this.sortEvents();
+          //this.sortEvents();
         })
         .catch(error => console.error("Error fetching events:", error));
     },
@@ -177,21 +192,19 @@ export default {
 
     submitForm() {
     
-      const formData = new FormData();
-      formData.append("title", this.title);
-      formData.append("description", this.description);
-      formData.append("address", this.address);
-      formData.append("city_name", this.city_id);
-      formData.append("date_start", new Date(this.date_start).toISOString());
-      formData.append("date_end", new Date(this.date_end).toISOString());
-
-      if (this.path_image) {
-        formData.append("path_image", this.path_image);
+      const eventData = {
+        title: this.title,
+        description: this.description,
+        address: this.address,
+        city_name: this.city_id,
+        date_start: this.date_start,
+        date_end: this.date_end,
+        path_image: this.path_image,
+        merchantId: this.$cookies.get('user').id
       }
-
       fetch("http://127.0.0.1:8000/events", {
         method: 'POST',
-        body: formData
+        body: JSON.stringify(eventData)
       })
         .then(response => response.json())
         .then(data => {
@@ -225,7 +238,6 @@ export default {
 .event-image-overlay {
   position: relative;
   height: 100%;
-  filter: blur(5px);
   opacity: 0.6;
 }
 

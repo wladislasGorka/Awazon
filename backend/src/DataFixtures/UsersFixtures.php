@@ -31,7 +31,6 @@ class UsersFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create('fr_FR');
         $registerDate = new \DateTimeImmutable();
-        dump($registerDate); // Vérifier la valeur générée
 
         // Création de Membres
         for ($i = 0; $i < 5; $i++) {

@@ -43,10 +43,11 @@ const store = createStore({
 
 
 const app = createApp(App);
-app.use(vuetify)
-   .use(require('vue-cookies'))
-   .use(router)
-   .use(store)
+app .use(router)
+    .use(store)
+    .use(vuetify)
+    .use(require('vue-cookies'))
+   
 
 store.dispatch('checkLoginStatus');
 

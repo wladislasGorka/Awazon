@@ -42,68 +42,58 @@ class CartRepository extends ServiceEntityRepository
     }
 
     /**
-     * Calculer la quantité totale d'articles dans un panier.
-     */
-    public function calcTotalQuantity(Cart $cart): int
-    {
-        return $cart->getQuantity();
-    }
-
-    /**
      * Calculer le prix total pour un produit spécifique dans un panier.
      */
     public function calcPriceByIdProduct(Cart $cart, int $productId): float
-{
-    $totalPrice = 0.0;
-    foreach ($cart->getCarts() as $cartItem) {
-        if ($cartItem->getProduct()->getId() === $productId) {
-            $totalPrice += $cartItem->getProduct()->getPrice() * $cartItem->getQuantity();
+    {
+        $totalPrice = 0.0;
+        foreach ($cart->getCarts() as $cartItem) {
+            if ($cartItem->getProduct()->getId() === $productId) {
+                $totalPrice += $cartItem->getProduct()->getPrice() * $cartItem->getQuantity();
+            }
         }
-    }
-    return $totalPrice;
-}
-
-/* *
- * Calculates the total quantity of all items in the cart.
- *
- * @param Cart $cart The cart object.
- * @return int The total quantity of all items in the cart.
- */
-public function calcTotalQuantity(Cart $cart): int
-{
-    $totalQuantity = 0;
-    foreach ($cart->getCarts() as $cartItem) {
-        $totalQuantity += $cartItem->getQuantity();
-    }
-    return $totalQuantity;
-}
-
-public function findByProduct($memberId): array
-{
-        $query = $this->createQueryBuilder('c')
-            ->select('c', 'p.price', 'p.name')
-            ->innerJoin('c.productId', 'p')
-            ->andWhere('c.memberId = :val')
-            ->setParameter('val', $memberId)
-            ->getQuery();
-        return $query->getResult();
-}
-// Trouver les paniers dans un array
-public function findByProductsId($userId, Array $productsId)
-{
-    $qb = $this->createQueryBuilder('c');
-
-    $qb->andWhere('c.memberId = :userId')
-        ->setParameter('userId', $userId);
-
-    foreach ($productsId as $id) {
-        $qb->orWhere('c.productId = :id')
-            ->setParameter('id', $id);
+        return $totalPrice;
     }
 
-    return $qb->getQuery()->getResult();
+    /* *
+    * Calculates the total quantity of all items in the cart.
+    *
+    * @param Cart $cart The cart object.
+    * @return int The total quantity of all items in the cart.
+    */
+    public function calcTotalQuantity(Cart $cart): int
+    {
+        // Puisque chaque instance de Cart représente un seul produit,
+        // renvoyez simplement la quantité associée.
+        return $cart->getQuantity();
+    }
 
-}
+    public function findByProduct($memberId): array
+    {
+            $query = $this->createQueryBuilder('c')
+                ->select('c', 'p.price', 'p.name')
+                ->innerJoin('c.product', 'p')
+                ->andWhere('c.member = :val')
+                ->setParameter('val', $memberId)
+                ->getQuery();
+            return $query->getResult();
+    }
+    // Trouver les paniers dans un array
+    public function findByProductsId($userId, Array $productsId)
+    {
+        $qb = $this->createQueryBuilder('c');
+
+        $qb->andWhere('c.member = :userId')
+            ->setParameter('userId', $userId);
+
+        foreach ($productsId as $id) {
+            $qb->orWhere('c.product = :id')
+                ->setParameter('id', $id);
+        }
+
+        return $qb->getQuery()->getResult();
+
+    }
 
 
     //    public function findByExampleField($value): array

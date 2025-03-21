@@ -1,4 +1,9 @@
 <template>   
+    <v-row v-if="loading">
+      <v-col class="text-center">
+        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+      </v-col>
+    </v-row>
     <v-row class="text-center">  
       <v-col cols="2" class="mb-4">
         <v-container class="mb-6 bg-surface-variant">
@@ -22,7 +27,7 @@
         </v-container>
       </v-col>
 
-      <v-col cols="10" class="mb-4">
+      <v-col cols="10" class="mb-4">        
         <v-container v-if="shops.length>0" class="d-flex justify-start flex-wrap mb-6 bg-surface-variant">      
           <ShopsCardView class="ma-2" v-for="shop in shops" :key="shop.id" :shop="shop" />
         </v-container>

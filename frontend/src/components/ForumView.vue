@@ -1,49 +1,38 @@
 <template>
   <v-container>
     <v-row>
-      <v-col v-for="section in section" :key="section.id">
-        <v-card @click="goToSection(section.id)">
-          <v-card-title>{{ section.name }}</v-card-title>
-        </v-card>
+      <v-col cols="12">
+        <h1>Forum</h1>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <ForumSectionView />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <ForumSubjectView />
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <ForumMessage />
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
+import ForumSectionView from './ForumSectionView.vue';
+import ForumSubjectView from './ForumSubjectView.vue';
+import ForumMessage from './ForumMessage.vue';
+
 export default {
-  data() {
-    return {
-      section: [],
-    };
-  },
-  created() {
-    this.fetchsection();
-  },
-  methods: {
-    fetchsection() {
-      fetch('/ForumSection', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(data => {
-        this.section = data;
-      })
-      .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-      });
-    },
-    goToSection(id) {
-      this.$router.push(`/forumSection/${id}`);
-    },
+  components: {
+    ForumSectionView,
+    ForumSubjectView,
+    ForumMessage,
   },
 };
 </script>
